@@ -1,3 +1,12 @@
+# Defining constants
+
+const_ARIS_FILE_SIGNATURE = 0x05464444
+const_ARIS_FRAME_SIGNATURE = 0x05464444
+
+class ARIS_File():
+    def __init__(   self,  filename):
+        pass
+
 def get_beams_from_pingmode(pingmode):
     pingmode = int(pingmode)
     if (pingmode is 1 or pingmode is 2):
