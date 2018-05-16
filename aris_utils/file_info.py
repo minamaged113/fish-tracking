@@ -9,6 +9,10 @@ version of sound
 
 class ARIS_File:
     const_ARIS_FILE_SIGNATURE = 0x05464444
+    version = None              # File format version DDF_05 = 0x05464444
+    frameCount = None           # Total frames in a file
+    frameRate = None            # Initial recorded framerate
+    highResolution = None       # 0: LF, 1: HF
 
     def __init__(self,  filename):
         pass
@@ -23,13 +27,6 @@ class ARIS_File:
         pass
 
     def fileName(self):
-        pass
-
-
-class ARIS_Frame:
-    const_ARIS_FRAME_SIGNATURE = 0x05464444
-    filename = None
-    def __init__(self, filename, frameNumber):
         pass
 
 
@@ -49,6 +46,3 @@ def get_beams_from_pingmode(pingmode):
 
     else:
         return False
-
-print(help(ARIS_File))
-print(help(ARIS_Frame))
