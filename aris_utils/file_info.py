@@ -5,7 +5,9 @@ LUKE-OY. The software is intended to be an open-source
 version of sound
 
 """
-
+import struct
+import aris_utils.error_description as err
+import aris_utils.frame_info as frame 
 
 class ARIS_File:
     const_ARIS_FILE_SIGNATURE = 0x05464444
@@ -15,7 +17,23 @@ class ARIS_File:
     highResolution = None       # 0: LF, 1: HF
 
     def __init__(self,  filename):
-        pass
+        try:
+            with open(filename, 'rb') as fhand:
+                self.version        = struct.unpack(cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                self.frameCount     = struct.unpack(cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                self.frameRate      = struct.unpack(cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+
+
+                self.sanityChecks()
+
+        except:
+            err.print_error(err.fileReadError)
+            raise
+
+    def sanityChecks(self):
+        if (self.version == 88491076):
+            return True
+        return False
 
     def readFileHeader(self, filename):
         pass
@@ -29,6 +47,8 @@ class ARIS_File:
     def fileName(self):
         pass
 
+    def fileVersion(self):
+        return self.version
 
 def get_beams_from_pingmode(pingmode):
     pingmode = int(pingmode)
@@ -46,3 +66,15 @@ def get_beams_from_pingmode(pingmode):
 
     else:
         return False
+
+def c(inpStr):
+    return struct.calcsize(cType[inpStr])
+    
+cType = {
+    "uint32_t"  :   "I" ,
+    "float"     :   "f" ,
+    "int32_t"   :   "i" ,
+    "uint64_t"  :   "Q" ,
+    "char[32]"  :   "32s",
+    "char[256]" :   "256s",
+}

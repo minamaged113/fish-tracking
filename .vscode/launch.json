@@ -5,18 +5,20 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "test.py",
+            "name": "test",
             "type": "python",
             "request": "launch",
             "stopOnEntry": false,
-            "module": "test",
+            "program": "${workspaceFolder}/test.py",
             "pythonPath": "${config:python.pythonPath}",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                
+            },
+            "envFile": "${workspaceFolder}/.env",
             "debugOptions": [
 				"RedirectOutput"
-            ],
-            "env": {},
-            "envFile": "${workspaceFolder}/.env",
-            "cwd": "${workspaceFolder}"
+            ]
         }
         
     ]
