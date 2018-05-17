@@ -12,9 +12,11 @@ import aris_utils.frame_info as frame
 class ARIS_File:
     const_ARIS_FILE_SIGNATURE = 0x05464444
     version = None              # File format version DDF_05 = 0x05464444
-    frameCount = None           # Total frames in a file
-    frameRate = None            # Initial recorded framerate
-    highResolution = None       # 0: LF, 1: HF
+    frameCount = None           # Total frames in a file [also count frames]
+    frameRate = None            # Initial recorded framerate [obsolete]
+    highResolution = None       # 0: LF, 1: HF [obsolete]
+    numRawBeams = None          # ARIS 3000 = 128/64, ARIS 1800 = 96/48, ARIS 1200 = 48 [obsolete]
+    sampleRate = None           # 1/sample_period
 
     def __init__(self,  filename):
         try:
@@ -22,7 +24,9 @@ class ARIS_File:
                 self.version        = struct.unpack(cType["uint32_t"], fhand.read(c("uint32_t")))[0]
                 self.frameCount     = struct.unpack(cType["uint32_t"], fhand.read(c("uint32_t")))[0]
                 self.frameRate      = struct.unpack(cType["uint32_t"], fhand.read(c("uint32_t")))[0]
-
+                self.highResolution = struct.unpack(cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                self.numRawBeams    = struct.unpack(cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                
 
                 self.sanityChecks()
 
@@ -32,6 +36,7 @@ class ARIS_File:
 
     def sanityChecks(self):
         if (self.version == 88491076):
+            # check number of frames == self.frameCount
             return True
         return False
 

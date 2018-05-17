@@ -1,8 +1,10 @@
 import aris_utils.file_info as file_info
 
 import aris_utils.error_description as err
+import os
 
-testingFilePath = "/home/mghobria/Desktop/fish_tracking/sample.aris"
+cwd = os.getcwd()
+testingFilePath = cwd + "/sample.aris"
 
 file1 = file_info.ARIS_File(testingFilePath)
 version = file1.fileVersion()
