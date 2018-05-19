@@ -1,6 +1,6 @@
 class ARIS_Frame:
-    const_ARIS_FRAME_SIGNATURE = 0x05464444
-    filename = None
 
     def __init__(self, filename, frameNumber):
+        
+        frameoffset = (1024+(frameNumber*(1024+(FrameSize))))
         pass
