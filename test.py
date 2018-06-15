@@ -7,5 +7,8 @@ cwd = os.getcwd()
 testingFilePath = cwd + "/sample.aris"
 
 file1 = file_info.ARIS_File(testingFilePath)
-version = file1.fileVersion()
-print(version)
+sanity = file1.fileVersion()
+if(sanity):
+    print("file loaded successfully")
+else:
+    print("some error happened")

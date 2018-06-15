@@ -11,7 +11,7 @@ import aris_utils.frame_info as frame
 
 
 class ARIS_File:
-
+    sanity = None
     def __init__(self,  filename):
         try:
             with open(filename, 'rb') as fhand:
@@ -98,7 +98,7 @@ class ARIS_File:
                 self.largeLens = struct.unpack(
                     cType["uint32_t"], fhand.read(c("uint32_t")))[0]
 
-                self.sanityChecks()
+                self.sanity = self.sanityChecks()
 
         except:
             err.print_error(err.fileReadError)
@@ -123,7 +123,7 @@ class ARIS_File:
         pass
 
     def fileVersion(self):
-        return self.version
+        return self.sanity
 
 
 def get_beams_from_pingmode(pingmode):

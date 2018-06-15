@@ -1,22 +1,22 @@
 headers = {
     "file": {
         "version": {
-            "size": None,
-            "title": None,
-            "description": None,
-            "default": None,
+            "size": "32-bit unsigned integer",
+            "title": "Version",
+            "description": "File format version DDF_05",
+            "default": 0x05464444,
             "more": None
         },
         "frameCount": {
-            "size": None,
-            "title": None,
-            "description": None,
+            "size": "32-bit unsigned integer",
+            "title": "frameCount",
+            "description": "Total number of frames in a given file",
             "default": None,
-            "more": None
+            "more": "The value of this variable should be equal to the number of frames read from the file, which is calculated from file size and number of beams multiplied by the number of samples"
         },
         "frameRate": {
-            "size": None,
-            "title": None,
+            "size": "32-bit unsigned integer",
+            "title": "Frame",
             "description": None,
             "default": None,
             "more": None
