@@ -12,3 +12,5 @@ if(sanity):
     print("file loaded successfully")
 else:
     print("some error happened")
+
+file1.readFileHeader()

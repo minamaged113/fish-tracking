@@ -8,6 +8,8 @@ version of sound
 import struct
 import aris_utils.error_description as err
 import aris_utils.frame_info as frame
+import os
+import json
 
 
 class ARIS_File:
@@ -110,8 +112,13 @@ class ARIS_File:
             return True
         return False
 
-    def readFileHeader(self, filename):
-        pass
+    def readFileHeader(self):
+        cwd = os.getcwd()
+        json_filepath = cwd + "/aris_utils/file_headers_info.json"
+        file_headers = open(json_filepath).read()
+        data = json.loads(file_headers)
+        
+        return
 
     def readFrameHeader(self, filename):
         pass
