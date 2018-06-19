@@ -1,8 +1,14 @@
 """
 Python3 module
 provided by the University of Oulu in collaboration with
-LUKE-OY. The software is intended to be an open-source 
-version of sound
+LUKE-OY. The software is intended to be an open-source.
+
+author: Mina Ghobrial.
+date:   April 19th, 2018.
+
+References: 
+#   https://github.com/SoundMetrics
+#   https://github.com/EminentCodfish/pyARIS
 
 """
 import struct
@@ -13,10 +19,23 @@ import json
 
 
 class ARIS_File:
+    """
+    Abstraction of the ARIS file format.
+
+    The following class contains all the tools needed
+    to read, write and modify ARIS file formats. It also
+    provides tools to export files and data in several
+    file formats
+
+    Example:
+    >>> file = ARIS_File("sample.aris")
+    """
+    filePath = None
     sanity = None
     def __init__(self,  filename):
         try:
             with open(filename, 'rb') as fhand:
+                self.filePath = filename
                 self.version = struct.unpack(
                     cType["uint32_t"], fhand.read(c("uint32_t")))[0]
                 self.frameCount = struct.unpack(
@@ -106,13 +125,30 @@ class ARIS_File:
             err.print_error(err.fileReadError)
             raise
 
+    def __len__(self):
+        """
+        Returns number of frames inside the file
+        """
+        return self.frameCount
+
     def sanityChecks(self):
+        """
+        Checking for file's sanity.
+        
+        returns:
+            {bool} -- True if everything working, otherwise False
+
+        """
         if (self.version == 88491076):
             # check number of frames == self.frameCount
             return True
         return False
 
-    def readFileHeader(self):
+    def printFileHeader(self):
+        """
+        Reads all file headers and displays them in non-ordered fashion.
+        This function depends on "file_headers_info.json" file.
+        """
         cwd = os.getcwd()
         json_filepath = cwd + "/aris_utils/file_headers_info.json"
         file_headers = open(json_filepath).read()
@@ -123,13 +159,13 @@ class ARIS_File:
             temp = data['file'][headerField]['title']
             temp = str(temp) + " ="
             exec("print(temp, self.%s)" % (headerField))
-        
+
         return
 
-    def readFrameHeader(self, filename):
+    def readFrameHeader(self, frameIndex):
         pass
 
-    def extractData(self, filname):
+    def extractData(self, frameIndex):
         pass
 
     def fileName(self):
@@ -137,6 +173,8 @@ class ARIS_File:
 
     def fileVersion(self):
         return self.sanity
+
+
 
 
 def get_beams_from_pingmode(pingmode):

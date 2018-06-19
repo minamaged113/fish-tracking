@@ -13,4 +13,4 @@ if(sanity):
 else:
     print("some error happened")
 
-file1.readFileHeader()
+file1.printFileHeader()
