@@ -117,6 +117,12 @@ class ARIS_File:
         json_filepath = cwd + "/aris_utils/file_headers_info.json"
         file_headers = open(json_filepath).read()
         data = json.loads(file_headers)
+        headerFields = data.get('file').keys()
+
+        for headerField in headerFields:
+            temp = data['file'][headerField]['title']
+            temp = str(temp) + " ="
+            exec("print(temp, self.%s)" % (headerField))
         
         return
 
