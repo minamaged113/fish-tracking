@@ -11,11 +11,15 @@ References:
 #   https://github.com/EminentCodfish/pyARIS
 
 """
+
+
 class ARIS_Frame:
 
-    def __init__(self, filename, frameIndex):
+    def __init__(self, filename, frameIndex, frameSize):
         try:
-            frameoffset = (1024+(frameNumber*(1024+(FrameSize))))
+            with open(filename, "rb") as fhand:
+                frameoffset = (1024+(frameNumber*(1024+(frameSize))))
+                print('inside the frame')
         except:
             err.print_error(err.frameReadError)
             raise

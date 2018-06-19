@@ -31,7 +31,9 @@ class ARIS_File:
     >>> file = ARIS_File("sample.aris")
     """
     filePath = None
+    fileSize = None
     sanity = None
+    frameSize = None
     def __init__(self,  filename):
         try:
             with open(filename, 'rb') as fhand:
@@ -120,6 +122,8 @@ class ARIS_File:
                     cType["uint32_t"], fhand.read(c("uint32_t")))[0]
 
                 self.sanity = self.sanityChecks()
+                self.frameSize = self.getFrameSize()
+                self.fileSize = self.getFileSize()
 
         except:
             err.print_error(err.fileReadError)
@@ -163,7 +167,8 @@ class ARIS_File:
         return
 
     def readFrameHeader(self, frameIndex):
-        pass
+        frame = frame.ARIS_Frame(self.filePath, frameIndex, self.frameSize)
+        return
 
     def extractData(self, frameIndex):
         pass
@@ -173,6 +178,12 @@ class ARIS_File:
 
     def fileVersion(self):
         return self.sanity
+
+    def getFrameSize(self):
+        return self.numRawBeams*self.samplesPerChannel
+
+    def getFileSize(self):
+        return os.path.getsize(self.filePath)
 
 
 
