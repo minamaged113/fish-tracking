@@ -321,33 +321,33 @@ class ARIS_Frame:
                 self.appliedSett = struct.unpack(
                     utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.constrainedSett = struct.unpack(
-                    utils.cType[], fhand.read(utils.c()))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.invalidSett = struct.unpack(
-                    utils.cType[], fhand.read(utils.c()))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.enableInterpacketDelay = struct.unpack(
-                    utils.cType[], fhand.read(utils.c()))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.interpacketDelayPeriod = struct.unpack(
-                    utils.cType[], fhand.read(utils.c()))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.uptime = struct.unpack(
-                    utils.cType[], fhand.read(utils.c()))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.ARISAppVersionMajor = struct.unpack(
-                    utils.cType[], fhand.read(utils.c()))[0]
+                    utils.cType["uint16_t"], fhand.read(utils.c("uint16_t")))[0]
                 self.ARISAppVersionMinor = struct.unpack(
-                    utils.cType[], fhand.read(utils.c()))[0]
+                    utils.cType["uint16_t"], fhand.read(utils.c("uint16_t")))[0]
                 self.goTime = struct.unpack(
-                    utils.cType[], fhand.read(utils.c()))[0]
+                    utils.cType["uint64_t"], fhand.read(utils.c("uint64_t")))[0]
                 self.panVelocity = struct.unpack(
-                    utils.cType[], fhand.read(utils.c()))[0]
+                    utils.cType["float"], fhand.read(utils.c("float")))[0]
                 self.tiltVelocity = struct.unpack(
-                    utils.cType[], fhand.read(utils.c()))[0]
+                    utils.cType["float"], fhand.read(utils.c("float")))[0]
                 self.rollVelocity = struct.unpack(
-                    utils.cType[], fhand.read(utils.c()))[0]
+                    utils.cType["float"], fhand.read(utils.c("float")))[0]
                 self.GPSTimeAge = struct.unpack(
-                    utils.cType[], fhand.read(utils.c()))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.systemVariant = struct.unpack(
-                    utils.cType[], fhand.read(utils.c()))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.padding = struct.unpack(
-                    utils.cType[], fhand.read(utils.c()))[0]
+                    utils.cType["char[288]"], fhand.read(utils.c("char[288]")))[0]
 
                 
 
