@@ -16,7 +16,10 @@ import aris_utils.error_description as err
 import aris_utils.frame_info as frame
 import os
 import json
+import aris_utils.utils as utils
 
+cwd = os.getcwd()
+JSON_FILE_PATH = cwd + "/aris_utils/file_headers_info.json"
 
 class ARIS_File:
     """
@@ -29,105 +32,122 @@ class ARIS_File:
 
     Example:
     >>> file = ARIS_File("sample.aris")
+
+    Note:
+        Naming Convention:
+            - header values follow camel case naming convention.
+            - calculated file values are in upper case
     """
-    filePath = None
-    fileSize = None
+    # File related calculated variables
+    FILE_PATH = None
+    FILE_SIZE = None
+    FILE_HEADER_SIZE = None
+
+    # Sanity check variable
     sanity = None
-    frameSize = None
+    
+    # Frame related calculated variables
+    FRAME_SIZE = None
+    ALL_FRAMES_SIZE = None
+    FRAME_COUNT = None
+
+    # ARIS File class initializer
     def __init__(self,  filename):
         try:
             with open(filename, 'rb') as fhand:
-                self.filePath = filename
+                self.FILE_PATH = filename
                 self.version = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.frameCount = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.frameRate = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.highResolution = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.numRawBeams = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.sampleRate = struct.unpack(
-                    cType["float"], fhand.read(c("float")))[0]
+                    utils.cType["float"], fhand.read(utils.c("float")))[0]
                 self.samplesPerChannel = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.receiverGain = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.windowStart = struct.unpack(
-                    cType["float"], fhand.read(c("float")))[0]
+                    utils.cType["float"], fhand.read(utils.c("float")))[0]
                 self.windowLength = struct.unpack(
-                    cType["float"], fhand.read(c("float")))[0]
+                    utils.cType["float"], fhand.read(utils.c("float")))[0]
                 self.reverse = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.serialNumber = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.strDate = struct.unpack(
-                    cType["char[32]"], fhand.read(c("char[32]")))[0]
+                    utils.cType["char[32]"], fhand.read(utils.c("char[32]")))[0]
                 self.strHeaderID = struct.unpack(
-                    cType["char[256]"], fhand.read(c("char[256]")))[0]
+                    utils.cType["char[256]"], fhand.read(utils.c("char[256]")))[0]
                 self.userID1 = struct.unpack(
-                    cType["int32_t"], fhand.read(c("int32_t")))[0]
+                    utils.cType["int32_t"], fhand.read(utils.c("int32_t")))[0]
                 self.userID2 = struct.unpack(
-                    cType["int32_t"], fhand.read(c("int32_t")))[0]
+                    utils.cType["int32_t"], fhand.read(utils.c("int32_t")))[0]
                 self.userID3 = struct.unpack(
-                    cType["int32_t"], fhand.read(c("int32_t")))[0]
+                    utils.cType["int32_t"], fhand.read(utils.c("int32_t")))[0]
                 self.userID4 = struct.unpack(
-                    cType["int32_t"], fhand.read(c("int32_t")))[0]
+                    utils.cType["int32_t"], fhand.read(utils.c("int32_t")))[0]
                 self.startFrame = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.endFrame = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.timelapse = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.recordInterval = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.radioSecond = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.frameInterval = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.flags = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.auxFlags = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.soundVelocity = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.flags3D = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.softwareVersion = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.waterTemp = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.salinity = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.pulseLength = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.TxMode = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.versionFPGA = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.versionPSuC = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.thumbnailFI = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.fileSize = struct.unpack(
-                    cType["uint64_t"], fhand.read(c("uint64_t")))[0]
+                    utils.cType["uint64_t"], fhand.read(utils.c("uint64_t")))[0]
                 self.optionalHeaderSize = struct.unpack(
-                    cType["uint64_t"], fhand.read(c("uint64_t")))[0]
+                    utils.cType["uint64_t"], fhand.read(utils.c("uint64_t")))[0]
                 self.optionalTailSize = struct.unpack(
-                    cType["uint64_t"], fhand.read(c("uint64_t")))[0]
+                    utils.cType["uint64_t"], fhand.read(utils.c("uint64_t")))[0]
                 self.versionMinor = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.largeLens = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
-
-                self.sanity = self.sanityChecks()
-                self.frameSize = self.getFrameSize()
-                self.fileSize = self.getFileSize()
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
 
         except:
             err.print_error(err.fileReadError)
             raise
+
+        self.sanity = self.sanityChecks()
+        self.FRAME_SIZE = self.getFrameSize()
+        self.FILE_SIZE = self.getFileSize()
+        self.FILE_HEADER_SIZE = self.getFileHeaderSize()
+        self.ALL_FRAMES_SIZE = self.getAllFramesSize()
 
     def __len__(self):
         """
@@ -143,7 +163,7 @@ class ARIS_File:
             {bool} -- True if everything working, otherwise False
 
         """
-        if (self.version == 88491076):
+        if ((self.version == 88491076) and (os.path.getsize(self.FILE_PATH) == self.fileSize)):
             # check number of frames == self.frameCount
             return True
         return False
@@ -153,21 +173,23 @@ class ARIS_File:
         Reads all file headers and displays them in non-ordered fashion.
         This function depends on "file_headers_info.json" file.
         """
-        cwd = os.getcwd()
-        json_filepath = cwd + "/aris_utils/file_headers_info.json"
-        file_headers = open(json_filepath).read()
-        data = json.loads(file_headers)
-        headerFields = data.get('file').keys()
+        try:
+            with open(JSON_FILE_PATH) as json_fhand:
+                file_headers = json_fhand.read()
+                data = json.loads(file_headers)
+                headerFields = data.get('file').keys()
 
-        for headerField in headerFields:
-            temp = data['file'][headerField]['title']
-            temp = str(temp) + " ="
-            exec("print(temp, self.%s)" % (headerField))
-
+                for headerField in headerFields:
+                    temp = data['file'][headerField]['title']
+                    temp = str(temp) + " ="
+                    exec("print(temp, self.%s)" % (headerField))
+        except:
+            err.print_error(err.jsonData)
+            raise
         return
 
-    def readFrameHeader(self, frameIndex):
-        frame = frame.ARIS_Frame(self.filePath, frameIndex, self.frameSize)
+    def readFrame(self, frameIndex):
+        frameData = frame.ARIS_Frame(self.FILE_PATH, frameIndex, self.FRAME_SIZE)
         return
 
     def extractData(self, frameIndex):
@@ -183,8 +205,22 @@ class ARIS_File:
         return self.numRawBeams*self.samplesPerChannel
 
     def getFileSize(self):
-        return os.path.getsize(self.filePath)
+        return os.path.getsize(self.FILE_PATH)
 
+    def getFileHeaderSize(self):
+        size = int()
+        try:
+            with open(JSON_FILE_PATH) as json_fhand:
+                file_headers = json_fhand.read()
+                data = json.loads(file_headers)
+                size = data['headerSize']['size']
+        except:
+            err.print_error(err.jsonData)
+            raise
+        return size
+
+    def getAllFramesSize(self):
+        return self.FILE_SIZE - self.FILE_HEADER_SIZE
 
 
 
@@ -204,18 +240,3 @@ def get_beams_from_pingmode(pingmode):
 
     else:
         return False
-
-
-def c(inpStr):
-    return struct.calcsize(cType[inpStr])
-
-
-cType = {
-    "uint32_t":   "I",
-    "float":   "f",
-    "int32_t":   "i",
-    "uint64_t":   "Q",
-    "char[32]":   "32s",
-    "char[256]":   "256s",
-    "char[568]":   "568s"
-}

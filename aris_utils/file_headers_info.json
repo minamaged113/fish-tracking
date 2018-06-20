@@ -226,7 +226,7 @@
         },
         "softwareVersion": {
             "size": "32-bit unsigned integer",
-            "title": null,
+            "title": "Software Version",
             "description": "DIDSON software version that recorded the file",
             "default": null,
             "more": null,
@@ -328,5 +328,9 @@
             "more": "Check frame headers instead",
             "obsolete": true
         }
+    },
+    "headerSize" : {
+        "size" : 1024,
+        "unit" : "byte"
     }
 }

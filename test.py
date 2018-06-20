@@ -14,5 +14,5 @@ else:
     print("some error happened")
 
 file1.printFileHeader()
-file1.readFrameHeader()
-print(file1.fileSize)
+# file1.readFrame(1)
+print(file1.ALL_FRAMES_SIZE)
