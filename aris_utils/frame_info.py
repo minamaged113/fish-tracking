@@ -24,10 +24,10 @@ class ARIS_Frame:
                 frameoffset = (1024+(frameIndex*(1024+(frameSize))))
                 print('inside the frame, showing frame #',frameIndexInp, ' frame offset: ', frameoffset )
                 fhand.seek(frameoffset, 0)
-                self.frameTime = struct.unpack(
-                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.frameIndex = struct.unpack(
                     utils.cType["uint64_t"], fhand.read(utils.c("uint64_t")))[0]
+                self.frameTime = struct.unpack(
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.version = struct.unpack(
                     utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.status = struct.unpack(

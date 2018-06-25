@@ -42,6 +42,7 @@ class ARIS_File:
     FILE_PATH = None
     FILE_SIZE = None
     FILE_HEADER_SIZE = None
+    FILE_HEADER_NUM = 41
 
     # Sanity check variable
     sanity = None
@@ -175,24 +176,44 @@ class ARIS_File:
         """
         try:
             with open(JSON_FILE_PATH) as json_fhand:
+                orderedSet = dict()
                 file_headers = json_fhand.read()
                 data = json.loads(file_headers)
-                headerFields = data.get('file').keys()
-
+                checkList = data.get("file").keys()
+                headerFields = self.__dict__
                 for headerField in headerFields:
-                    temp = data['file'][headerField]['title']
-                    temp = str(temp) + " ="
-                    exec("print(temp, self.%s)" % (headerField))
+                    if(headerField in checkList):
+                        headerValue = headerField + " = " + str(headerFields[headerField])
+                        index = str(data["file"][headerField]["order"])
+                        orderedSet[index] = headerValue
+                    else:
+                        continue
+                for i in range(self.FILE_HEADER_NUM):
+                    print(orderedSet[str(i)])
+
         except:
             err.print_error(err.jsonData)
             raise
         return
 
     def readFrame(self, frameIndex):
-        frameData = frame.ARIS_Frame(self.FILE_PATH, frameIndex, self.FRAME_SIZE)
-        return
+        """This function reads a frame given the frame index
+        of that frame and returns a class handle of the read
+        frame.
+        
+        Arguments:
+            frameIndex {[integer]} -- [specifies a frame to be read from
+                                    a given file]
+        
+        Returns:
+            [class handle] -- [returns a class handle pointing
+                                to the data]
+        """
 
-    def extractData(self, frameIndex):
+        return frame.ARIS_Frame(self.FILE_PATH, frameIndex, self.FRAME_SIZE)
+
+    def getData(self, frameIndex):
+        
         pass
 
     def fileName(self):
@@ -202,12 +223,32 @@ class ARIS_File:
         return self.sanity
 
     def getFrameSize(self):
+        """a functione that takes an instant of the class and returns
+        an integer containing the frame size in the given file.
+        
+        Returns:
+            [integer] -- [number of beams * number of samples per channel]
+        """
+
         return self.numRawBeams*self.samplesPerChannel
 
     def getFileSize(self):
+        """Returns the file size on disk
+        
+        Returns:
+            [integer] -- [Given file size]
+        """
+
         return os.path.getsize(self.FILE_PATH)
 
     def getFileHeaderSize(self):
+        """Returns the default header size written in the
+        `file_headers_info.json`
+        
+        Returns:
+            [integer] -- [Number of bytes that the header occupies]
+        """
+
         size = int()
         try:
             with open(JSON_FILE_PATH) as json_fhand:
@@ -220,8 +261,21 @@ class ARIS_File:
         return size
 
     def getAllFramesSize(self):
+        """Returns the size of all frames with their headers
+        
+        Returns:
+            [integer] -- [bytes that the header file occupy]
+        """
+
         return self.FILE_SIZE - self.FILE_HEADER_SIZE
 
+    def exportFrameHeaders(self, format = "JSON", outputFilePath = None):
+        if(format == "JSON"):
+            print("Exporting JSON file...")
+
+        elif(format == "CSV"):
+            print("Exporting CSV file...")
+        pass
 
 
 def get_beams_from_pingmode(pingmode):

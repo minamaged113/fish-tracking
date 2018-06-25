@@ -1,162 +1,1629 @@
-frameTime
-frameIndex
-version
-status
-sonarTimeStamp
-TS_Day
-TS_Hour
-TS_Minute
-TS_Second
-TS_Hsecond
-transmitMode
-windowStart
-windowLength
-threshold
-intensity
-receiverGain
-degC1
-degC2
-humidity
-focus
-battery
-userVal1
-userVal2
-userVal3
-userVal4
-userVal5
-userVal6
-userVal7
-userVal8
-velocity
-depth
-altitude
-pitch
-pitchRate
-heading
-headingRate
-compassHeading
-compassPitch
-compassRoll
-latitude
-longitude
-sonarPosition
-configFlags
-beamTilt
-targetRange
-targetBearing
-targetPresent
-firmwareRev
-flags
-sourceFrame
-waterTemp
-timerPeriod
-sonarX
-sonarY
-sonarZ
-sonarPan
-sonarTilt
-sonarRoll
-panPNNL
-tiltPNNL
-rollPNNL
-vehicleTime
-timeGGK
-dateGGK
-qualityGGK
-numStatsGGK
-DOPGGK
-EHTDDK
-heaveTSS
-yearGPS
-monthGPS
-dayGPS
-hourGPS
-minuteGPS
-secondGPS
-HSecondGPS
-sonarPanOffset
-sonarTiltOffset
-sonarRollOffset
-sonarXOffset
-sonarYOffset
-sonarZOffset
-Tmatrix
-sampleRate
-accelX
-accelY
-accelZ
-pingMode
-freq
-pulseWidth
-cyclePeriod
-samplePeriod
-transmitEnable
-frameRate
-soundSpeed
-samplesPerBeam
-enable150V
-sampleStartDelay
-largeLens
-systemType
-sonarSerialNumber
-reservedEK
-ARISErrorFlags
-missedPackets
-ARISAppVersion
-available2
-reordered
-salinity
-pressure
-batteryVoltage
-mainVoltage
-switchVoltage
-focusMotorMoving
-voltageChanging
-focusTimeoutFault
-focusOverCurrentFault
-focusNotFoundFault
-focusStalledFault
-FPGATimeoutFault
-FPGABusyFault
-FPGAStuckFault
-CPUTempFault
-PSUTempFault
-waterTempFault
-humidityFault
-pressureFault
-voltageReadFault
-voltageWriteFault
-focusCurrentPosition
-targetPan
-targetTilt
-targetRoll
-panMotorErrorCode
-tiltMotorErrorCode
-rollMotorErrorCode
-panAbsPos
-tiltAbsPos
-rollAbsPos
-panAccelX
-panAccelY
-panAccelZ
-tiltAccelX
-tiltAccelY
-tiltAccelZ
-rollAccelX
-rollAccelY
-rollAccelZ
-appliedSett
-constrainedSett
-invalidSett
-enableInterpacketDelay
-interpacketDelayPeriod
-uptime
-ARISAppVersionMajor
-ARISAppVersionMinor
-goTime
-panVelocity
-tiltVelocity
-rollVelocity
-GPSTimeAge
-systemVariant
-padding
+{
+    "frame": {
+        "frameTime" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "frameIndex" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "version" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "status" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "sonarTimeStamp" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "TS_Day" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "TS_Hour" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "TS_Minute" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "TS_Second" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "TS_Hsecond" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "transmitMode" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "windowStart" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "windowLength" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "threshold" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "intensity" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "receiverGain" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "degC1" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "degC2" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "humidity" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "focus" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "battery" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "userVal1" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "userVal2" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "userVal3" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "userVal4" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "userVal5" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "userVal6" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "userVal7" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "userVal8" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "velocity" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "depth" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "altitude" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "pitch" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "pitchRate" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "heading" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "headingRate" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "compassHeading" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "compassPitch" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "compassRoll" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "latitude" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "longitude" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "sonarPosition" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "configFlags" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "beamTilt" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "targetRange" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "targetBearing" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "targetPresent" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "firmwareRev" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "flags" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "sourceFrame" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "waterTemp" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "timerPeriod" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "sonarX" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "sonarY" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "sonarZ" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "sonarPan" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "sonarTilt" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "sonarRoll" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "panPNNL" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "tiltPNNL" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "rollPNNL" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "vehicleTime" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "timeGGK" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "dateGGK" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "qualityGGK" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "numStatsGGK" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "DOPGGK" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "EHTDDK" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "heaveTSS" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "yearGPS" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "monthGPS" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "dayGPS" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "hourGPS" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "minuteGPS" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "secondGPS" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "HSecondGPS" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "sonarPanOffset" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "sonarTiltOffset" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "sonarRollOffset" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "sonarXOffset" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "sonarYOffset" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "sonarZOffset" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "Tmatrix" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "sampleRate" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "accelX" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "accelY" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "accelZ" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "pingMode" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "freq" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "pulseWidth" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "cyclePeriod" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "samplePeriod" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "transmitEnable" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "frameRate" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "soundSpeed" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "samplesPerBeam" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "enable150V" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "sampleStartDelay" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "largeLens" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "systemType" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "sonarSerialNumber" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "reservedEK" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "ARISErrorFlags" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "missedPackets" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "ARISAppVersion" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "available2" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "reordered" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "salinity" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "pressure" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "batteryVoltage" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "mainVoltage" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "switchVoltage" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "focusMotorMoving" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "voltageChanging" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "focusTimeoutFault" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "focusOverCurrentFault" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "focusNotFoundFault" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "focusStalledFault" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "FPGATimeoutFault" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "FPGABusyFault" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "FPGAStuckFault" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "CPUTempFault" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "PSUTempFault" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "waterTempFault" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "humidityFault" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "pressureFault" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "voltageReadFault" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "voltageWriteFault" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "focusCurrentPosition" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "targetPan" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "targetTilt" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "targetRoll" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "panMotorErrorCode" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "tiltMotorErrorCode" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "rollMotorErrorCode" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "panAbsPos" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "tiltAbsPos" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "rollAbsPos" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "panAccelX" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "panAccelY" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "panAccelZ" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "tiltAccelX" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "tiltAccelY" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "tiltAccelZ" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "rollAccelX" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "rollAccelY" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "rollAccelZ" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "appliedSett" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "constrainedSett" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "invalidSett" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "enableInterpacketDelay" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "interpacketDelayPeriod" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "uptime" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "ARISAppVersionMajor" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "ARISAppVersionMinor" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "goTime" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "panVelocity" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "tiltVelocity" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "rollVelocity" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "GPSTimeAge" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "systemVariant" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        },
+        "padding" : {
+            "size": null,
+            "title": null,
+            "description": null,
+            "default": null,
+            "more": null,
+            "order": null,
+            "obsolete": null
+
+        }
+
+    },
+    "headerSize":{
+        "size": 1024,
+        "unit": "byte"
+    }
+}

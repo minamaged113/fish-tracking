@@ -6,6 +6,7 @@
             "description": "File format version DDF_05",
             "default": "0x05464444",
             "more": null,
+            "order": 0,
             "obsolete":null
         },
         "frameCount": {
@@ -14,6 +15,7 @@
             "description": "Total number of frames in a given file",
             "default": null,
             "more": "The value of this variable should be equal to the number of frames read from the file, which is calculated from file size and number of beams multiplied by the number of samples",
+            "order": 1,
             "obsolete": false
         },
         "frameRate": {
@@ -22,6 +24,7 @@
             "description": "Initial recorded frame rate",
             "default": null,
             "more": "should be read from frame header, it might happen that a frame has its own different framerate",
+            "order": 2,
             "obsolete":null
         },
         "highResolution": {
@@ -30,6 +33,7 @@
             "description": "If the value is zero, then frames are in low resolution. Otherwise, high resolution",
             "default": null,
             "more": "Each frame has its own value, so frame headers should be considered",
+            "order": 3,
             "obsolete":null
         },
         "numRawBeams": {
@@ -38,6 +42,7 @@
             "description": "Number of beams produced by the hardware. It is considered the X-axis of the produced images.",
             "default": null,
             "more": "Each model of hardware has its own number of beams, ARIS 3000 has 128 or 64, ARIS 1800 has 96 or 48 and ARIS 1200 has 48 beams. However, every frame might contain different information, so frame headers should be considered.",
+            "order": 4,
             "obsolete":null
         },
         "sampleRate": {
@@ -46,6 +51,7 @@
             "description": "It is the reciprocal of the sample period",
             "default": null,
             "more": "Each frame might have different sample rate, so frame header should be considered",
+            "order": 5,
             "obsolete":null
         },
         "samplesPerChannel": {
@@ -54,6 +60,7 @@
             "description": "Number of range sample in each beam produced by the hardware. It is considered the Y-axis of the produced images",
             "default": null,
             "more": "Each frame might have different value, so frame header should be considered.",
+            "order": 6,
             "obsolete":null
         },
         "receiverGain": {
@@ -62,6 +69,7 @@
             "description": "Relative gain in dB, has values ranging from 0 to 40",
             "default": null,
             "more": "Each frame might have different value, so frame header should be considered.",
+            "order": 7,
             "obsolete":null
         },
         "windowStart": {
@@ -70,6 +78,7 @@
             "description": "Image window start range in meters",
             "default": null,
             "more": "Each frame might have different value, so frame header should be considered.",
+            "order": 8,
             "obsolete":null
         },
         "windowLength": {
@@ -78,6 +87,7 @@
             "description": "Image window length in meters",
             "default": null,
             "more": "Each frame might have different value, so frame header should be considered.",
+            "order": 9,
             "obsolete":null
         },
         "reverse": {
@@ -86,6 +96,7 @@
             "description": "Lens position either up or down.",
             "default": null,
             "more": "If the hardware is DIDSON, then a non-zero value would indicate the lens is facing down. However, in case of ARIS, a non-zero value indicates a lens facing upwards. Otherwise, if zero value, it means the opposite of what has been stated.",
+            "order": 10,
             "obsolete":null
         },
         "serialNumber": {
@@ -94,6 +105,7 @@
             "description": "Serial number of the SONAR hardware.",
             "default": null,
             "more": null,
+            "order": 11,
             "obsolete":null
         },
         "strDate": {
@@ -102,6 +114,7 @@
             "description": "Date of recording the file.",
             "default": null,
             "more": null,
+            "order": 12,
             "obsolete":null
         },
         "strHeaderID": {
@@ -110,6 +123,7 @@
             "description": "User input to identify file.",
             "default": null,
             "more": null,
+            "order": 13,
             "obsolete":null
         },
         "userID1": {
@@ -118,6 +132,7 @@
             "description": "User-defined integer quantity",
             "default": null,
             "more": null,
+            "order": 14,
             "obsolete":null
         },
         "userID2": {
@@ -126,6 +141,7 @@
             "description": "User-defined integer quantity",
             "default": null,
             "more": null,
+            "order": 15,
             "obsolete":null
         },
         "userID3": {
@@ -134,6 +150,7 @@
             "description": "User-defined integer quantity",
             "default": null,
             "more": null,
+            "order": 16,
             "obsolete":null
         },
         "userID4": {
@@ -142,6 +159,7 @@
             "description": "User-defined integer quantity",
             "default": null,
             "more": null,
+            "order": 17,
             "obsolete":null
         },
         "startFrame": {
@@ -150,6 +168,7 @@
             "description": "First frame number from source file",
             "default": null,
             "more": "For DIDSON snippet files",
+            "order": 18,
             "obsolete":null
         },
         "endFrame": {
@@ -158,6 +177,7 @@
             "description": "Last frame number from source file",
             "default": null,
             "more": "For DIDSON snippet files",
+            "order": 19,
             "obsolete":null
         },
         "timelapse": {
@@ -166,6 +186,7 @@
             "description": "If non-zero, it indicates Timelapse recording mode. Otherwise, no Timelapse.",
             "default": null,
             "more": "Indicates whether recording was made in timelapse mode or not.",
+            "order": 20,
             "obsolete": false
         },
         "recordInterval": {
@@ -174,6 +195,7 @@
             "description": "Number of frames/seconds between recorded frames",
             "default": null,
             "more": null,
+            "order": 21,
             "obsolete": false
         },
         "radioSecond": {
@@ -182,6 +204,7 @@
             "description": "Frames or seconds interval",
             "default": null,
             "more": null,
+            "order": 22,
             "obsolete": false
         },
         "frameInterval": {
@@ -190,6 +213,7 @@
             "description": "Record every Nth frame",
             "default": null,
             "more": null,
+            "order": 23,
             "obsolete": false
         },
         "flags": {
@@ -198,6 +222,7 @@
             "description": "See DDF_04 file format document",
             "default": null,
             "more": null,
+            "order": 24,
             "obsolete": true
         },
         "auxFlags": {
@@ -206,6 +231,7 @@
             "description": "See DDF_04 file format document",
             "default": null,
             "more": null,
+            "order": 25,
             "obsolete": true
         },
         "soundVelocity": {
@@ -214,6 +240,7 @@
             "description": "Sound velocity in water",
             "default": null,
             "more": null,
+            "order": 26,
             "obsolete": true
         },
         "flags3D": {
@@ -222,6 +249,7 @@
             "description": "See DDF_04 file format document",
             "default": null,
             "more": null,
+            "order": 27,
             "obsolete": true
         },
         "softwareVersion": {
@@ -230,6 +258,7 @@
             "description": "DIDSON software version that recorded the file",
             "default": null,
             "more": null,
+            "order": 28,
             "obsolete": false
         },
         "waterTemp": {
@@ -238,6 +267,7 @@
             "description": "Water temperature code:  0 = 5-15C, 1 = 15-25C, 2 = 25-35C",
             "default": null,
             "more": null,
+            "order": 29,
             "obsolete": false
         },
         "salinity": {
@@ -246,6 +276,7 @@
             "description": "Salinity code:  0 = fresh, 1 = brackish, 2 = salt",
             "default": null,
             "more": null,
+            "order": 30,
             "obsolete": false
         },
         "pulseLength": {
@@ -254,6 +285,7 @@
             "description": null,
             "default": null,
             "more": "Added for ARIS but not used",
+            "order": 31,
             "obsolete": true
         },
         "TxMode": {
@@ -262,6 +294,7 @@
             "description": null,
             "default": null,
             "more": "Added for ARIS but not used",
+            "order": 32,
             "obsolete": true
         },
         "versionFPGA": {
@@ -270,6 +303,7 @@
             "description": null,
             "default": null,
             "more": "Reserved for future use",
+            "order": 33,
             "obsolete": true
         },
         "versionPSuC": {
@@ -278,6 +312,7 @@
             "description": null,
             "default": null,
             "more": "Reserved for future use",
+            "order": 34,
             "obsolete": true
         },
         "thumbnailFI": {
@@ -286,6 +321,7 @@
             "description": "Frame index of frame used for thumbnail image of file",
             "default": null,
             "more": null,
+            "order": 35,
             "obsolete": false
         },
         "fileSize": {
@@ -294,6 +330,7 @@
             "description": "Total file size in bytes",
             "default": null,
             "more": "Do not use; query your filesystem instead",
+            "order": 36,
             "obsolete": true
         },
         "optionalHeaderSize": {
@@ -302,6 +339,7 @@
             "description": null,
             "default": null,
             "more": "Reserved for future use",
+            "order": 37,
             "obsolete": true
         },
         "optionalTailSize": {
@@ -310,6 +348,7 @@
             "description": null,
             "default": null,
             "more": "Reserved for future use",
+            "order": 38,
             "obsolete": true
         },
         "versionMinor": {
@@ -318,6 +357,7 @@
             "description": null,
             "default": null,
             "more": "Obsolete",
+            "order": 39,
             "obsolete": true
         },
         "largeLens": {
@@ -326,6 +366,7 @@
             "description": "Non-zero if telephoto lens (large lens, hi-res lens, big lens) is present",
             "default": null,
             "more": "Check frame headers instead",
+            "order": 40,
             "obsolete": true
         }
     },
