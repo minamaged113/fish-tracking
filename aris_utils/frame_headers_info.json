@@ -57,7 +57,7 @@
             "default": null,
             "more": null,
             "order": 5,
-            "obsolete": null
+            "obsolete": false
 
         },
         "TS_Hour" : {
@@ -66,368 +66,388 @@
             "description": "Part of the on-sonar timestamp indicating the hour of recording",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 6,
+            "obsolete": false
 
         },
         "TS_Minute" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Timestamp (Min.)",
+            "description": "Part of the on-sonar timestamp indicating the minute of recording",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 7,
+            "obsolete": false
 
         },
         "TS_Second" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Timestamp (Sec.)",
+            "description": "Part of the on-sonar timestamp indicating the second of recording",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 8,
+            "obsolete": false
 
         },
         "TS_Hsecond" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Timestamp (Hsec.)",
+            "description": "Part of the on-sonar timestamp indicating the hundredth of a second of recording",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 9,
+            "obsolete": false
 
         },
         "transmitMode" : {
-            "size": null,
-            "title": null,
+            "size": "32-bit unsigned integer",
+            "title": "Transmit Mode",
             "description": null,
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 10,
+            "obsolete": false
 
         },
         "windowStart" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Window Start",
+            "description": "Starting distance of the window in meters",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 11,
+            "obsolete": false
 
         },
         "windowLength" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Window Lenght",
+            "description": "The length of the window in meters",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 12,
+            "obsolete": false
 
         },
         "threshold" : {
-            "size": null,
-            "title": null,
+            "size": "32-bit unsigned integer",
+            "title": "Threshold",
             "description": null,
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 13,
+            "obsolete": false
 
         },
         "intensity" : {
-            "size": null,
-            "title": null,
+            "size": "32-bit signed integer",
+            "title": "Intensity",
             "description": null,
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 14,
+            "obsolete": false
 
         },
         "receiverGain" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Receiver Gain",
+            "description": "it has a range from 0 to 24 dB",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 15,
+            "obsolete": false
 
         },
         "degC1" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "CPU Temp. (C)",
+            "description": "CPU temperature in celsius",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 16,
+            "obsolete": false
 
         },
         "degC2" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "PSU Temp. (C)",
+            "description": "Power Suply Unit (PSU) temperature in celsius",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 17,
+            "obsolete": false
 
         },
         "humidity" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Humidity",
+            "description": "Relative humidity",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 18,
+            "obsolete": false
 
         },
         "focus" : {
-            "size": null,
-            "title": null,
+            "size": "32-bit unsigned integer",
+            "title": "Focus",
             "description": null,
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 19,
+            "obsolete": false
 
         },
         "battery" : {
-            "size": null,
-            "title": null,
+            "size": "32-bit unsigned integer",
+            "title": "Battery",
             "description": null,
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 20,
+            "obsolete": true
 
         },
         "userVal1" : {
-            "size": null,
-            "title": null,
+            "size": "32-bit float",
+            "title": "User Value #1",
             "description": null,
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 21,
+            "obsolete": false
 
         },
         "userVal2" : {
-            "size": null,
-            "title": null,
+            "size": "32-bit float",
+            "title": "User Value #2",
             "description": null,
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 22,
+            "obsolete": false
 
         },
         "userVal3" : {
-            "size": null,
-            "title": null,
+            "size": "32-bit float",
+            "title": "User Value #3",
             "description": null,
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 23,
+            "obsolete": false
 
         },
         "userVal4" : {
-            "size": null,
-            "title": null,
+            "size": "32-bit float",
+            "title": "User Value #4",
             "description": null,
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 24,
+            "obsolete": false
 
         },
         "userVal5" : {
-            "size": null,
-            "title": null,
+            "size": "32-bit float",
+            "title": "User Value #5",
             "description": null,
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 25,
+            "obsolete": false
 
         },
         "userVal6" : {
-            "size": null,
-            "title": null,
+            "size": "32-bit float",
+            "title": "User Value #6",
             "description": null,
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 26,
+            "obsolete": false
 
         },
         "userVal7" : {
-            "size": null,
-            "title": null,
+            "size": "32-bit float",
+            "title": "User Value #7",
             "description": null,
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 27,
+            "obsolete": false
 
         },
         "userVal8" : {
-            "size": null,
-            "title": null,
+            "size": "32-bit float",
+            "title": "User Value #8",
             "description": null,
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 28,
+            "obsolete": false
 
         },
         "velocity" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Velocity",
+            "description": "Platform velocity from AUV integration",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 29,
+            "obsolete": false
 
         },
         "depth" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Depth",
+            "description": "Platform depth from AUV integration",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 30,
+            "obsolete": false
 
         },
         "altitude" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Altitude",
+            "description": "Platform altitude from AUV integration",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 31,
+            "obsolete": false
 
         },
         "pitch" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Pitch",
+            "description": "Platform pitch from AUV integration",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 32,
+            "obsolete": false
 
         },
         "pitchRate" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Pitch Rate",
+            "description": "Platform pitch rate from AUV integration",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 33,
+            "obsolete": false
+
+        },
+        "roll" : {
+            "size": "32-bit float",
+            "title": "Roll",
+            "description": "Platform roll from AUV integration",
+            "default": null,
+            "more": null,
+            "order": 34,
+            "obsolete": false
+
+        },
+        "rollRate" : {
+            "size": "32-bit float",
+            "title": "Roll Rate",
+            "description": "Platform roll rate from AUV integration",
+            "default": null,
+            "more": null,
+            "order": 35,
+            "obsolete": false
 
         },
         "heading" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Heading",
+            "description": "Platform heading from AUV integration",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 36,
+            "obsolete": false
 
         },
         "headingRate" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Heading Rate",
+            "description": "Platform heading rate from AUV integration",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 37,
+            "obsolete": false
 
         },
         "compassHeading" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Compass Heading",
+            "description": "Sonar compass heading output",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 38,
+            "obsolete": false
 
         },
         "compassPitch" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Compass Pitch",
+            "description": "Sonar compass pitch output",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 39,
+            "obsolete": false
 
         },
         "compassRoll" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Compass Roll",
+            "description": "Sonar compass roll output",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 40,
+            "obsolete": false
 
         },
         "latitude" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "64-bit double",
+            "title": "Latitude",
+            "description": "Latitude from auxiliary GPS sensor",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 41,
+            "obsolete": false
 
         },
         "longitude" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "64-bit double",
+            "title": "Longitude",
+            "description": "Longitude from auxiliary GPS sensor",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 42,
+            "obsolete": false
 
         },
         "sonarPosition" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Sonar Pos.",
+            "description": "Sonar Position, special for PNNL",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 43,
+            "obsolete": false
 
         },
         "configFlags" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Config. Flags",
+            "description": "Configuration Flags",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 44,
+            "obsolete": false
 
         },
         "beamTilt" : {

@@ -26,7 +26,6 @@ class ARIS_Frame:
         try:
             with open(filename, "rb") as fhand:
                 frameoffset = (1024+(frameIndex*(1024+(frameSize))))
-                print('inside the frame, showing frame #',frameIndexInp, ' frame offset: ', frameoffset )
                 fhand.seek(frameoffset, 0)
                 self.frameIndex = struct.unpack(
                     utils.cType["uint64_t"], fhand.read(utils.c("uint64_t")))[0]
@@ -96,6 +95,10 @@ class ARIS_Frame:
                     utils.cType["float"], fhand.read(utils.c("float")))[0]
                 self.pitchRate = struct.unpack(
                     utils.cType["float"], fhand.read(utils.c("float")))[0]
+                self.roll = struct.unpack(
+                    utils.cType["float"], fhand.read(utils.c("float")))[0]
+                self.rollRate = struct.unpack(
+                    utils.cType["float"], fhand.read(utils.c("float")))[0]
                 self.heading = struct.unpack(
                     utils.cType["float"], fhand.read(utils.c("float")))[0]
                 self.headingRate = struct.unpack(
@@ -107,9 +110,9 @@ class ARIS_Frame:
                 self.compassRoll = struct.unpack(
                     utils.cType["float"], fhand.read(utils.c("float")))[0]
                 self.latitude = struct.unpack(
-                    utils.cType["float"], fhand.read(utils.c("float")))[0]
+                    utils.cType["double"], fhand.read(utils.c("double")))[0]
                 self.longitude = struct.unpack(
-                    utils.cType["float"], fhand.read(utils.c("float")))[0]
+                    utils.cType["double"], fhand.read(utils.c("double")))[0]
                 self.sonarPosition = struct.unpack(
                     utils.cType["float"], fhand.read(utils.c("float")))[0]
                 self.configFlags = struct.unpack(

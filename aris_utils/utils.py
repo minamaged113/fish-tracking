@@ -26,5 +26,6 @@ cType = {
     "char[568]":   "568s",
     "char[288]": "288s",
     "uint16_t": "H",
-    "uint8_t": "B"
+    "uint8_t": "B",
+    "double": "d"
 }

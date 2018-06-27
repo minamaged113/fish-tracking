@@ -14,6 +14,6 @@ else:
     print("some error happened")
 
 # file1.printFileHeader()
-file1.readFrame(1)
-print(file1.readFrame(1).pingMode)
+x = file1.readFrame(2)
+print(x.pingMode)
 print(file1.ALL_FRAMES_SIZE)
