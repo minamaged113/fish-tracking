@@ -901,33 +901,33 @@
 
         },
         "freq" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Frequency",
+            "description": "if 1, it's high frequency. if 0, it's low frequency.",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 90,
+            "obsolete": false
 
         },
         "pulseWidth" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Pulse Width",
+            "description": "Width of transmit pulse",
             "default": null,
-            "more": null,
-            "order": null,
-            "obsolete": null
+            "more": "It has values from 4 to 100 microseconds",
+            "order": 91,
+            "obsolete": false
 
         },
         "cyclePeriod" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Cycle Period",
+            "description": "Ping cycle time",
             "default": null,
-            "more": null,
-            "order": null,
-            "obsolete": null
+            "more": "It has values from 1802 to 65535 microseconds",
+            "order": 92,
+            "obsolete": false
 
         },
         "samplePeriod" : {
