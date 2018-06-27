@@ -14,9 +14,13 @@ References:
 import struct
 import json
 import aris_utils.utils as utils
+import numpy as np 
+import aris_utils.error_description as err
+
 
 class ARIS_Frame:
-
+    FRAME_DATA = None
+    BEAM_COUNT = None
     def __init__(self, filename, frameIndexInp, frameSize):
         frameIndex = frameIndexInp - 1
         try:
@@ -349,12 +353,45 @@ class ARIS_Frame:
                 self.padding = struct.unpack(
                     utils.cType["char[288]"], fhand.read(utils.c("char[288]")))[0]
 
+
+                self.BEAM_COUNT = self.getBeamsFromPingMode(self.pingMode)
                 
 
         except:
             err.print_error(err.frameReadError)
             raise
         pass
+
+    def getBeamsFromPingMode(self, pingmode):
+        """This function takes a class variable pingMode
+        `self.pingMode` and returns the Number of beams
+        across the image in the horizontal dimension;
+        this is derived from the ping mode used. Beam
+        count can be 48, 64, 96, or 128 depending on
+        the model of ARIS that produced the data.
+
+        if it returns false, it means that the file being
+        read is corrupted.
+        
+        Arguments:
+            pingmode {[integer]} -- [please look up `frame_headers_info.json`
+                                    for `pingMode`]
+        
+        Returns:
+            [integer] -- [Number of beams across the image in the horizontal dimension]
+        """
+
+        if pingmode in [1, 2]:
+            return 48
+        elif pingmode in [3,4,5]:
+            return 96
+        elif pingmode in [6,7,8]:
+            return 64
+        elif pingmode in [9,10,11,12]:
+            return 128
+        else:
+            return False
+
 
     def __len__(self):
         pass

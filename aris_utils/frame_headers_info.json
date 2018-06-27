@@ -1,69 +1,69 @@
 {
     "frame": {
-        "frameTime" : {
-            "size": null,
-            "title": null,
-            "description": null,
+        "frameIndex" : {
+            "size": "32-bit unsigned integer",
+            "title": "Frame Index",
+            "description": "Frame number inside the ARIS file",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 0,
+            "obsolete": false
 
         },
-        "frameIndex" : {
-            "size": null,
-            "title": null,
-            "description": null,
+        "frameTime" : {
+            "size": "64-bit unsigned integer",
+            "title": "Frame Time",
+            "description": "PC Timestamp when recorded; microseconds since epoch (Jan. 1st, 1970)",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 1,
+            "obsolete": false
 
         },
         "version" : {
-            "size": null,
-            "title": null,
-            "description": null,
-            "default": null,
+            "size": "32-bit unsigned integer",
+            "title": "Version",
+            "description": "ARIS file format version.",
+            "default": 88491076,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 2,
+            "obsolete": false
 
         },
         "status" : {
-            "size": null,
-            "title": null,
+            "size": "32-bit unsigned integer",
+            "title": "Status",
             "description": null,
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 3,
+            "obsolete": false
 
         },
         "sonarTimeStamp" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "64-bit unsigned integer",
+            "title": "Sonar Timestamp",
+            "description": "On-Sonar microsecond since epoch (Jan. 1st, 1970)",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 4,
+            "obsolete": false
 
         },
         "TS_Day" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Timestamp (Day)",
+            "description": "Part of the on-sonar timestamp indicating the day of recording",
             "default": null,
             "more": null,
-            "order": null,
+            "order": 5,
             "obsolete": null
 
         },
         "TS_Hour" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Timestamp (Hour)",
+            "description": "Part of the on-sonar timestamp indicating the hour of recording",
             "default": null,
             "more": null,
             "order": null,
