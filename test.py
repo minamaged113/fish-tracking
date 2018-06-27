@@ -16,4 +16,5 @@ else:
 # file1.printFileHeader()
 x = file1.readFrame(2)
 print(x.pingMode)
+print(x.BEAM_COUNT)
 print(file1.ALL_FRAMES_SIZE)

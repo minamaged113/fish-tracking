@@ -154,7 +154,7 @@ class ARIS_Frame:
                 self.rollPNNL = struct.unpack(
                     utils.cType["float"], fhand.read(utils.c("float")))[0]
                 self.vehicleTime = struct.unpack(
-                    utils.cType["float"], fhand.read(utils.c("float")))[0]
+                    utils.cType["double"], fhand.read(utils.c("double")))[0]
                 self.timeGGK = struct.unpack(
                     utils.cType["float"], fhand.read(utils.c("float")))[0]
                 self.dateGGK = struct.unpack(
@@ -165,7 +165,7 @@ class ARIS_Frame:
                     utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.DOPGGK = struct.unpack(
                     utils.cType["float"], fhand.read(utils.c("float")))[0]
-                self.EHTDDK = struct.unpack(
+                self.EHTGGK = struct.unpack(
                     utils.cType["float"], fhand.read(utils.c("float")))[0]
                 self.heaveTSS = struct.unpack(
                     utils.cType["float"], fhand.read(utils.c("float")))[0]
@@ -195,7 +195,37 @@ class ARIS_Frame:
                     utils.cType["float"], fhand.read(utils.c("float")))[0]
                 self.sonarZOffset = struct.unpack(
                     utils.cType["float"], fhand.read(utils.c("float")))[0]
-                self.Tmatrix = struct.unpack(
+                self.Tmatrix1 = struct.unpack(
+                    utils.cType["float"], fhand.read(utils.c("float")))[0]
+                self.Tmatrix2 = struct.unpack(
+                    utils.cType["float"], fhand.read(utils.c("float")))[0]
+                self.Tmatrix3 = struct.unpack(
+                    utils.cType["float"], fhand.read(utils.c("float")))[0]
+                self.Tmatrix4 = struct.unpack(
+                    utils.cType["float"], fhand.read(utils.c("float")))[0]
+                self.Tmatrix5 = struct.unpack(
+                    utils.cType["float"], fhand.read(utils.c("float")))[0]
+                self.Tmatrix6 = struct.unpack(
+                    utils.cType["float"], fhand.read(utils.c("float")))[0]
+                self.Tmatrix7 = struct.unpack(
+                    utils.cType["float"], fhand.read(utils.c("float")))[0]
+                self.Tmatrix8 = struct.unpack(
+                    utils.cType["float"], fhand.read(utils.c("float")))[0]
+                self.Tmatrix9 = struct.unpack(
+                    utils.cType["float"], fhand.read(utils.c("float")))[0]
+                self.Tmatrix10 = struct.unpack(
+                    utils.cType["float"], fhand.read(utils.c("float")))[0]
+                self.Tmatrix11 = struct.unpack(
+                    utils.cType["float"], fhand.read(utils.c("float")))[0]
+                self.Tmatrix12 = struct.unpack(
+                    utils.cType["float"], fhand.read(utils.c("float")))[0]
+                self.Tmatrix13 = struct.unpack(
+                    utils.cType["float"], fhand.read(utils.c("float")))[0]
+                self.Tmatrix14 = struct.unpack(
+                    utils.cType["float"], fhand.read(utils.c("float")))[0]
+                self.Tmatrix15 = struct.unpack(
+                    utils.cType["float"], fhand.read(utils.c("float")))[0]
+                self.Tmatrix16 = struct.unpack(
                     utils.cType["float"], fhand.read(utils.c("float")))[0]
                 self.sampleRate = struct.unpack(
                     utils.cType["float"], fhand.read(utils.c("float")))[0]

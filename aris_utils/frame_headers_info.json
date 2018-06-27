@@ -451,453 +451,453 @@
 
         },
         "beamTilt" : {
-            "size": null,
-            "title": null,
+            "size": "32-bit float",
+            "title": "Beam Tilt",
             "description": null,
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 45,
+            "obsolete": false
 
         },
         "targetRange" : {
-            "size": null,
-            "title": null,
+            "size": "32-bit float",
+            "title": "Target Range",
             "description": null,
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 46,
+            "obsolete": false
 
         },
         "targetBearing" : {
-            "size": null,
-            "title": null,
+            "size": "32-bit float",
+            "title": "Target Bearing",
             "description": null,
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 47,
+            "obsolete": false
 
         },
         "targetPresent" : {
-            "size": null,
-            "title": null,
+            "size": "32-bit unsigned integer",
+            "title": "Target Present",
             "description": null,
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 48,
+            "obsolete": false
 
         },
         "firmwareRev" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Firmware Rev.",
+            "description": "Firmware Revision",
             "default": null,
-            "more": null,
-            "order": null,
-            "obsolete": null
+            "more": "Unused",
+            "order": 49,
+            "obsolete": true
 
         },
         "flags" : {
-            "size": null,
-            "title": null,
+            "size": "32-bit unsigned integer",
+            "title": "Flags",
             "description": null,
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 50,
+            "obsolete": false
 
         },
         "sourceFrame" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Source Frame",
+            "description": "Source file frame number for CSOT output files",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 51,
+            "obsolete": false
 
         },
         "waterTemp" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Water Temp. (C)",
+            "description": "Water temperature from housing temperature sensor",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 52,
+            "obsolete": false
 
         },
         "timerPeriod" : {
-            "size": null,
-            "title": null,
+            "size": "32-bit unsigned integer",
+            "title": "Timer Period",
             "description": null,
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 53,
+            "obsolete": false
 
         },
         "sonarX" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Sonar X",
+            "description": "Sonar X location for 3D processing",
             "default": null,
-            "more": null,
-            "order": null,
-            "obsolete": null
+            "more": "Bluefin, external sensor data",
+            "order": 54,
+            "obsolete": false
 
         },
         "sonarY" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Sonar Y",
+            "description": "Sonar Y location for 3D processing",
             "default": null,
-            "more": null,
-            "order": null,
-            "obsolete": null
+            "more": "Bluefin, external sensor data",
+            "order": 55,
+            "obsolete": false
 
         },
         "sonarZ" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Sonar Z",
+            "description": "Sonar Z location for 3D processing",
             "default": null,
-            "more": null,
-            "order": null,
-            "obsolete": null
+            "more": "Bluefin, external sensor data",
+            "order": 56,
+            "obsolete": false
 
         },
         "sonarPan" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Sonar Pan",
+            "description": "X2 pan output",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 57,
+            "obsolete": false
 
         },
         "sonarTilt" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Sonar Tilt",
+            "description": "X2 tilt output",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 58,
+            "obsolete": false
 
         },
         "sonarRoll" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Sonar Roll",
+            "description": "X2 roll output",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 59,
+            "obsolete": false
 
         },
         "panPNNL" : {
-            "size": null,
-            "title": null,
+            "size": "32-bit float",
+            "title": "Pan PNN",
             "description": null,
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 60,
+            "obsolete": false
 
         },
         "tiltPNNL" : {
-            "size": null,
-            "title": null,
+            "size": "32-bit float",
+            "title": "Tilt PNNL",
             "description": null,
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 61,
+            "obsolete": false
 
         },
         "rollPNNL" : {
-            "size": null,
-            "title": null,
+            "size": "32-bit float",
+            "title": "Roll PNNL",
             "description": null,
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 62,
+            "obsolete": false
 
         },
         "vehicleTime" : {
-            "size": null,
-            "title": null,
+            "size": "64-bit double",
+            "title": "Vehicle Time",
             "description": null,
             "default": null,
-            "more": null,
-            "order": null,
-            "obsolete": null
+            "more": "special for Bluefin HAUV or other AUV integration",
+            "order": 63,
+            "obsolete": false
 
         },
         "timeGGK" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Time GGK",
+            "description": "GPS output from NMEA GGK message",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 64,
+            "obsolete": false
 
         },
         "dateGGK" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Date GGK",
+            "description": "GPS output from NMEA GGK message",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 65,
+            "obsolete": false
 
         },
         "qualityGGK" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Quality GGK",
+            "description": "GPS output from NMEA GGK message",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 66,
+            "obsolete": false
 
         },
         "numStatsGGK" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Number Stats GGK",
+            "description": "GPS output from NMEA GGK message",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 67,
+            "obsolete": false
 
         },
         "DOPGGK" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "DOP GGK",
+            "description": "GPS output from NMEA GGK message",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 68,
+            "obsolete": false
 
         },
-        "EHTDDK" : {
-            "size": null,
-            "title": null,
-            "description": null,
+        "EHTGGK" : {
+            "size": "32-bit float",
+            "title": "EHT GGK",
+            "description": "GPS output from NMEA GGK message",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 69,
+            "obsolete": false
 
         },
         "heaveTSS" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Heave TSS",
+            "description": "External sensor",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 70,
+            "obsolete": false
 
         },
         "yearGPS" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Year (GPS)",
+            "description": "GPS year output",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 71,
+            "obsolete": false
 
         },
         "monthGPS" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Month (GPS)",
+            "description": "GPS month output",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 72,
+            "obsolete": false
 
         },
         "dayGPS" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Day (GPS)",
+            "description": "GPS day output",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 73,
+            "obsolete": false
 
         },
         "hourGPS" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Hour (GPS)",
+            "description": "GPS hour output",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 74,
+            "obsolete": false
 
         },
         "minuteGPS" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Min. (GPS)",
+            "description": "GPS minute output",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 75,
+            "obsolete": false
 
         },
         "secondGPS" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Sec. (GPS)",
+            "description": "GPS seconds output",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 76,
+            "obsolete": false
 
         },
         "HSecondGPS" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "H.Sec. (GPS)",
+            "description": "GPS hundredth of a second output",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 77,
+            "obsolete": false
 
         },
         "sonarPanOffset" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Sonar Pan Off. (m)",
+            "description": "Sonar Pan Offset; Sonar mount location pan offset for 3D processing. (meters)",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 78,
+            "obsolete": false
 
         },
         "sonarTiltOffset" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Sonar Tilt Off.",
+            "description": "Sonar Tilt Offset; Sonar mount location tilt offset for 3D processing",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 79,
+            "obsolete": false
 
         },
         "sonarRollOffset" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Sonar Roll Off.",
+            "description": "Sonar Roll Offset; Sonar mount location roll offset for 3D processing",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 80,
+            "obsolete": false
 
         },
         "sonarXOffset" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Sonar X Off.",
+            "description": "Sonar X Offset; Sonar mount location X offset for 3D processing",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 81,
+            "obsolete": false
 
         },
         "sonarYOffset" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Sonar Y Off.",
+            "description": "Sonar Y Offset; Sonar mount location Y offset for 3D processing",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 82,
+            "obsolete": false
 
         },
         "sonarZOffset" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Sonar Z Off.",
+            "description": "Sonar Z Offset; Sonar mount location Z offset for 3D processing",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 83,
+            "obsolete": false
 
         },
         "Tmatrix" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "16 x 32-bit float",
+            "title": "Transformation Matrix",
+            "description": "3D processing transformation matrix",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 84,
+            "obsolete": false
 
         },
         "sampleRate" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Sample Rate",
+            "description": "Calculated as 1e6/SamplePeriod",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 85,
+            "obsolete": false
 
         },
         "accelX" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Acc. X",
+            "description": "X-axis sonar acceleration",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 86,
+            "obsolete": false
 
         },
         "accelY" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Acc. Y",
+            "description": "Y-axis sonar acceleration",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 87,
+            "obsolete": false
 
         },
         "accelZ" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Acc. Z",
+            "description": "Z-axis sonar acceleration",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 88,
+            "obsolete": false
 
         },
         "pingMode" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Ping Mode",
+            "description": "ARIS ping mode; helps deciding the beam count.",
             "default": null,
-            "more": null,
-            "order": null,
-            "obsolete": null
+            "more": "It depends on the hardware model. It has values from 1 to 12. otherwise, file is corrupted.",
+            "order": 89,
+            "obsolete": false
 
         },
         "freq" : {
