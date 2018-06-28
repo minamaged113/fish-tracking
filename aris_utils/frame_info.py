@@ -21,6 +21,7 @@ import aris_utils.error_description as err
 class ARIS_Frame:
     FRAME_DATA = None
     BEAM_COUNT = None
+    Tmatrix = None
     def __init__(self, filename, frameIndexInp, frameSize):
         frameIndex = frameIndexInp - 1
         try:
@@ -425,6 +426,15 @@ class ARIS_Frame:
         else:
             return False
 
+
+    def readData(self):
+
+        pass
+
+
+    def getTransformationMatrix(self, t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16):
+
+        pass
 
     def __len__(self):
         pass

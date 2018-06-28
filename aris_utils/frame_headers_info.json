@@ -931,713 +931,713 @@
 
         },
         "samplePeriod" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Sample Period",
+            "description": "Downrange sample rate",
             "default": null,
-            "more": null,
-            "order": null,
-            "obsolete": null
+            "more": "It has values from 4 to 100 microseconds",
+            "order": 93,
+            "obsolete": false
 
         },
         "transmitEnable" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Transmission",
+            "description": "Transmission Enable",
             "default": null,
-            "more": null,
-            "order": null,
-            "obsolete": null
+            "more": "If 0, then Transmission is OFF. Otherwise, it's ON",
+            "order": 94,
+            "obsolete": false
 
         },
         "frameRate" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Frame Rate",
+            "description": "Instantaneous frame rate between frame N and frame N-1",
             "default": null,
-            "more": null,
-            "order": null,
-            "obsolete": null
+            "more": "Measured in microseconds",
+            "order": 95,
+            "obsolete": false
 
         },
         "soundSpeed" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Sound Speed",
+            "description": "Sound velocity in water calculated from water temperature depth and salinity setting",
             "default": null,
-            "more": null,
-            "order": null,
-            "obsolete": null
+            "more": "Measured in meters per second",
+            "order": 96,
+            "obsolete": false
 
         },
         "samplesPerBeam" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Samples per Beam",
+            "description": "Number of downrange samples in each beam",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 97,
+            "obsolete": false
 
         },
         "enable150V" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Power Mode",
+            "description": "1 = 150V ON (Max Power), 0 = 150V OFF (Min Power, 12V)",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 98,
+            "obsolete": false
 
         },
         "sampleStartDelay" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Sample start delay",
+            "description": "Delay from transmit until start of sampling (window start) in usec, [930..65535]",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 99,
+            "obsolete": false
 
         },
         "largeLens" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Lens Type",
+            "description": "1 = telephoto lens (large lens, big lens, hi-res lens) present",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 100,
+            "obsolete": false
 
         },
         "systemType" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "System Type",
+            "description": "1 = ARIS 3000, 0 = ARIS 1800, 2 = ARIS 1200",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 101,
+            "obsolete": false
 
         },
         "sonarSerialNumber" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Serial Number",
+            "description": "Sonar serial number as labeled on housing",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 102,
+            "obsolete": false
 
         },
         "reservedEK" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "64-bit unsigned integer",
+            "title": "Reserved",
+            "description": "Reserved for future use",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 103,
+            "obsolete": true
 
         },
         "ARISErrorFlags" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Error Flags",
+            "description": "Error flag code bits",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 104,
+            "obsolete": false
 
         },
         "missedPackets" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Missed Packets",
+            "description": "Missed packet count for Ethernet statistics reporting",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 105,
+            "obsolete": false
 
         },
         "ARISAppVersion" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "ARIS App. Version",
+            "description": "Version number of ArisApp sending frame data",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 106,
+            "obsolete": false
 
         },
         "available2" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Reserved",
+            "description": "Reserved for future use",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 107,
+            "obsolete": false
 
         },
         "reordered" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Order",
+            "description": "1 = frame data already ordered into [beam,sample] array, 0 = needs reordering",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 108,
+            "obsolete": false
 
         },
         "salinity" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Salinity",
+            "description": "Water salinity code:  0 = fresh, 15 = brackish, 35 = salt",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 109,
+            "obsolete": false
 
         },
         "pressure" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Pressure (psi)",
+            "description": "Depth sensor output",
             "default": null,
-            "more": null,
-            "order": null,
-            "obsolete": null
+            "more": "Measured in psi",
+            "order": 110,
+            "obsolete": false
 
         },
         "batteryVoltage" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Battery (mV)",
+            "description": "Battery input voltage before power steering",
             "default": null,
-            "more": null,
-            "order": null,
-            "obsolete": null
+            "more": "Measured in milliVolts",
+            "order": 111,
+            "obsolete": false
 
         },
         "mainVoltage" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Main Voltage (mV)",
+            "description": "Main cable input voltage before power steerin",
             "default": null,
-            "more": null,
-            "order": null,
-            "obsolete": null
+            "more": "Measured in milliVolts",
+            "order": 112,
+            "obsolete": false
 
         },
         "switchVoltage" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Switch Voltage (mV)",
+            "description": "Input voltage after power steering; filtered voltage",
             "default": null,
-            "more": null,
-            "order": null,
-            "obsolete": null
+            "more": "Measured in milliVolts",
+            "order": 113,
+            "obsolete": false
 
         },
         "focusMotorMoving" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Autofocus",
+            "description": "Used for automatic recording",
             "default": null,
-            "more": null,
-            "order": null,
-            "obsolete": null
+            "more": "Added 14-Aug-2012",
+            "order": 114,
+            "obsolete": false
 
         },
         "voltageChanging" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Voltage Change",
+            "description": "First two bits = 12V, second two bits = 150V",
             "default": null,
-            "more": null,
-            "order": null,
-            "obsolete": null
+            "more": "Added 16-Aug (00 = not changing, 01 = turning on, 10 = turning off)",
+            "order": 115,
+            "obsolete": false
 
         },
         "focusTimeoutFault" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Focus Timeout",
+            "description": "Focus Timeout Fault",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 116,
+            "obsolete": false
 
         },
         "focusOverCurrentFault" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Focus Over Current",
+            "description": "Focus Over Current Fault",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 117,
+            "obsolete": false
 
         },
         "focusNotFoundFault" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Focus Not Found",
+            "description": "Focus Not Found Fault",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 118,
+            "obsolete": false
 
         },
         "focusStalledFault" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Focus Stalled",
+            "description": "Focus Stalled Fault",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 119,
+            "obsolete": false
 
         },
         "FPGATimeoutFault" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "FPGA Timeout",
+            "description": "FPGA Timeout Fault",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 120,
+            "obsolete": false
 
         },
         "FPGABusyFault" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "FPGA Busy",
+            "description": "FPGA Busy Fault",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 121,
+            "obsolete": false
 
         },
         "FPGAStuckFault" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "FPGA Stuck",
+            "description": "FPGA Stuck Fault",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 122,
+            "obsolete": false
 
         },
         "CPUTempFault" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "CPU Temp.",
+            "description": "CPU Temperature Fault",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 123,
+            "obsolete": false
 
         },
         "PSUTempFault" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "PSU Temp.",
+            "description": "PSU Temperature Fault",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 124,
+            "obsolete": false
 
         },
         "waterTempFault" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Water Temp.",
+            "description": "Water Temperature Fault",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 125,
+            "obsolete": false
 
         },
         "humidityFault" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Humidity",
+            "description": "Humidity Fault",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 126,
+            "obsolete": false
 
         },
         "pressureFault" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Pressure",
+            "description": "Pressure Fault",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 127,
+            "obsolete": false
 
         },
         "voltageReadFault" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Voltage Read",
+            "description": "Voltage Read Fault",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 128,
+            "obsolete": false
 
         },
         "voltageWriteFault" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Voltage Write",
+            "description": "Voltage Write Fault",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 129,
+            "obsolete": false
 
         },
         "focusCurrentPosition" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Focus Position",
+            "description": "Focus Shaft Current Position",
             "default": null,
-            "more": null,
-            "order": null,
-            "obsolete": null
+            "more": "It has values from 0 to 1000 motor units",
+            "order": 130,
+            "obsolete": false
 
         },
         "targetPan" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Target Pan",
+            "description": "Commanded pan position",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 131,
+            "obsolete": false
 
         },
         "targetTilt" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Target Tilt",
+            "description": "Commanded tilt position",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 132,
+            "obsolete": false
 
         },
         "targetRoll" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Target Roll",
+            "description": "Commanded roll position",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 133,
+            "obsolete": false
 
         },
         "panMotorErrorCode" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Pan Motor Error",
+            "description": "Pan Motor Error Code",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 134,
+            "obsolete": false
 
         },
         "tiltMotorErrorCode" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Tilt Motor Error",
+            "description": "Tilt Motor Error Code",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 135,
+            "obsolete": false
 
         },
         "rollMotorErrorCode" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Roll Motor Error",
+            "description": "Roll Motor Error Code",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 136,
+            "obsolete": false
 
         },
         "panAbsPos" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Pan Abs. Pos.",
+            "description": "Pan Absolute Position; Low-resolution magnetic encoder absolute pan position (NaN indicates no arm detected for axis since 2.6.0.8403)",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 137,
+            "obsolete": false
 
         },
         "tiltAbsPos" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Tilt Abs. Pos",
+            "description": "Tilt Absolute Postion; Low-resolution magnetic encoder absolute tilt position (NaN indicates no arm detected for axis since 2.6.0.8403)",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 138,
+            "obsolete": false
 
         },
         "rollAbsPos" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Roll Abs. Pos.",
+            "description": "Roll Absolute Position; Low-resolution magnetic encoder absolute roll position (NaN indicates no arm detected for axis since 2.6.0.8403)",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 139,
+            "obsolete": false
 
         },
         "panAccelX" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Pan Accel. X",
+            "description": "Accelerometer outputs from AR2 CPU board sensor",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 140,
+            "obsolete": false
 
         },
         "panAccelY" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Pan Accel. Y",
+            "description": "Accelerometer outputs from AR2 CPU board sensor",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 141,
+            "obsolete": false
 
         },
         "panAccelZ" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Pan Accel. Z",
+            "description": "Accelerometer outputs from AR2 CPU board sensor",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 142,
+            "obsolete": false
 
         },
         "tiltAccelX" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Tilt Accel. X",
+            "description": "Accelerometer outputs from AR2 CPU board sensor",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 143,
+            "obsolete": false
 
         },
         "tiltAccelY" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Tilt Accel. Y",
+            "description": "Accelerometer outputs from AR2 CPU board sensor",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 144,
+            "obsolete": false
 
         },
         "tiltAccelZ" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Tilt Accel. Z",
+            "description": "Accelerometer outputs from AR2 CPU board sensor",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 145,
+            "obsolete": false
 
         },
         "rollAccelX" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Roll Accel. X",
+            "description": "Accelerometer outputs from AR2 CPU board sensor",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 146,
+            "obsolete": false
 
         },
         "rollAccelY" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Roll Accel. Y",
+            "description": "Accelerometer outputs from AR2 CPU board sensor",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 147,
+            "obsolete": false
 
         },
         "rollAccelZ" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Roll Accel. Z",
+            "description": "Accelerometer outputs from AR2 CPU board sensor",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 148,
+            "obsolete": false
 
         },
         "appliedSett" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Applied Settings",
+            "description": "Cookie indices for command acknowlege in frame header",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 149,
+            "obsolete": false
 
         },
         "constrainedSett" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Constrained Settings",
+            "description": "Cookie indices for command acknowlege in frame header",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 150,
+            "obsolete": false
 
         },
         "invalidSett" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Invalid Settings",
+            "description": "Cookie indices for command acknowlege in frame header",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 151,
+            "obsolete": false
 
         },
         "enableInterpacketDelay" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Interpacket Delay",
+            "description": "If true delay is added between sending out image data packets",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 152,
+            "obsolete": false
 
         },
         "interpacketDelayPeriod" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Interpacket Delay Period (us)",
+            "description": "packet delay factor in us (does not include function overhead time)",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 153,
+            "obsolete": false
 
         },
         "uptime" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "Uptime (s)",
+            "description": "Total time the sonar has been running over its lifetime.",
             "default": null,
-            "more": null,
-            "order": null,
-            "obsolete": null
+            "more": "Measured in seconds",
+            "order": 154,
+            "obsolete": false
 
         },
         "ARISAppVersionMajor" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "16-bit unsigned integer",
+            "title": "Version (Major)",
+            "description": "ARIS application major version number",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 155,
+            "obsolete": false
 
         },
         "ARISAppVersionMinor" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "16-bit unsigned integer",
+            "title": "Version (Minor)",
+            "description": "ARIS application minor version number",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 156,
+            "obsolete": false
 
         },
         "goTime" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "64-bit unsigned integer",
+            "title": "Go Time",
+            "description": "Sonar time when frame cycle is initiated in hardware",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 157,
+            "obsolete": false
 
         },
         "panVelocity" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Pan Velocity (deg/s)",
+            "description": "AR2 pan velocity",
             "default": null,
-            "more": null,
-            "order": null,
-            "obsolete": null
+            "more": "Measured in degrees/second",
+            "order": 158,
+            "obsolete": false
 
         },
         "tiltVelocity" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Tilt Velocity (deg/s)",
+            "description": "AR2 tilt velocity",
             "default": null,
-            "more": null,
-            "order": null,
-            "obsolete": null
+            "more": "Measured in degrees/second",
+            "order": 159,
+            "obsolete": false
 
         },
         "rollVelocity" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit float",
+            "title": "Roll Velocity (deg/s)",
+            "description": "AR2 roll velocity",
             "default": null,
-            "more": null,
-            "order": null,
-            "obsolete": null
+            "more": "Measured in degrees/second",
+            "order": 160,
+            "obsolete": false
 
         },
         "GPSTimeAge" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "GPS Time Age",
+            "description": "Age of the last GPS fix acquired; capped at 0xFFFFFFFF; zero if none",
             "default": null,
-            "more": null,
-            "order": null,
-            "obsolete": null
+            "more": "Measured in microseconds",
+            "order": 161,
+            "obsolete": false
 
         },
         "systemVariant" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "32-bit unsigned integer",
+            "title": "System Variant",
+            "description": "Bit 0 = Defender",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 162,
+            "obsolete": false
 
         },
         "padding" : {
-            "size": null,
-            "title": null,
-            "description": null,
+            "size": "288 bytes",
+            "title": "Padding",
+            "description": "Padding to fill out to 1024 bytes",
             "default": null,
             "more": null,
-            "order": null,
-            "obsolete": null
+            "order": 163,
+            "obsolete": true
 
         }
 
