@@ -389,6 +389,7 @@ class ARIS_Frame:
 
 
                 self.BEAM_COUNT = self.getBeamsFromPingMode(self.pingMode)
+                self.FRAME_DATA = self.readData(frameoffset, fhand)
                 
 
         except:
@@ -427,9 +428,17 @@ class ARIS_Frame:
             return False
 
 
-    def readData(self):
+    def readData(self, frameOffset , fileHandle):
+        data = np.empty( [self.samplesPerBeam, self.BEAM_COUNT] , dtype=float)
+        # print(self.samplesPerBeam, " x ", self.BEAM_COUNT)
+        # print(data.size)
+        fileHandle.seek(frameOffset+1024, 0)
+        for rows in range(len(data)):
+            for cols in range(len(data[rows])):
+                data[rows][cols] = struct.unpack(utils.cType["uint8_t"] , fileHandle.read(1))[0]
 
-        pass
+        data = np.fliplr(data)
+        return data
 
 
     def getTransformationMatrix(self, t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16):
