@@ -14,19 +14,28 @@ References:
 import struct
 import json
 import aris_utils.utils as utils
-import numpy as np 
+import numpy as np
 import aris_utils.error_description as err
+import os
+import datetime
+import pytz
 
+cwd = os.getcwd()
+JSON_FILE_PATH = cwd + "/aris_utils/frame_headers_info.json"
 
 class ARIS_Frame:
     FRAME_DATA = None
     BEAM_COUNT = None
     Tmatrix = None
+    FRAME_HEADER_NUM = 163
+    FRAME_NUMBER = None
+
     def __init__(self, filename, frameIndexInp, frameSize):
-        frameIndex = frameIndexInp - 1
+        # frameIndex = frameIndexInp - 1
+        self.FRAME_NUMBER = frameIndexInp
         try:
             with open(filename, "rb") as fhand:
-                frameoffset = (1024+(frameIndex*(1024+(frameSize))))
+                frameoffset = (1024+(frameIndexInp*(1024+(frameSize))))
                 fhand.seek(frameoffset, 0)
                 self.frameIndex = struct.unpack(
                     utils.cType["uint64_t"], fhand.read(utils.c("uint64_t")))[0]
@@ -386,16 +395,84 @@ class ARIS_Frame:
                     utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.padding = struct.unpack(
                     utils.cType["char[288]"], fhand.read(utils.c("char[288]")))[0]
-
-
+                ###########################
+                # Functions Section
+                ###########################
                 self.BEAM_COUNT = self.getBeamsFromPingMode(self.pingMode)
                 self.FRAME_DATA = self.readData(frameoffset, fhand)
-                
-
         except:
             err.print_error(err.frameReadError)
             raise
-        pass
+
+        self.Tmatrix = self.getTransformationMatrix()
+        return
+
+    ##############################################################
+    #       Usable user Functions
+    ##############################################################
+
+    def __repr__(self):
+        """Returns frame number
+        
+        Returns:
+            [Integer] -- [Indicates frame index in the ARIS file]
+        """
+
+        return self.FRAME_NUMBER
+
+    def getInfo(self, all=False):
+        """Returns header values of the frame under 
+        inspection. 
+        
+        Keyword Arguments:
+            all {bool} -- [controls whether all header values
+                        are returned or just the important ones] 
+                        (default: {False})
+        
+        Returns:
+            [dictionary] -- [dictionary containing all the header values]
+        """
+
+        if(all):
+            try:
+                with open(JSON_FILE_PATH) as json_fhand:
+                    orderedSet = dict()
+                    frame_headers = json_fhand.read()
+                    data = json.loads(frame_headers)
+                    checkList = data.get("frame").keys()
+                    headerFields = self.__dict__
+                    for headerField in headerFields:
+                        if(headerField in checkList):
+                            headerValue = headerField + " = " + str(headerFields[headerField])
+                            index = str(data["frame"][headerField]["order"])
+                            orderedSet[index] = headerValue
+                        else:
+                            continue
+                    return orderedSet
+            except:
+                err.print_error(err.jsonData)
+                raise
+        else:
+            info = {
+                "Frame Number": self.FRAME_NUMBER,
+                "Ping Mode": self.pingMode,
+                "Samples per period": self.samplePeriod,
+                "Sound Speed": self.soundSpeed,
+                "Samples per beam": self.samplesPerBeam,
+                "Sample start delay": self.sampleStartDelay,
+                "Large Lens": self.getBool(self.largeLens),
+                "Reordered samples": self.getBool(self.reordered),
+                "Frame Time": datetime.datetime.fromtimestamp(self.sonarTimeStamp/1000000, pytz.timezone('UTC')).strftime('%Y-%m-%d %H:%M:%S.%f'),
+                "Frame Rate": self.frameRate,
+                "Window Start": self.windowStart,
+                "Window Length": self.windowLength,
+                "Frequency": self.freq
+            }
+            return info
+        
+    ##############################################################
+    #       Functions called when initializing ARIS Frame Class
+    ##############################################################
 
     def getBeamsFromPingMode(self, pingmode):
         """This function takes a class variable pingMode
@@ -407,43 +484,110 @@ class ARIS_Frame:
 
         if it returns false, it means that the file being
         read is corrupted.
-        
+
         Arguments:
             pingmode {[integer]} -- [please look up `frame_headers_info.json`
                                     for `pingMode`]
-        
+
         Returns:
             [integer] -- [Number of beams across the image in the horizontal dimension]
         """
 
         if pingmode in [1, 2]:
             return 48
-        elif pingmode in [3,4,5]:
+        elif pingmode in [3, 4, 5]:
             return 96
-        elif pingmode in [6,7,8]:
+        elif pingmode in [6, 7, 8]:
             return 64
-        elif pingmode in [9,10,11,12]:
+        elif pingmode in [9, 10, 11, 12]:
             return 128
         else:
             return False
 
+    def readData(self, frameOffset, fileHandle):
+        """Reads frame data unsigned bytes sequentially, after
+        last frame header byte, until last byte of the
+        frame.
+        
+        Arguments:
+            frameOffset {[Integer]} -- [Starting byte of data to read]
+            fileHandle {[file handle]} -- [handle returned from ``open()`` 
+                                    function]
+        
+        Returns:
+            [numpy matrix] -- [returns a matrix with the number of rows is 
+                            equal to ``samplesPerBeam``, and the number of
+                            columns is equal to ``BEAM_COUNT``]
+        """
 
-    def readData(self, frameOffset , fileHandle):
-        data = np.empty( [self.samplesPerBeam, self.BEAM_COUNT] , dtype=float)
-        # print(self.samplesPerBeam, " x ", self.BEAM_COUNT)
-        # print(data.size)
+        data = np.empty([self.samplesPerBeam, self.BEAM_COUNT], dtype=float)
         fileHandle.seek(frameOffset+1024, 0)
         for rows in range(len(data)):
             for cols in range(len(data[rows])):
-                data[rows][cols] = struct.unpack(utils.cType["uint8_t"] , fileHandle.read(1))[0]
+                data[rows][cols] = struct.unpack(
+                    utils.cType["uint8_t"], fileHandle.read(1))[0]
 
         data = np.fliplr(data)
         return data
 
+    def getTransformationMatrix(self):
+        """Takes an instance of the frame class,
+        extracts the transformation matrix of the
+        intended frame.
+        
+        Returns:
+            [numpy array] -- [a numpy array containing
+                            transformation matrix paramaters]
+        """
 
-    def getTransformationMatrix(self, t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16):
+        Tmatrix = np.array([self.Tmatrix1,
+                            self.Tmatrix2,
+                            self.Tmatrix3,
+                            self.Tmatrix4,
+                            self.Tmatrix5,
+                            self.Tmatrix6,
+                            self.Tmatrix7,
+                            self.Tmatrix8,
+                            self.Tmatrix9,
+                            self.Tmatrix10,
+                            self.Tmatrix11,
+                            self.Tmatrix12,
+                            self.Tmatrix13,
+                            self.Tmatrix14,
+                            self.Tmatrix15,
+                            self.Tmatrix16])
+        return Tmatrix
+    
+    ##############################################################
+    #       ARIS Frame Only Class Functions
+    ##############################################################
 
-        pass
+    def sanityCheck(self):
+        """checks whether the version header value is right, or not.
+        
+        Returns:
+            [Class] -- [class instance]
+        """
 
-    def __len__(self):
-        pass
+        if(self.version == 88491076):
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def getBool(x):
+        """Takes an input, and tell whether
+        it's a zero, or non-zero value.
+        
+        Arguments:
+            x {Integer} -- [Any integer value]
+        
+        Returns:
+            [Bool] -- [ True:   Non-Zero,
+                        False:  Zero ]
+        """
+
+        if(x):
+            return True
+        else:
+            return False

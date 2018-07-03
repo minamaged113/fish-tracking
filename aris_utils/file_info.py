@@ -17,6 +17,11 @@ import aris_utils.frame_info as frame
 import os
 import json
 import aris_utils.utils as utils
+import aris_utils.beamLookUp as beamLookUp
+import numpy as np
+import re
+
+
 
 cwd = os.getcwd()
 JSON_FILE_PATH = cwd + "/aris_utils/file_headers_info.json"
@@ -144,11 +149,17 @@ class ARIS_File:
             err.print_error(err.fileReadError)
             raise
 
-        self.sanity = self.sanityChecks()
+        
         self.FRAME_SIZE = self.getFrameSize()
         self.FILE_SIZE = self.getFileSize()
         self.FILE_HEADER_SIZE = self.getFileHeaderSize()
         self.ALL_FRAMES_SIZE = self.getAllFramesSize()
+        self.sanity = self.sanityChecks()
+
+        
+    ##############################################################
+    #       Usable user Functions
+    ##############################################################
 
     def __len__(self):
         """
@@ -156,24 +167,28 @@ class ARIS_File:
         """
         return self.frameCount
 
-    def sanityChecks(self):
-        """
-        Checking for file's sanity.
+    def __repr__(self):
+        fileName = re.search("/([a-zA-Z0-9]+).aris", self.FILE_PATH)
+        return fileName.group(0)
+    
+    def readFrame(self, frameIndex):
+        """This function reads a frame given the frame index
+        of that frame and returns a class handle of the read
+        frame.
         
-        returns:
-            {bool} -- True if everything working, otherwise False
-
+        Arguments:
+            frameIndex {[integer]} -- [specifies a frame to be read from
+                                    a given file]
+        
+        Returns:
+            [class handle] -- [returns a class handle pointing
+                                to the data]
         """
-        if ((self.version == 88491076) and (os.path.getsize(self.FILE_PATH) == self.fileSize)):
-            # check number of frames == self.frameCount
-            return True
-        return False
 
+        return frame.ARIS_Frame(self.FILE_PATH, frameIndex, self.FRAME_SIZE)
+    
     def printFileHeader(self):
-        """
-        Reads all file headers and displays them in non-ordered fashion.
-        This function depends on "file_headers_info.json" file.
-        """
+    
         try:
             with open(JSON_FILE_PATH) as json_fhand:
                 orderedSet = dict()
@@ -196,32 +211,44 @@ class ARIS_File:
             raise
         return
 
-    def readFrame(self, frameIndex):
-        """This function reads a frame given the frame index
-        of that frame and returns a class handle of the read
-        frame.
-        
-        Arguments:
-            frameIndex {[integer]} -- [specifies a frame to be read from
-                                    a given file]
-        
-        Returns:
-            [class handle] -- [returns a class handle pointing
-                                to the data]
-        """
-
-        return frame.ARIS_Frame(self.FILE_PATH, frameIndex, self.FRAME_SIZE)
-
-    def getData(self, frameIndex):
-        
-        pass
+    def getInfo(self):
+        Info = {
+            "File Name": self.FILE_PATH,
+            "Software Version": self.softwareVersion,
+            "ARIS SN": self.serialNumber,
+            "File Size": self.FILE_SIZE,
+            "Number Of Frames": self.frameCount,
+            "Beam Count": self.numRawBeams,
+            "Samples per Beam": self.samplesPerChannel
+        }
+        return Info
 
     def fileName(self):
-        pass
+        return self.FILE_PATH
 
     def fileVersion(self):
         return self.sanity
 
+    def exportFrameHeaders(self, format = "JSON", outputFilePath = None):
+        if(format == "JSON"):
+            print("Exporting JSON file...")
+
+        elif(format == "CSV"):
+            print("Exporting CSV file...")
+        pass
+
+
+    def formImage(self, frameIndex):
+        output = self.readFrame(frameIndex)
+        createLUP(self, output)
+        # self.warpFrame(frameIndex)
+        remapARIS(self, output)
+        return
+
+    ##############################################################
+    #       Functions called when initializing ARIS File Class
+    ##############################################################
+    
     def getFrameSize(self):
         """a functione that takes an instant of the class and returns
         an integer containing the frame size in the given file.
@@ -269,28 +296,100 @@ class ARIS_File:
 
         return self.FILE_SIZE - self.FILE_HEADER_SIZE
 
-    def exportFrameHeaders(self, format = "JSON", outputFilePath = None):
-        if(format == "JSON"):
-            print("Exporting JSON file...")
+    def sanityChecks(self):
+        """
+        Checking for file's sanity.
+        
+        returns:
+            [bool] -- [True if everything working, otherwise False]
 
-        elif(format == "CSV"):
-            print("Exporting CSV file...")
-        pass
-
-
-def get_beams_from_pingmode(pingmode):
-    pingmode = int(pingmode)
-    if (pingmode is 1 or pingmode is 2):
-        return 48
-
-    elif (pingmode is 3 or pingmode is 4 or pingmode is 5):
-        return 96
-
-    elif (pingmode is 6 or pingmode is 7 or pingmode is 8):
-        return 64
-
-    elif (pingmode is 9 or pingmode is 10 or pingmode is 11 or pingmode is 12):
-        return 128
-
-    else:
+        """
+        if ((self.version == 88491076)):
+            # check number of frames == self.frameCount
+            for i in range(self.frameCount):
+                x = frame.ARIS_Frame(self.FILE_PATH, i, self.FRAME_SIZE)
+                if(x.sanityCheck() != True):
+                    return False
+            return True
         return False
+
+    
+def getXY(beamnum, binnum, frame):
+    #windowStart = frame.samplestartdelay * 0.000001 * frame.soundSpeed / 2
+    bin_dist = frame.windowStart + frame.samplePeriod * binnum * 0.000001 * frame.soundSpeed / 2
+    beam_angle = beamLookUp.beamAngle(beamnum, frame.BEAM_COUNT)
+    x = bin_dist*np.sin(np.deg2rad(-beam_angle))
+    y = bin_dist*np.cos(np.deg2rad(-beam_angle))
+    return x, y
+
+def getBeamBin(x,y, frame):
+    #windowStart = frame.samplestartdelay * 0.000001 * frame.soundSpeed / 2
+    angle = np.rad2deg(np.tan(x/y))
+    hyp = y/np.cos(np.deg2rad(angle))
+    binnum2 = int((2*(hyp-frame.windowStart))/(frame.samplePeriod * 0.000001 * frame.soundSpeed))
+    beamnum = beamLookUp.BeamLookUp(-angle, frame.BEAM_COUNT)
+    return beamnum, binnum2
+
+
+def px2Meters(x,y, frame, xdim = None):
+    #windowStart = frame.samplestartdelay * 0.000001 * frame.soundSpeed / 2
+    pix2Meter = frame.samplePeriod * 0.000001 * frame.soundSpeed / 2
+    if xdim == None:
+        xdim = int(getXY(0,frame.samplesPerBeam, frame)[0]*(1/pix2Meter)*2)
+    x1 = (x - xdim/2) * pix2Meter #Convert X pixel to X dimension
+    y1 = (y*pix2Meter)+(frame.windowStart) #Convert Y pixel to y dimension
+    return x1, y1 
+
+
+def createLUP(ARISFile, frame):
+    #Lookup dimensions
+    SampleLength = frame.samplePeriod * 0.000001 * frame.soundSpeed / 2
+    ARISFile.ydim = int(frame.samplesPerBeam)
+    ARISFile.xdim = int(getXY(0,frame.samplesPerBeam, frame)[0]*(1/SampleLength)*2)
+
+    LUP = {}
+
+    #Iterate through each point in the frame and lookup data
+    for x in range(ARISFile.xdim):
+        for y in range(ARISFile.ydim):
+            x1, y1 = px2Meters(x, y, frame, xdim = ARISFile.xdim)
+            Beam, Bin = getBeamBin(x1, y1, frame)
+            if Beam != 999:
+                if Bin < frame.samplesPerBeam:
+                    LUP[(x, y)] = (Bin, Beam)
+                
+    ARISFile.LUP = LUP
+
+
+def remapARIS(ARISFile, frame, frameBuffer = None): 
+    """This function remaps the pixels from the bin/beam format to a 2D real world
+    format with pixel resolution equal to the SampleLength.
+    
+    Parameters
+    -----------
+    ARISFile : ARIS data structure returned via pyARIS.DataImport()
+    frame : frame number to be remapped
+    frameBuffer : This parameter add a specified number of pixels around the edges.   
+    
+    Returns
+    -------
+    A remapped frame which is stored in the frames data structure as frame.remap    
+    """               
+    #Create an empty frame
+    Remap = np.zeros([ARISFile.xdim,ARISFile.ydim])
+    
+    #Populate the empty frame
+    for key in ARISFile.LUP:
+        Remap[key[0],key[1]] = frame.frame_data[ARISFile.LUP[key][0], ARISFile.LUP[key][1]]
+        
+    Remap = np.rot90(Remap, 1)
+    
+    #Add buffer is requested
+    if frameBuffer != None:
+        buffY = int(ARISFile.ydim*frameBuffer)
+        buffX = int(ARISFile.xdim*frameBuffer)
+        Remap = np.concatenate((np.ones([ARISFile.ydim, buffX]), Remap, np.ones([ARISFile.ydim, buffX])), axis = 1)
+        Remap = np.concatenate((np.ones([buffY,ARISFile.xdim+buffX*2]), Remap, np.ones([buffY,ARISFile.xdim+buffX*2])))
+        
+    #Add to frame data
+    frame.image = Remap.astype('uint8')
