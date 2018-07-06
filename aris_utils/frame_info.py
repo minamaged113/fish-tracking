@@ -570,7 +570,7 @@ class ARIS_Frame:
             "SAMPLE_LENGTH": sampleLength
         }
 
-        return image    
+        return    
     ##############################################################
     #       ARIS Frame Only Class Functions
     ##############################################################
