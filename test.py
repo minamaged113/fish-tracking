@@ -4,6 +4,7 @@ import aris_utils.error_description as err
 import os
 import cv2
 import json
+import numpy as np
 
 cwd = os.getcwd()
 testingFilePath = cwd + "/sample.aris"
@@ -20,17 +21,18 @@ print(file1.__repr__())
 
 # file1.printFileHeader()
 # x = file1.formImage(2)
-x = file1.readFrame(1)
-# image = x.FRAME_DATA
+frame = file1.readFrame(1)
+print(True if(frame.largeLens) else False)
 
-# print(image.shape)
-# cv2.namedWindow("Frame #1", cv2.WINDOW_NORMAL)
-# cv2.imshow("Frame #1", image)
-# cv2.waitKey(0)
-# cv2.destroyAllWindows()
-# print(file1.ALL_FRAMES_SIZE)
-print(x.__repr__())
-q = x.getInfo()
-x.constructImage()
-print(json.dumps(x.imageParamaters, indent=4))
-print(json.dumps(q, indent=4))
+im = frame.FRAME_DATA
+im = np.array(im, dtype=np.uint8) 
+im = cv2.flip( im, 0)
+im = cv2.flip( im, 1)
+height, width = im.shape[:2]
+im = cv2.resize(im,(20*width, height), interpolation = cv2.INTER_CUBIC)
+
+cv2.namedWindow('image', cv2.WINDOW_NORMAL)
+cv2.imshow('image',im)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
