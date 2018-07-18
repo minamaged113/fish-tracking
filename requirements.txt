@@ -1,0 +1,4 @@
+DateTime==4.2
+numpy==1.14.5
+pytz==2018.5
+zope.interface==4.5.0
