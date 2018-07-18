@@ -562,6 +562,7 @@ class ARIS_Frame:
         windowStart = self.sampleStartDelay * 0.000001 * self.soundSpeed/2
         windowLength = self.samplePeriod * self.samplesPerBeam * 0.000001 * self.soundSpeed/2
         sampleLength = self.samplePeriod * 0.000001 * self.soundSpeed/2
+        aspectRatio = int( self.samplesPerBeam/self.BEAM_COUNT)
         
         self.imageParamaters = {
             "WINDOW_START": windowStart,
@@ -569,7 +570,8 @@ class ARIS_Frame:
             "RANGE_START": windowStart,
             "RANGE_END": windowStart + windowLength,
             "SAMPLE_LENGTH": sampleLength,
-            "width"
+            "Height": 0,
+            "Width":0
         }
 
         return    
