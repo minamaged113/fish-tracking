@@ -6,3 +6,7 @@ prof.out
 aris_utils/__pycache__/beamLookUp.cpython-35.pyc
 aris_utils/__pycache__/file_info.cpython-35.pyc
 aris_utils/__pycache__/frame_info.cpython-35.pyc
+Fishing-contest-badges.zip
+venv/lib/python3.5/__pycache__/site.cpython-35.pyc
+venv/*
+.vscode/settings.json
