@@ -6,6 +6,7 @@ Date: July 19th, 2018
 """
 import tkinter as tk
 from PIL import Image, ImageTk
+import UI_utils as ui 
 
 color_codes = {
     "foreground" : "#999999",
@@ -13,6 +14,14 @@ color_codes = {
     "lightInActiveBG": "#333333" ,
     "inActiveBG": "#222222",
     "background" : "#111111"
+}
+fonts = {
+    "normalText": ("Century Gothic", 12),
+    "title": ("Times New Roman", 26, "bold"),
+    "subtitle": ("Time New Roman", 18, "italic"),
+    "heading1": ("Century Gothic", 20),
+    "heading2": ("Century Gothic", 17),
+    "heading3": ("Century Gothic", 14)
 }
 
 class fisher_main(tk.Tk):
@@ -27,6 +36,7 @@ class fisher_main(tk.Tk):
         self.frames = {}
         self.frames_tuple = (
             welcomeScreen,
+            framePage
         )
         for frame in self.frames_tuple:
             handle = frame(container, self)
@@ -45,13 +55,30 @@ class welcomeScreen(tk.Frame):
         tk.Frame.__init__(self, parent)
         im = Image.open("Figures/images.jpeg")
         im = ImageTk.PhotoImage(im)
-        top = tk.Label(self , bg = color_codes["background"]).pack(fill = tk.BOTH)
-        middle = tk.Label(self , bg = color_codes["inActiveBG"]).pack(fill = tk.BOTH, expand = True)
-
-        bottom = tk.Label(self , bg = color_codes["background"]).pack(fill = tk.BOTH)
         
+        top = tk.Label( self,
+                        font = fonts["title"],
+                        text = "Welcome to Fisher",
+                        bg = color_codes["background"],
+                        fg = color_codes["foreground"]).pack(side = tk.TOP, fill = tk.BOTH)
 
+        middle = tk.Label(  self,
+                            bg = color_codes["inActiveBG"]).pack(side = tk.TOP,
+                                                                fill = tk.BOTH,
+                                                                expand = True)
 
+        openFileBTN = tk.Button(middle,
+                                text = "Open File",
+                                command = lambda: ui.getFilePath(self)).pack(fill = tk.BOTH, side = tk.TOP )
+
+        bottom = tk.Label(self , bg = color_codes["background"]).pack(  side = tk.TOP, 
+                                                                        fill = tk.BOTH)
+        
+        
+class framePage(tk.Frame):
+    def __init__(self, parent, controller):
+        
+        
 
 
 main= fisher_main()
