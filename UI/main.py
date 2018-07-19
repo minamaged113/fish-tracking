@@ -19,6 +19,7 @@ class fisher_main(tk.Tk):
     # class initializer
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self,  *args, **kwargs)
+        tk.Tk.wm_title(self, "Fishery")
         container = tk.Frame(self)
         container.pack(side = "top", fill = "both", expand = True)
         container.grid_rowconfigure(0, weight = 1)
@@ -42,16 +43,12 @@ class welcomeScreen(tk.Frame):
     # is launched for the first time
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        frame = tk.Frame(self)
-        frame.grid_rowconfigure(0, weight = 1)
-        frame.grid_columnconfigure(0, weight = 1)
-        # frame.grid(row = 0, column = 0, sticky = "nsew")
         im = Image.open("Figures/images.jpeg")
         im = ImageTk.PhotoImage(im)
-        topBar = tk.Label(self ,text = "\t\t\t\t\t\t", bg = color_codes["background"]).grid(row = 0 ,column = 0,sticky = "w", columnspan =5 )
-        leftSideBar = tk.Label(self , bg = color_codes["inActiveBG"]).grid(row = 1 ,column = 0,sticky = "w" )
+        top = tk.Label(self , bg = color_codes["background"]).pack(fill = tk.BOTH)
+        middle = tk.Label(self , bg = color_codes["inActiveBG"]).pack(fill = tk.BOTH, expand = True)
 
-        rightSideBar = tk.Label(self , bg = color_codes["lightInActiveBG"]).grid(row = 1 ,column = 1,sticky = "w" )
+        bottom = tk.Label(self , bg = color_codes["background"]).pack(fill = tk.BOTH)
         
 
 
