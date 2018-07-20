@@ -36,7 +36,7 @@ class fisher_main(tk.Tk):
         self.frames = {}
         self.frames_tuple = (
             welcomeScreen,
-            framePage
+            # framePage
         )
         for frame in self.frames_tuple:
             handle = frame(container, self)
@@ -75,8 +75,8 @@ class welcomeScreen(tk.Frame):
                                                                         fill = tk.BOTH)
         
         
-class framePage(tk.Frame):
-    def __init__(self, parent, controller):
+# class framePage(tk.Frame):
+#     def __init__(self, parent, controller):
         
         
 
