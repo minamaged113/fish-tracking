@@ -313,6 +313,9 @@ class ARIS_File:
             return True
         return False
 
+
+    def play(self):
+        pass
     
 # def getXY(beamnum, binnum, frame):
 #     #windowStart = frame.samplestartdelay * 0.000001 * frame.soundSpeed / 2

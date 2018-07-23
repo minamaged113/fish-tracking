@@ -63,7 +63,7 @@ telephoto96 = [ -6.806, -6.689, -6.560, -6.427, -6.293, -6.160, -6.027, -5.893, 
                 3.951,  4.093,  4.235,  4.377,  4.520,  4.662,  4.804,  4.946,  5.089,  5.226,  5.360,  5.493,  5.626,  5.760,  5.893,
                 6.027,  6.160,  6.293,  6.427,  6.560,  6.689,  6.806]
 
-def BeamLookUp(beam_angle, BeamCount,largeLens):
+def BeamLookUp(BeamCount,largeLens, beam_angle =False):
     if BeamCount == 128:
         breakpoints = breakpoints128
     if BeamCount == 96:
@@ -79,12 +79,12 @@ def BeamLookUp(beam_angle, BeamCount,largeLens):
         else:
             breakpoints = breakpoints48
 
-    beam = 999
-    if beam_angle > breakpoints[0]:
-        if beam_angle <= breakpoints[-1]:
-            beam = bisect(breakpoints, beam_angle)-1
-    return beam
-
+    # beam = 999
+    # if beam_angle > breakpoints[0]:
+    #     if beam_angle <= breakpoints[-1]:
+    #         beam = bisect(breakpoints, beam_angle)-1
+    # return beam
+    return breakpoints
 
 def beamAngle(beam_num, BeamCount):
     '''Returns the beam angle of the requested beam.  This may not be the true beam center,

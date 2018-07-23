@@ -19,6 +19,9 @@ import aris_utils.error_description as err
 import os
 import datetime
 import pytz
+import aris_utils.beamLookUp as bl
+import math
+import cv2 
 
 cwd = os.getcwd()
 JSON_FILE_PATH = cwd + "/aris_utils/frame_headers_info.json"
@@ -29,6 +32,7 @@ class ARIS_Frame:
     Tmatrix = None
     FRAME_HEADER_NUM = 163
     FRAME_NUMBER = None
+    IMAGE = None
 
     def __init__(self, filename, frameIndexInp, frameSize):
         # frameIndex = frameIndexInp - 1
@@ -405,6 +409,7 @@ class ARIS_Frame:
             raise
 
         self.Tmatrix = self.getTransformationMatrix()
+        self.IMAGE = self.constructImage()
         return
 
     ##############################################################
@@ -561,20 +566,34 @@ class ARIS_Frame:
     def constructImage(self):
         windowStart = self.sampleStartDelay * 0.000001 * self.soundSpeed/2
         windowLength = self.samplePeriod * self.samplesPerBeam * 0.000001 * self.soundSpeed/2
-        sampleLength = self.samplePeriod * 0.000001 * self.soundSpeed/2
-        aspectRatio = int( self.samplesPerBeam/self.BEAM_COUNT)
         
-        self.imageParamaters = {
-            "WINDOW_START": windowStart,
-            "WINDOW_LENGTH": windowLength,
-            "RANGE_START": windowStart,
-            "RANGE_END": windowStart + windowLength,
-            "SAMPLE_LENGTH": sampleLength,
-            "Height": 0,
-            "Width":0
-        }
+        # calculating metric rectangular image dimensions
+        verticalMeters = windowStart + windowLength
+        allAngles = bl.BeamLookUp(self.BEAM_COUNT, self.largeLens)
+        firstBeamAngle_degrees  = allAngles[-1]
+        horizontalMeteres = verticalMeters * np.sin(np.radians(firstBeamAngle_degrees))
 
-        return    
+        # calculating pixel dimensions of rectangular image
+        height = self.samplesPerBeam
+        width = 2 * int( (horizontalMeteres * height)/ verticalMeters)
+
+        # converting data bytes to image 
+        image = np.array(self.FRAME_DATA, dtype= np.uint8)
+        image = cv2.flip( image , 0)
+        image = cv2.flip( image , 1)
+        image = cv2.resize(image,(width, height), interpolation = cv2.INTER_CUBIC)
+
+        # self.imageParamaters = {
+        #     "WINDOW_START": windowStart,
+        #     "WINDOW_LENGTH": windowLength,
+        #     "RANGE_START": windowStart,
+        #     "RANGE_END": windowStart + windowLength,
+        #     "SAMPLE_LENGTH": sampleLength,
+        #     "Height": 0,
+        #     "Width":0
+        # }
+
+        return  image 
     ##############################################################
     #       ARIS Frame Only Class Functions
     ##############################################################
@@ -608,3 +627,12 @@ class ARIS_Frame:
             return True
         else:
             return False
+
+
+    def showImage(self):
+        text = "Frame Number: "+ str(self.FRAME_NUMBER)
+        cv2.namedWindow(text, cv2.WINDOW_NORMAL)
+        cv2.imshow(text,self.IMAGE)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+        return
