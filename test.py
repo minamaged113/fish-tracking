@@ -21,9 +21,9 @@ else:
 print(json.dumps(file1.getInfo(), indent = 4))
 print(file1.__repr__())
 
-# file1.printFileHeader()
-# x = file1.formImage(2)
-for i in range(file1.frameCount):
-    frame = file1.readFrame(i)
-    frame.showImage()
+frame = file1.readFrame(0)
+frame.showWarpedImage()
+# for i in range(file1.frameCount):
+#     frame = file1.readFrame(i)
+#     frame.showImage()
 

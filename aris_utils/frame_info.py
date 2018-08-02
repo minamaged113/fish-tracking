@@ -21,7 +21,8 @@ import datetime
 import pytz
 import aris_utils.beamLookUp as bl
 import math
-import cv2 
+import cv2
+from skimage.transform import PiecewiseAffineTransform, warp
 
 cwd = os.getcwd()
 JSON_FILE_PATH = cwd + "/aris_utils/frame_headers_info.json"
@@ -474,6 +475,70 @@ class ARIS_Frame:
                 "Frequency": self.freq
             }
             return info
+
+    def showImage(self):
+        text = "Frame Number: "+ str(self.FRAME_NUMBER)
+        cv2.namedWindow(text, cv2.WINDOW_NORMAL)
+        cv2.imshow(text,self.IMAGE)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+        return
+    
+    def showWarpedImage(self):
+        image = self.IMAGE
+        
+        rows, cols = image.shape[0], image.shape[1]
+
+        src_cols = np.linspace(0, cols, 10, dtype=np.uint16)
+        src_rows = np.linspace(0, rows, 20, dtype=np.uint16)
+
+        src_rows, src_cols = np.meshgrid(src_rows, src_cols)
+        src = np.dstack([src_cols.flat, src_rows.flat])[0]
+
+        visualColDots = np.linspace(0, cols, 10, dtype=np.uint16)
+        visualRowDots = np.linspace(0, rows, 20, dtype=np.uint16)
+
+        visualRowDots, visualColDots = np.meshgrid(visualRowDots, visualColDots)
+        visualDots = np.dstack([visualColDots.flat, visualRowDots.flat])[0]
+        
+        dots = tuple(map(tuple, visualDots))
+        flag = True
+        for dot in dots:
+            cv2.circle(image, dot, 1, (0,0,0), thickness = 5)
+
+        windowStart = self.sampleStartDelay * 0.000001 * self.soundSpeed/2
+        windowLength = self.samplePeriod * self.samplesPerBeam * 0.000001 * self.soundSpeed/2
+
+        allAngles = bl.BeamLookUp(self.BEAM_COUNT, self.largeLens)
+        firstBeamAngle_degrees  = allAngles[-1]
+
+        verticalMeters = windowStart + windowLength
+
+        horizontalMeteres = verticalMeters * np.sin(np.radians(firstBeamAngle_degrees))
+        Y = verticalMeters * (1 - np.cos(np.radians(firstBeamAngle_degrees)))
+
+        slope = (verticalMeters - Y)/ horizontalMeteres
+        x = np.linspace(0, src.shape[0], src.shape[0], dtype=np.uint16)
+        
+        dst_cols = src[:, 0] - (slope*x - windowStart)
+        dst_rows = src[:, 1]
+        dst_cols *= 1.5
+        dst_cols += 20 * 50
+        dst = np.vstack([dst_cols, dst_rows]).T
+
+        tform = PiecewiseAffineTransform()
+        tform.estimate(src, dst)
+
+        out_rows = image.shape[0]
+        out_cols = image.shape[1]
+        output = warp(image, tform, output_shape=(out_rows, out_cols))
+
+        text = "Frame Number: "+ str(self.FRAME_NUMBER)
+        cv2.namedWindow(text, cv2.WINDOW_NORMAL)
+        cv2.imshow(text,output)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+        return
         
     ##############################################################
     #       Functions called when initializing ARIS Frame Class
@@ -583,15 +648,6 @@ class ARIS_Frame:
         image = cv2.flip( image , 1)
         image = cv2.resize(image,(width, height), interpolation = cv2.INTER_CUBIC)
 
-        # self.imageParamaters = {
-        #     "WINDOW_START": windowStart,
-        #     "WINDOW_LENGTH": windowLength,
-        #     "RANGE_START": windowStart,
-        #     "RANGE_END": windowStart + windowLength,
-        #     "SAMPLE_LENGTH": sampleLength,
-        #     "Height": 0,
-        #     "Width":0
-        # }
 
         return  image 
     ##############################################################
@@ -629,10 +685,4 @@ class ARIS_Frame:
             return False
 
 
-    def showImage(self):
-        text = "Frame Number: "+ str(self.FRAME_NUMBER)
-        cv2.namedWindow(text, cv2.WINDOW_NORMAL)
-        cv2.imshow(text,self.IMAGE)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
-        return
+    
