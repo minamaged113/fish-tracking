@@ -306,10 +306,10 @@ class ARIS_File:
         """
         if ((self.version == 88491076)):
             # check number of frames == self.frameCount
-            for i in range(self.frameCount):
-                x = frame.ARIS_Frame(self.FILE_PATH, i, self.FRAME_SIZE)
-                if(x.sanityCheck() != True):
-                    return False
+            # for i in range(self.frameCount):
+            #     x = frame.ARIS_Frame(self.FILE_PATH, i, self.FRAME_SIZE)
+            #     if(x.sanityCheck() != True):
+            #         return False
             return True
         return False
 
@@ -317,82 +317,3 @@ class ARIS_File:
     def play(self):
         pass
     
-# def getXY(beamnum, binnum, frame):
-#     #windowStart = frame.samplestartdelay * 0.000001 * frame.soundSpeed / 2
-#     bin_dist = frame.windowStart + frame.samplePeriod * binnum * 0.000001 * frame.soundSpeed / 2
-#     beam_angle = beamLookUp.beamAngle(beamnum, frame.BEAM_COUNT)
-#     x = bin_dist*np.sin(np.deg2rad(-beam_angle))
-#     y = bin_dist*np.cos(np.deg2rad(-beam_angle))
-#     return x, y
-
-# def getBeamBin(x,y, frame):
-#     #windowStart = frame.samplestartdelay * 0.000001 * frame.soundSpeed / 2
-#     angle = np.rad2deg(np.tan(x/y))
-#     hyp = y/np.cos(np.deg2rad(angle))
-#     binnum2 = int((2*(hyp-frame.windowStart))/(frame.samplePeriod * 0.000001 * frame.soundSpeed))
-#     beamnum = beamLookUp.BeamLookUp(-angle, frame.BEAM_COUNT)
-#     return beamnum, binnum2
-
-
-# def px2Meters(x,y, frame, xdim = None):
-#     #windowStart = frame.samplestartdelay * 0.000001 * frame.soundSpeed / 2
-#     pix2Meter = frame.samplePeriod * 0.000001 * frame.soundSpeed / 2
-#     if xdim == None:
-#         xdim = int(getXY(0,frame.samplesPerBeam, frame)[0]*(1/pix2Meter)*2)
-#     x1 = (x - xdim/2) * pix2Meter #Convert X pixel to X dimension
-#     y1 = (y*pix2Meter)+(frame.windowStart) #Convert Y pixel to y dimension
-#     return x1, y1 
-
-
-# def createLUP(ARISFile, frame):
-#     #Lookup dimensions
-#     SampleLength = frame.samplePeriod * 0.000001 * frame.soundSpeed / 2
-#     ARISFile.ydim = int(frame.samplesPerBeam)
-#     ARISFile.xdim = int(getXY(0,frame.samplesPerBeam, frame)[0]*(1/SampleLength)*2)
-
-#     LUP = {}
-
-#     #Iterate through each point in the frame and lookup data
-#     for x in range(ARISFile.xdim):
-#         for y in range(ARISFile.ydim):
-#             x1, y1 = px2Meters(x, y, frame, xdim = ARISFile.xdim)
-#             Beam, Bin = getBeamBin(x1, y1, frame)
-#             if Beam != 999:
-#                 if Bin < frame.samplesPerBeam:
-#                     LUP[(x, y)] = (Bin, Beam)
-                
-#     ARISFile.LUP = LUP
-
-
-# def remapARIS(ARISFile, frame, frameBuffer = None): 
-#     """This function remaps the pixels from the bin/beam format to a 2D real world
-#     format with pixel resolution equal to the SampleLength.
-    
-#     Parameters
-#     -----------
-#     ARISFile : ARIS data structure returned via pyARIS.DataImport()
-#     frame : frame number to be remapped
-#     frameBuffer : This parameter add a specified number of pixels around the edges.   
-    
-#     Returns
-#     -------
-#     A remapped frame which is stored in the frames data structure as frame.remap    
-#     """               
-#     #Create an empty frame
-#     Remap = np.zeros([ARISFile.xdim,ARISFile.ydim])
-    
-#     #Populate the empty frame
-#     for key in ARISFile.LUP:
-#         Remap[key[0],key[1]] = frame.frame_data[ARISFile.LUP[key][0], ARISFile.LUP[key][1]]
-        
-#     Remap = np.rot90(Remap, 1)
-    
-#     #Add buffer is requested
-#     if frameBuffer != None:
-#         buffY = int(ARISFile.ydim*frameBuffer)
-#         buffX = int(ARISFile.xdim*frameBuffer)
-#         Remap = np.concatenate((np.ones([ARISFile.ydim, buffX]), Remap, np.ones([ARISFile.ydim, buffX])), axis = 1)
-#         Remap = np.concatenate((np.ones([buffY,ARISFile.xdim+buffX*2]), Remap, np.ones([buffY,ARISFile.xdim+buffX*2])))
-        
-#     #Add to frame data
-#     frame.image = Remap.astype('uint8')

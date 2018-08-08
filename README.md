@@ -13,3 +13,11 @@ pip install -r requirements.txt
 sudo apt-get install python3-tk
 ```
 ## Running
+
+mghobria@cse-cn0001.oulu.fi
+
+/home/mghobria
+
+/research/imag/development/
+
+adm@ee.oulu.fi

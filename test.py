@@ -22,8 +22,12 @@ print(json.dumps(file1.getInfo(), indent = 4))
 print(file1.__repr__())
 
 frame = file1.readFrame(0)
-frame.showWarpedImage()
+frame.showImage()
 # for i in range(file1.frameCount):
 #     frame = file1.readFrame(i)
-#     frame.showImage()
+#     # frame.showImage()
+#     ## uncomment the next part to save images on disk
+#     image = frame.FRAME_DATA
+#     image = np.array(image, dtype= np.uint8)
+#     cv2.imwrite("frame_"+ str(i)+ "_data.jpg", image)
 

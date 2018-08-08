@@ -22,7 +22,7 @@ import pytz
 import aris_utils.beamLookUp as bl
 import math
 import cv2
-from skimage.transform import PiecewiseAffineTransform, warp
+from skimage.transform import PiecewiseAffineTransform, warp, rescale
 
 cwd = os.getcwd()
 JSON_FILE_PATH = cwd + "/aris_utils/frame_headers_info.json"
@@ -484,61 +484,6 @@ class ARIS_Frame:
         cv2.destroyAllWindows()
         return
     
-    def showWarpedImage(self):
-        image = self.IMAGE
-        
-        rows, cols = image.shape[0], image.shape[1]
-
-        src_cols = np.linspace(0, cols, 10, dtype=np.uint16)
-        src_rows = np.linspace(0, rows, 20, dtype=np.uint16)
-
-        src_rows, src_cols = np.meshgrid(src_rows, src_cols)
-        src = np.dstack([src_cols.flat, src_rows.flat])[0]
-
-        visualColDots = np.linspace(0, cols, 10, dtype=np.uint16)
-        visualRowDots = np.linspace(0, rows, 20, dtype=np.uint16)
-
-        visualRowDots, visualColDots = np.meshgrid(visualRowDots, visualColDots)
-        visualDots = np.dstack([visualColDots.flat, visualRowDots.flat])[0]
-        
-        dots = tuple(map(tuple, visualDots))
-        flag = True
-        for dot in dots:
-            cv2.circle(image, dot, 1, (0,0,0), thickness = 5)
-
-        windowStart = self.sampleStartDelay * 0.000001 * self.soundSpeed/2
-        windowLength = self.samplePeriod * self.samplesPerBeam * 0.000001 * self.soundSpeed/2
-
-        allAngles = bl.BeamLookUp(self.BEAM_COUNT, self.largeLens)
-        firstBeamAngle_degrees  = allAngles[-1]
-
-        verticalMeters = windowStart + windowLength
-
-        horizontalMeteres = verticalMeters * np.sin(np.radians(firstBeamAngle_degrees))
-        Y = verticalMeters * (1 - np.cos(np.radians(firstBeamAngle_degrees)))
-
-        slope = (verticalMeters - Y)/ horizontalMeteres
-        x = np.linspace(0, src.shape[0], src.shape[0], dtype=np.uint16)
-        
-        dst_cols = src[:, 0] - (slope*x - windowStart)
-        dst_rows = src[:, 1]
-        dst_cols *= 1.5
-        dst_cols += 20 * 50
-        dst = np.vstack([dst_cols, dst_rows]).T
-
-        tform = PiecewiseAffineTransform()
-        tform.estimate(src, dst)
-
-        out_rows = image.shape[0]
-        out_cols = image.shape[1]
-        output = warp(image, tform, output_shape=(out_rows, out_cols))
-
-        text = "Frame Number: "+ str(self.FRAME_NUMBER)
-        cv2.namedWindow(text, cv2.WINDOW_NORMAL)
-        cv2.imshow(text,output)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
-        return
         
     ##############################################################
     #       Functions called when initializing ARIS Frame Class
@@ -629,27 +574,55 @@ class ARIS_Frame:
         return Tmatrix
     
     def constructImage(self):
-        windowStart = self.sampleStartDelay * 0.000001 * self.soundSpeed/2
-        windowLength = self.samplePeriod * self.samplesPerBeam * 0.000001 * self.soundSpeed/2
+        # windowStart = self.sampleStartDelay * 0.000001 * self.soundSpeed/2
+        # windowLength = self.samplePeriod * self.samplesPerBeam * 0.000001 * self.soundSpeed/2
         
         # calculating metric rectangular image dimensions
-        verticalMeters = windowStart + windowLength
-        allAngles = bl.BeamLookUp(self.BEAM_COUNT, self.largeLens)
-        firstBeamAngle_degrees  = allAngles[-1]
-        horizontalMeteres = verticalMeters * np.sin(np.radians(firstBeamAngle_degrees))
+        # verticalMeters = windowStart + windowLength
+        
+        # firstBeamAngle_degrees  = allAngles[-1]
+        # horizontalMeteres = verticalMeters * np.sin(np.radians(firstBeamAngle_degrees))
 
         # calculating pixel dimensions of rectangular image
-        height = self.samplesPerBeam
-        width = 2 * int( (horizontalMeteres * height)/ verticalMeters)
+        # height = self.samplesPerBeam
+        # width = 2 * int( (horizontalMeteres * height)/ verticalMeters)
+        I = self.FRAME_DATA.astype(np.uint8)
+        I = cv2.flip( I, 0 )
+        # I = cv2.flip( I, 1 )
+        allAngles = bl.BeamLookUp(self.BEAM_COUNT, self.largeLens)
+        d0 = self.sampleStartDelay * 0.000001 * self.soundSpeed/2
+        dm = d0 + self.samplePeriod * self.samplesPerBeam * 0.000001 * self.soundSpeed/2
+        am = allAngles[-1]
+        K = self.samplesPerBeam
+        N, M = I.shape
 
-        # converting data bytes to image 
-        image = np.array(self.FRAME_DATA, dtype= np.uint8)
-        image = cv2.flip( image , 0)
-        image = cv2.flip( image , 1)
-        image = cv2.resize(image,(width, height), interpolation = cv2.INTER_CUBIC)
+        xm = dm*np.tan(am/180*np.pi)
+        L = int(K/(dm-d0) * 2*xm)
 
+        sx = L/(2*xm)
+        sa = M/(2*am)
+        sd = N/(dm-d0)
+        O = sx*d0
+        Q = sd*d0
 
-        return  image 
+        def invmap(inp):
+            xi = inp[:,0]
+            yi = inp[:,1]
+            xc = (xi - L/2)/sx
+            yc = (K + O - yi)/sx
+            dc = np.sqrt(xc**2 + yc**2)
+            ac = np.arctan(xc / yc)/np.pi*180
+            ap = ac*sa
+            dp = dc*sd
+            a = ap + M/2
+            d = N + Q - dp
+            outp = np.array((a,d)).T
+            return outp
+
+        out = warp(I, invmap, output_shape=(K, L))
+        return  out
+
+    
     ##############################################################
     #       ARIS Frame Only Class Functions
     ##############################################################
