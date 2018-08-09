@@ -574,22 +574,10 @@ class ARIS_Frame:
         return Tmatrix
     
     def constructImage(self):
-        # windowStart = self.sampleStartDelay * 0.000001 * self.soundSpeed/2
-        # windowLength = self.samplePeriod * self.samplesPerBeam * 0.000001 * self.soundSpeed/2
-        
-        # calculating metric rectangular image dimensions
-        # verticalMeters = windowStart + windowLength
-        
-        # firstBeamAngle_degrees  = allAngles[-1]
-        # horizontalMeteres = verticalMeters * np.sin(np.radians(firstBeamAngle_degrees))
-
-        # calculating pixel dimensions of rectangular image
-        # height = self.samplesPerBeam
-        # width = 2 * int( (horizontalMeteres * height)/ verticalMeters)
         I = self.FRAME_DATA.astype(np.uint8)
         I = cv2.flip( I, 0 )
-        # I = cv2.flip( I, 1 )
         allAngles = bl.BeamLookUp(self.BEAM_COUNT, self.largeLens)
+        
         d0 = self.sampleStartDelay * 0.000001 * self.soundSpeed/2
         dm = d0 + self.samplePeriod * self.samplesPerBeam * 0.000001 * self.soundSpeed/2
         am = allAngles[-1]
