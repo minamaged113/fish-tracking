@@ -9,8 +9,8 @@ import json
 import numpy as np
 
 cwd = os.getcwd()
-testingFilePath = cwd + "/sample.aris"
-
+# testingFilePath = cwd + "/sample.aris"
+testingFilePath = "/home/mghobria/Documents/work/data/data 1/data.aris"
 file1 = file.ARIS_File(testingFilePath)
 sanity = file1.fileVersion()
 if(sanity):
@@ -21,7 +21,7 @@ else:
 print(json.dumps(file1.getInfo(), indent = 4))
 print(file1.__repr__())
 
-frame = file1.readFrame(0)
+frame = file1.readFrame(46)
 frame.showImage()
 # for i in range(file1.frameCount):
 #     frame = file1.readFrame(i)
