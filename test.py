@@ -14,6 +14,7 @@ import cv2
 import json
 import numpy as np
 import matplotlib.pyplot as plt
+from skimage.transform import rescale
 
 ##########################################################
 #       UI elements
@@ -22,6 +23,7 @@ import matplotlib.pyplot as plt
 
 class FMainWindow(QDialog):
     FRAME_INDEX = 0
+    SCALE = 1.0/3.0
     def __init__(self):
         ##  Reading the file
         self.FLoadARISFile()
@@ -36,35 +38,73 @@ class FMainWindow(QDialog):
 
         self.FLayout.addWidget(FNextBTN,1,1)
         self.FLayout.addWidget(FPreviousBTN,1,0)
-
+        '''
         self.Frame = self.File.readFrame(self.FRAME_INDEX)
-        plt.imsave("temp.jpg",self.Frame.IMAGE, cmap = 'gray')
+        self.image = self.Frame.IMAGE
+        self.image = resize(self.image, (int(self.image.shape[0]/self.SCALE), int(self.image.shape[1]/self.SCALE)), anti_aliasing=True)
+        plt.imsave("temp.jpg",self.image, cmap = 'gray')
         self.im = QImage("temp.jpg")
         self.imageLabel = QLabel()
         self.imageLabel.setPixmap(QPixmap.fromImage(self.im))
+        '''
+        self.Frame = self.File.readFrame(self.FRAME_INDEX)
+        self.qformat =QImage.Format_Grayscale8
+        self.Frame.IMAGE = rescale(self.Frame.IMAGE, self.SCALE, anti_aliasing=True)
+        self.Frame.IMAGE = (self.Frame.IMAGE*255).astype(np.uint8)
+        
+        self.image = QImage(self.Frame.IMAGE,
+                            self.Frame.IMAGE.shape[1],
+                            self.Frame.IMAGE.shape[0],
+                            self.Frame.IMAGE.strides[0],
+                            self.qformat)
+        self.imageLabel = QLabel()
+        self.imageLabel.setPixmap(QPixmap.fromImage(self.image))
+        
         self.FLayout.addWidget(self.imageLabel,0,0,1,2, Qt.AlignCenter)
 
         self.setLayout(self.FLayout)
 
     def FShowNextImage(self):
-        self.imagePath = "/home/mghobria/Pictures/Screenshot from 2018-05-17 00-34-44.png"
-        self.im = QImage(self.imagePath)
+        self.FRAME_INDEX +=1
+        if (self.FRAME_INDEX > self.File.frameCount):
+            self.FRAME_INDEX = 0
+        self.Frame = self.File.readFrame(self.FRAME_INDEX)
+        self.qformat =QImage.Format_Grayscale8
+        self.Frame.IMAGE = rescale(self.Frame.IMAGE, self.SCALE, anti_aliasing=True)
+        self.Frame.IMAGE = (self.Frame.IMAGE*255).astype(np.uint8)
+        
+        self.image = QImage(self.Frame.IMAGE,
+                            self.Frame.IMAGE.shape[1],
+                            self.Frame.IMAGE.shape[0],
+                            self.Frame.IMAGE.strides[0],
+                            self.qformat)
         self.imageLabel = QLabel()
-        self.pixmap = QPixmap.fromImage(self.im)
-        self.pixmap = self.pixmap.scaledToWidth(64)
-        self.imageLabel.setPixmap(self.pixmap)
+        self.imageLabel.setPixmap(QPixmap.fromImage(self.image))
+        
         self.FLayout.addWidget(self.imageLabel,0,0,1,2, Qt.AlignCenter)
 
 
     def FShowPreviousImage(self):
-        self.imagePath = "/home/mghobria/Pictures/Figure_1.png"
-        self.im = QImage(self.imagePath)
+        self.FRAME_INDEX -= 1
+        if (self.FRAME_INDEX < 0 ):
+            self.FRAME_INDEX = self.File.frameCount
+        self.Frame = self.File.readFrame(self.FRAME_INDEX)
+        self.qformat =QImage.Format_Grayscale8
+        self.Frame.IMAGE = rescale(self.Frame.IMAGE, self.SCALE, anti_aliasing=True)
+        self.Frame.IMAGE = (self.Frame.IMAGE*255).astype(np.uint8)
+        
+        self.image = QImage(self.Frame.IMAGE,
+                            self.Frame.IMAGE.shape[1],
+                            self.Frame.IMAGE.shape[0],
+                            self.Frame.IMAGE.strides[0],
+                            self.qformat)
         self.imageLabel = QLabel()
-        self.imageLabel.setPixmap(QPixmap.fromImage(self.im))
+        self.imageLabel.setPixmap(QPixmap.fromImage(self.image))
+        
         self.FLayout.addWidget(self.imageLabel,0,0,1,2, Qt.AlignCenter)
 
     def FLoadARISFile(self):
-        self.FFilePath = "/home/mghobria/Documents/work/data/data 1/data.aris"
+        self.FFilePath = "/home/mghobria/Desktop/fish-tracking/sample.aris"
         self.File = ARIS_File.ARIS_File(self.FFilePath)
         sanity = self.File.fileVersion()
         if(sanity):
