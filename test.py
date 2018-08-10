@@ -22,7 +22,7 @@ from skimage.transform import rescale
 
 
 class FMainWindow(QDialog):
-    FRAME_INDEX = 0
+    UI_FRAME_INDEX = 0
     SCALE = 1.0/3.0
     def __init__(self):
         ##  Reading the file
@@ -38,16 +38,9 @@ class FMainWindow(QDialog):
 
         self.FLayout.addWidget(FNextBTN,1,1)
         self.FLayout.addWidget(FPreviousBTN,1,0)
-        '''
-        self.Frame = self.File.readFrame(self.FRAME_INDEX)
-        self.image = self.Frame.IMAGE
-        self.image = resize(self.image, (int(self.image.shape[0]/self.SCALE), int(self.image.shape[1]/self.SCALE)), anti_aliasing=True)
-        plt.imsave("temp.jpg",self.image, cmap = 'gray')
-        self.im = QImage("temp.jpg")
-        self.imageLabel = QLabel()
-        self.imageLabel.setPixmap(QPixmap.fromImage(self.im))
-        '''
-        self.Frame = self.File.readFrame(self.FRAME_INDEX)
+       
+        self.Frame = self.File.readFrame(self.UI_FRAME_INDEX)
+        print(self.UI_FRAME_INDEX)
         self.qformat =QImage.Format_Grayscale8
         self.Frame.IMAGE = rescale(self.Frame.IMAGE, self.SCALE, anti_aliasing=True)
         self.Frame.IMAGE = (self.Frame.IMAGE*255).astype(np.uint8)
@@ -65,10 +58,11 @@ class FMainWindow(QDialog):
         self.setLayout(self.FLayout)
 
     def FShowNextImage(self):
-        self.FRAME_INDEX +=1
-        if (self.FRAME_INDEX > self.File.frameCount):
-            self.FRAME_INDEX = 0
-        self.Frame = self.File.readFrame(self.FRAME_INDEX)
+        self.UI_FRAME_INDEX +=1
+        print(self.UI_FRAME_INDEX)
+        if (self.UI_FRAME_INDEX > self.File.frameCount-1):
+            self.UI_FRAME_INDEX = 0
+        self.Frame = self.File.readFrame(self.UI_FRAME_INDEX)
         self.qformat =QImage.Format_Grayscale8
         self.Frame.IMAGE = rescale(self.Frame.IMAGE, self.SCALE, anti_aliasing=True)
         self.Frame.IMAGE = (self.Frame.IMAGE*255).astype(np.uint8)
@@ -85,10 +79,11 @@ class FMainWindow(QDialog):
 
 
     def FShowPreviousImage(self):
-        self.FRAME_INDEX -= 1
-        if (self.FRAME_INDEX < 0 ):
-            self.FRAME_INDEX = self.File.frameCount
-        self.Frame = self.File.readFrame(self.FRAME_INDEX)
+        self.UI_FRAME_INDEX -= 1
+        print(self.UI_FRAME_INDEX)
+        if (self.UI_FRAME_INDEX < 0 ):
+            self.UI_FRAME_INDEX = self.File.frameCount-1
+        self.Frame = self.File.readFrame(self.UI_FRAME_INDEX)
         self.qformat =QImage.Format_Grayscale8
         self.Frame.IMAGE = rescale(self.Frame.IMAGE, self.SCALE, anti_aliasing=True)
         self.Frame.IMAGE = (self.Frame.IMAGE*255).astype(np.uint8)
