@@ -167,10 +167,11 @@ class FWelcomeScreen(QMainWindow):
 
     def FOpenFile(self):
         filePathTuple = QFileDialog.getOpenFileName(self, "Open File", "/home", "Sonar Files (*.aris *.ddf)")
-        self.FFilePath = filePathTuple[0]
-        self.FCentralScreen = FMainWindow(self)
-        self.setCentralWidget(self.FCentralScreen)
-        self.setWindowTitle("Fisher - " + self.FFilePath)
+        if filePathTuple[0] != "" : 
+            self.FFilePath = filePathTuple[0]
+            self.FCentralScreen = FMainWindow(self)
+            self.setCentralWidget(self.FCentralScreen)
+            self.setWindowTitle("Fisher - " + self.FFilePath)
 
 class FMainWindow(QDialog):
     """This class holds the main window which will be used to 
@@ -292,6 +293,20 @@ class FMainWindow(QDialog):
             framesIndices.append()
             
         pass
+
+class FWelcomeInfo(QDialog):
+    """This class will hold information screen about the software
+    and its owners and developers.
+    
+    Arguments:
+        QDialog {[Class]} -- PyQt parent class
+    """
+    
+    def __init__(self, parent):
+        QDialog.__init__(self)
+
+    
+
 
 def run():
     cwd = os.getcwd()
