@@ -20,7 +20,7 @@ from skimage.transform import rescale
 #       UI elements
 ##########################################################
 
-def FGetIcon(folder, icon):
+def FGetIcon(icon):
     ## TODO
     """get icon path.
     """
@@ -42,8 +42,7 @@ class FWelcomeScreen(QMainWindow):
         ##  UI elements description
         QMainWindow.__init__(self)
         self.initUI()
-        self.FCentralScreen = FMainWindow(self)
-        self.setCentralWidget(self.FCentralScreen)
+        
         
 
     def initUI(self):
@@ -51,7 +50,7 @@ class FWelcomeScreen(QMainWindow):
         self.setWindowTitle("Fisher - Welcome Screen")
 
         self.FMainMenu_init()        
-        self.show()
+        self.showMaximized()
 
         
     def FMainMenu_init(self):
@@ -61,7 +60,11 @@ class FWelcomeScreen(QMainWindow):
         self.FFileMenu_init()
         self.FEditMenu_init()
         self.FHelpMenu_init()
-        self.statusBar()
+        self.FStatusBar = QStatusBar()
+        self.setStatusBar(self.FStatusBar)
+        self.FStatusBarFrameNumber = QLabel()
+        self.FStatusBarFrameNumber.setText("No File Loaded")
+        self.FStatusBar.addPermanentWidget(self.FStatusBarFrameNumber)
         return
 
     def FFileMenu_init(self):
@@ -163,8 +166,11 @@ class FWelcomeScreen(QMainWindow):
         print(text)
 
     def FOpenFile(self):
-        self.FFilePath = QFileDialog.getOpenFileName(self, "Open File", "home/", "Sonar Files (*.aris *.ddf)")
-        print("file opened: "+ str(self.FFilePath))
+        filePathTuple = QFileDialog.getOpenFileName(self, "Open File", "home/", "Sonar Files (*.aris *.ddf)")
+        self.FFilePath = filePathTuple[0]
+        self.FCentralScreen = FMainWindow(self)
+        self.setCentralWidget(self.FCentralScreen)
+        self.setWindowTitle("Fisher - " + self.FFilePath)
 
 class FMainWindow(QDialog):
     """This class holds the main window which will be used to 
@@ -181,9 +187,11 @@ class FMainWindow(QDialog):
         """Initializes the window and loads the first frame and
         places the UI elements, each in its own place.
         """
+        self.FParent = parent
+        
         ##  Reading the file
-        self.FLoadARISFile()
-
+        self.FLoadARISFile(self.FParent.FFilePath)
+        self.FParent.FStatusBarFrameNumber.setText("Frame : "+str(self.UI_FRAME_INDEX+1)+"/"+str(self.File.frameCount))
         QDialog.__init__(self)
         self.setWindowTitle("Fisher - " + self.FFilePath)
         self.FLayout = QGridLayout()
@@ -224,7 +232,6 @@ class FMainWindow(QDialog):
         """
 
         self.UI_FRAME_INDEX +=1
-        print(self.UI_FRAME_INDEX)
         if (self.UI_FRAME_INDEX > self.File.frameCount-1):
             self.UI_FRAME_INDEX = 0
         self.Frame = self.File.readFrame(self.UI_FRAME_INDEX)
@@ -241,6 +248,7 @@ class FMainWindow(QDialog):
         self.imageLabel.setPixmap(QPixmap.fromImage(self.image))
         
         self.FLayout.addWidget(self.imageLabel,0,0,1,2, Qt.AlignCenter)
+        self.FParent.FStatusBarFrameNumber.setText("Frame : "+str(self.UI_FRAME_INDEX+1)+"/"+str(self.File.frameCount))
 
 
     def FShowPreviousImage(self):
@@ -248,7 +256,6 @@ class FMainWindow(QDialog):
         """
 
         self.UI_FRAME_INDEX -= 1
-        print(self.UI_FRAME_INDEX)
         if (self.UI_FRAME_INDEX < 0 ):
             self.UI_FRAME_INDEX = self.File.frameCount-1
         self.Frame = self.File.readFrame(self.UI_FRAME_INDEX)
@@ -265,10 +272,11 @@ class FMainWindow(QDialog):
         self.imageLabel.setPixmap(QPixmap.fromImage(self.image))
         
         self.FLayout.addWidget(self.imageLabel,0,0,1,2, Qt.AlignCenter)
+        self.FParent.FStatusBarFrameNumber.setText("Frame : "+str(self.UI_FRAME_INDEX+1)+"/"+str(self.File.frameCount))
 
-    def FLoadARISFile(self):
-        self.FFilePath = "/home/mghobria/Documents/work/data/data.aris"
-        # self.FFilePath = "/home/mghobria/Desktop/sample.aris"
+
+    def FLoadARISFile(self, filePath):
+        self.FFilePath = filePath
         self.File = ARIS_File.ARIS_File(self.FFilePath)
         if(self.File.fileVersion()):
             print("file loaded successfully")
@@ -315,26 +323,3 @@ def run():
     sys.exit(app.exec_())
 
 run()
-
-# # FFilePath = cwd + "/sample.aris"
-# self.FFilePath = "/home/mghobria/Documents/work/data/data 1/data.aris"
-# file1 = file.ARIS_File(FFilePath)
-# sanity = file1.fileVersion()
-# if(sanity):
-#     print("file loaded successfully")
-# else:
-#     print("some error happened")
-
-# print(json.dumps(file1.getInfo(), indent = 4))
-# print(file1.__repr__())
-
-# frame = file1.readFrame(46)
-# frame.showImage()
-# # for i in range(file1.frameCount):
-# #     frame = file1.readFrame(i)
-# #     # frame.showImage()
-# #     ## uncomment the next part to save images on disk
-# #     image = frame.FRAME_DATA
-# #     image = np.array(image, dtype= np.uint8)
-# #     cv2.imwrite("frame_"+ str(i)+ "_data.jpg", image)
-
