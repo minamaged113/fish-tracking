@@ -186,6 +186,13 @@ class ARIS_File:
         """
 
         return frame.ARIS_Frame(self.FILE_PATH, frameIndex, self.FRAME_SIZE)
+
+    def getImages(self):
+        images = list()
+        for frameIndex in range(self.frameCount):
+            wholeFrame = frame.ARIS_Frame(self.FILE_PATH, frameIndex, self.FRAME_SIZE)
+            images.append(wholeFrame.IMAGE)
+        return images
     
     def printFileHeader(self):
     
@@ -250,7 +257,7 @@ class ARIS_File:
     ##############################################################
     
     def getFrameSize(self):
-        """a functione that takes an instant of the class and returns
+        """a function that takes an instant of the class and returns
         an integer containing the frame size in the given file.
         
         Returns:
