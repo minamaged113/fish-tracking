@@ -193,6 +193,7 @@ class ARIS_File:
             wholeFrame = frame.ARIS_Frame(self.FILE_PATH, frameIndex, self.FRAME_SIZE)
             images.append(wholeFrame.IMAGE)
         return images
+
     
     def printFileHeader(self):
     
@@ -322,5 +323,26 @@ class ARIS_File:
 
 
     def play(self):
+        ## TODO
         pass
     
+
+def getAllFramesData(fileName, ):
+    """Opens a .aris file and extracts all bytes for all frames and returns a
+    list containing all frames data, to be used in drawing the images.
+
+    """
+    ## TODO
+    allFrames = list()
+    try:
+        with open(fileName, 'rb') as fhand:
+            version = struct.unpack(
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
+            frameCount = struct.unpack(
+                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
+            frameoffset = (1024+(frameIndexInp*(1024+(frameSize))))
+
+    except:
+        err.print_error(err.fileReadError)
+        raise
+    return

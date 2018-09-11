@@ -2,6 +2,8 @@
     "file": {
         "version": {
             "size": "32-bit unsigned integer",
+            "bytes" : 4,
+            "location": 0,
             "title": "Version",
             "description": "File format version DDF_05",
             "default": "0x05464444",
@@ -11,6 +13,8 @@
         },
         "frameCount": {
             "size": "32-bit unsigned integer",
+            "bytes" : 4,
+            "location": 4,
             "title": "frameCount",
             "description": "Total number of frames in a given file",
             "default": null,
@@ -20,6 +24,8 @@
         },
         "frameRate": {
             "size": "32-bit unsigned integer",
+            "bytes" : 4,
+            "location": 8,
             "title": "Frame rate",
             "description": "Initial recorded frame rate",
             "default": null,
@@ -29,6 +35,8 @@
         },
         "highResolution": {
             "size": "32-bit unsigned integer",
+            "bytes" : 4,
+            "location": 12,
             "title": "High resolution",
             "description": "If the value is zero, then frames are in low resolution. Otherwise, high resolution",
             "default": null,
@@ -38,6 +46,8 @@
         },
         "numRawBeams": {
             "size": "32-bit unsigned integer",
+            "bytes" : 4,
+            "location": 16,
             "title": "Number of Beams",
             "description": "Number of beams produced by the hardware. It is considered the X-axis of the produced images.",
             "default": null,
@@ -47,6 +57,8 @@
         },
         "sampleRate": {
             "size": "32-bit float",
+            "bytes" : 4,
+            "location": 20,
             "title": "Sample rate",
             "description": "It is the reciprocal of the sample period",
             "default": null,
@@ -56,6 +68,8 @@
         },
         "samplesPerChannel": {
             "size": "32-bit unsigned integer",
+            "bytes" : 4,
+            "location":24 ,
             "title": "Samples per Channel",
             "description": "Number of range sample in each beam produced by the hardware. It is considered the Y-axis of the produced images",
             "default": null,
@@ -65,6 +79,8 @@
         },
         "receiverGain": {
             "size": "32-bit unsigned integer",
+            "bytes" : 4,
+            "location": 28,
             "title": "Receiver Gain (dB)",
             "description": "Relative gain in dB, has values ranging from 0 to 40",
             "default": null,
@@ -74,6 +90,8 @@
         },
         "windowStart": {
             "size": "32-bit float",
+            "bytes" : 4,
+            "location": 32,
             "title": "Window start (m)",
             "description": "Image window start range in meters",
             "default": null,
@@ -83,6 +101,8 @@
         },
         "windowLength": {
             "size": "32-bit float",
+            "bytes" : 4,
+            "location":36 ,
             "title": "Window length (m)",
             "description": "Image window length in meters",
             "default": null,
@@ -92,6 +112,8 @@
         },
         "reverse": {
             "size": "32-bit unsigned integer",
+            "bytes" : 4,
+            "location":40 ,
             "title": "Lens position",
             "description": "Lens position either up or down.",
             "default": null,
@@ -101,6 +123,8 @@
         },
         "serialNumber": {
             "size": "32-bit unsigned integer",
+            "bytes" : 4,
+            "location": 44,
             "title": "Serial Number",
             "description": "Serial number of the SONAR hardware.",
             "default": null,
@@ -110,6 +134,8 @@
         },
         "strDate": {
             "size": "32 unsigned bytes",
+            "bytes" : 4,
+            "location": 48,
             "title": "Date",
             "description": "Date of recording the file.",
             "default": null,
@@ -119,6 +145,8 @@
         },
         "strHeaderID": {
             "size": "256 unsigned bytes",
+            "bytes" : 256,
+            "location": 80, 
             "title": "Header ID",
             "description": "User input to identify file.",
             "default": null,
@@ -128,6 +156,8 @@
         },
         "userID1": {
             "size": "32-bit signed integer",
+            "bytes" : 4,
+            "location": 336,
             "title": "User 1 ID",
             "description": "User-defined integer quantity",
             "default": null,
@@ -137,6 +167,8 @@
         },
         "userID2": {
             "size": "32-bit signed integer",
+            "bytes" : 4,
+            "location": 340,
             "title": "User 2 ID",
             "description": "User-defined integer quantity",
             "default": null,
@@ -146,6 +178,8 @@
         },
         "userID3": {
             "size": "32-bit signed integer",
+            "bytes" : 4,
+            "location": 344,
             "title": "User 3 ID",
             "description": "User-defined integer quantity",
             "default": null,
@@ -155,6 +189,8 @@
         },
         "userID4": {
             "size": "32-bit signed integer",
+            "bytes" : 4,
+            "location": 348,
             "title": "User 4 ID",
             "description": "User-defined integer quantity",
             "default": null,
@@ -164,6 +200,8 @@
         },
         "startFrame": {
             "size": "32-bit unsigned integer",
+            "bytes" : 4,
+            "location": 352,
             "title": "First frame #",
             "description": "First frame number from source file",
             "default": null,
@@ -173,6 +211,8 @@
         },
         "endFrame": {
             "size": "32-bit unsigned integer",
+            "bytes" : 4,
+            "location":356 ,
             "title": "Last frame #",
             "description": "Last frame number from source file",
             "default": null,
@@ -182,6 +222,8 @@
         },
         "timelapse": {
             "size": "32-bit unsigned integer",
+            "bytes" : 4,
+            "location": 360,
             "title": "Timelapse",
             "description": "If non-zero, it indicates Timelapse recording mode. Otherwise, no Timelapse.",
             "default": null,
@@ -191,6 +233,8 @@
         },
         "recordInterval": {
             "size": "32-bit unsigned integer",
+            "bytes" : 4,
+            "location": 364,
             "title": "Record Interval",
             "description": "Number of frames/seconds between recorded frames",
             "default": null,
@@ -200,6 +244,8 @@
         },
         "radioSecond": {
             "size": "32-bit unsigned integer",
+            "bytes" : 4,
+            "location": 368,
             "title": "Radio Second",
             "description": "Frames or seconds interval",
             "default": null,
@@ -209,6 +255,8 @@
         },
         "frameInterval": {
             "size": "32-bit unsigned integer",
+            "bytes" : 4,
+            "location": 372,
             "title": "Frame Interval",
             "description": "Record every Nth frame",
             "default": null,
@@ -218,6 +266,8 @@
         },
         "flags": {
             "size": "32-bit unsigned integer",
+            "bytes" : 4,
+            "location": 376,
             "title": "Flags",
             "description": "See DDF_04 file format document",
             "default": null,
@@ -227,6 +277,8 @@
         },
         "auxFlags": {
             "size": "32-bit unsigned integer",
+            "bytes" : 4,
+            "location": 380,
             "title": "Auxiliary Flags",
             "description": "See DDF_04 file format document",
             "default": null,
@@ -236,6 +288,8 @@
         },
         "soundVelocity": {
             "size": "32-bit unsigned integer",
+            "bytes" : 4,
+            "location": 384,
             "title": "Sound Velocity",
             "description": "Sound velocity in water",
             "default": null,
@@ -245,6 +299,8 @@
         },
         "flags3D": {
             "size": "32-bit unsigned integer",
+            "bytes" :4 ,
+            "location": 388,
             "title": "3D Flags",
             "description": "See DDF_04 file format document",
             "default": null,
@@ -254,6 +310,8 @@
         },
         "softwareVersion": {
             "size": "32-bit unsigned integer",
+            "bytes" : 4,
+            "location": 392,
             "title": "Software Version",
             "description": "DIDSON software version that recorded the file",
             "default": null,
@@ -263,6 +321,8 @@
         },
         "waterTemp": {
             "size": "32-bit unsigned integer",
+            "bytes" : 4,
+            "location": 396,
             "title": "Water Temperature",
             "description": "Water temperature code:  0 = 5-15C, 1 = 15-25C, 2 = 25-35C",
             "default": null,
@@ -272,6 +332,8 @@
         },
         "salinity": {
             "size": "32-bit unsigned integer",
+            "bytes" : 4,
+            "location": 400,
             "title": "Salinity",
             "description": "Salinity code:  0 = fresh, 1 = brackish, 2 = salt",
             "default": null,
@@ -281,6 +343,8 @@
         },
         "pulseLength": {
             "size": "32-bit unsigned integer",
+            "bytes" : 4,
+            "location": 404,
             "title": "Pulse Length",
             "description": null,
             "default": null,
@@ -290,6 +354,8 @@
         },
         "TxMode": {
             "size": "32-bit unsigned integer",
+            "bytes" : 4,
+            "location": 408,
             "title": "Transmitter Mode",
             "description": null,
             "default": null,
@@ -299,6 +365,8 @@
         },
         "versionFPGA": {
             "size": "32-bit unsigned integer",
+            "bytes" : 4,
+            "location": 412,
             "title": "versionFPGA",
             "description": null,
             "default": null,
@@ -308,6 +376,8 @@
         },
         "versionPSuC": {
             "size": "32-bit unsigned integer",
+            "bytes" : 4,
+            "location": 416,
             "title": "VersionPSuC",
             "description": null,
             "default": null,
@@ -317,6 +387,8 @@
         },
         "thumbnailFI": {
             "size": "32-bit unsigned integer",
+            "bytes" :4 ,
+            "location": 420,
             "title": "Frame Index Thumbnail",
             "description": "Frame index of frame used for thumbnail image of file",
             "default": null,
@@ -326,6 +398,8 @@
         },
         "fileSize": {
             "size": "64-bit unsigned integer",
+            "bytes" : 8,
+            "location" : 424,
             "title": "File Size",
             "description": "Total file size in bytes",
             "default": null,
@@ -335,6 +409,8 @@
         },
         "optionalHeaderSize": {
             "size": "64-bit unsigned integer",
+            "bytes" :8 ,
+            "location": 432,
             "title": "Optional Header Size",
             "description": null,
             "default": null,
@@ -344,6 +420,8 @@
         },
         "optionalTailSize": {
             "size": "64-bit unsigned integer",
+            "bytes" :8 ,
+            "location": 440,
             "title": "Optional Tail Size",
             "description": null,
             "default": null,
@@ -353,6 +431,8 @@
         },
         "versionMinor": {
             "size": "32-bit unsigned integer",
+            "bytes" :4 ,
+            "location": 448,
             "title": "DIDSON Version Minor",
             "description": null,
             "default": null,
@@ -362,6 +442,8 @@
         },
         "largeLens": {
             "size": "32-bit unsigned integer",
+            "bytes" :4 ,
+            "location": 452,
             "title": "Large Lens",
             "description": "Non-zero if telephoto lens (large lens, hi-res lens, big lens) is present",
             "default": null,
