@@ -49,8 +49,10 @@ class FWelcomeScreen(QMainWindow):
         self.setWindowIcon(QIcon("/home/mghobria/Desktop/fish-tracking/UI/UI_presentation/salmon/salmon_16"))
         self.setWindowTitle("Fisher - Welcome Screen")
 
-        self.FMainMenu_init()        
-        self.showMaximized()
+        self.FMainMenu_init()
+        self.showMaximized() 
+        self.FWelcomeInfo = FWelcomeInfo(self)
+        self.setCentralWidget(self.FWelcomeInfo)
 
         
     def FMainMenu_init(self):
@@ -260,6 +262,8 @@ class FMainWindow(QDialog):
             print("file loaded successfully")
         else:
             print("some error happened")
+        self.FLoadARISFileProgress = QProgressDialog("Loading File...", "Cancel!",0, self.File.frameCount,self.FParent)
+        self.FLoadARISFileProgress.setWindowTitle("Open File")
         self.FFrames = self.File.getImages()
         # print(json.dumps(self.File.getInfo(), indent = 4))
         # print(self.File.__repr__())
@@ -304,6 +308,53 @@ class FWelcomeInfo(QDialog):
     
     def __init__(self, parent):
         QDialog.__init__(self)
+        self.FParent = parent
+        self.FLayout = QGridLayout()
+
+        FOpenFileBTN = QPushButton("OPEN FILE", self)
+        FOpenFileBTN.clicked.connect(self.FParent.FOpenFile)
+
+        FShowStatsBTN = QPushButton("STATISTICS", self)
+        FShowStatsBTN.clicked.connect(self.FShowStats)
+
+        FAboutBTN = QPushButton("ABOUT", self)
+        FAboutBTN.clicked.connect(self.FAbout)
+
+        FInfo = QLabel()
+        FInfo.setText("Fisher is an open-source software developed by the University of Oulu, Finland \
+in collaboration with the Natural Resources Institute in Finland.")
+        FInfo.setWordWrap(True)
+
+        self.FLayout.addWidget(FOpenFileBTN, 0, 0)
+        self.FLayout.addWidget(FShowStatsBTN, 1, 0)
+        self.FLayout.addWidget(FAboutBTN, 2,0)
+        self.FLayout.addWidget(FInfo, 0,1, 3,1)
+
+        self.FLayout.setColumnStretch(0, 1)
+        self.FLayout.setColumnStretch(1, 4)
+        self.setLayout(self.FLayout)
+
+    def FShowStats(self):
+        ## TODO : Implement function to show statistics.
+        """Intended statistics include, but not limited to,
+            + number of files opened (.ddf, .aris)
+            + number of fish captured
+            + days with the highest and lowest number of fish
+            + Water levels and temperatures
+
+        """
+
+        pass
+
+    def FAbout(self):
+        ## TODO : Implement a function to show About information.
+        """
+        Should either be opening a new window to show information
+        about the software and its owners or show a webpage with
+        all the information.
+        """
+        pass
+
 
     
 
