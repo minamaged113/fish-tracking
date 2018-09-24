@@ -187,11 +187,12 @@ class ARIS_File:
 
         return frame.ARIS_Frame(self.FILE_PATH, frameIndex, self.FRAME_SIZE)
 
-    def getImages(self):
+    def getImages(self, QDrogressDialog):
         images = list()
         for frameIndex in range(self.frameCount):
             wholeFrame = frame.ARIS_Frame(self.FILE_PATH, frameIndex, self.FRAME_SIZE)
             images.append(wholeFrame.IMAGE)
+            QDrogressDialog.setValue(frameIndex)
         return images
 
     

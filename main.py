@@ -262,9 +262,9 @@ class FMainWindow(QDialog):
             print("file loaded successfully")
         else:
             print("some error happened")
-        self.FLoadARISFileProgress = QProgressDialog("Loading File...", "Cancel!",0, self.File.frameCount,self.FParent)
+        self.FLoadARISFileProgress = QProgressDialog("Loading File...", "Cancel",0, self.File.frameCount,self.FParent)
         self.FLoadARISFileProgress.setWindowTitle("Open File")
-        self.FFrames = self.File.getImages()
+        self.FFrames = self.File.getImages(self.FLoadARISFileProgress)
         # print(json.dumps(self.File.getInfo(), indent = 4))
         # print(self.File.__repr__())
 
