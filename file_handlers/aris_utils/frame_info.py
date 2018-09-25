@@ -20,9 +20,8 @@ import os
 import datetime
 import pytz
 import aris_utils.beamLookUp as bl
-import math
 import cv2
-from skimage.transform import PiecewiseAffineTransform, warp, rescale
+from skimage.transform import warp, rescale
 
 cwd = os.getcwd()
 JSON_FILE_PATH = cwd + "/aris_utils/frame_headers_info.json"

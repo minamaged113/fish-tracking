@@ -1,12 +1,14 @@
-from tkinter import filedialog
+"""
+Python Module for functions that is used by the UI
+that is available in all windows
+
+"""
 
 
-fileTypeTuple = ( ("ARIS files", "*.aris"), ("All files", "*.*"))
 
-def openFile(root):
-    root.fileName = filedialog.askopenfilename(filetypes = fileTypeTuple)
-    # root.show_frame[]
-    return root.fileName
+def FGetIcon(icon):
+    ## TODO : this function should add all icons
+    """get icon path.
+    """
 
-def show_frame():
     pass
