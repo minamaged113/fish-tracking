@@ -1,3 +1,7 @@
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
+
 class FWelcomeInfo(QDialog):
     """This class will hold information screen about the software
     and its owners and developers.

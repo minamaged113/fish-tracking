@@ -1,3 +1,16 @@
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
+
+## Other windows connected to this one
+from UI.FWelcomeInfo import *
+from UI.FMainWindow import *
+
+
+## Other entities dealing with the UI
+#   - File handler for opening SONAR Files
+from file_handler import *
+
 class FWelcomeScreen(QMainWindow):
     """This class holds the welcome window which will be used to 
     open ARIS and DIDSON files and show statistics and information

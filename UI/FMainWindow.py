@@ -1,3 +1,9 @@
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
+import cv2
+
+
 class FMainWindow(QDialog):
     """This class holds the main window which will be used to 
     show the SONAR images, analyze them and edit images.

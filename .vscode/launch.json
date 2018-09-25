@@ -16,7 +16,7 @@
             "type": "python",
             "request": "launch",
             "stopOnEntry": false,
-            "program": "${workspaceFolder}/test.py",
+            "program": "${workspaceFolder}/main.py",
             "pythonPath": "${config:python.pythonPath}",
             "cwd": "${workspaceFolder}",
             "env": {
