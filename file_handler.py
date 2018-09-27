@@ -17,11 +17,17 @@ def FOpenSonarFile(filename):
     ## TODO : function that opens sonar file
     """
     Opens a sonar file and decides which DIDSON version it is.
+    DIDSON version 0: 0x0464444
+    DIDSON version 1: 0x1464444
+    DIDSON version 2: 0x2464444
     DIDSON version 3: 0x3464444
-    DIDSON version 4: *****************
+    DIDSON version 4: 0x4464444
     DIDSON version 5 [ARIS]: 0x05464444
     Then calls the extract images function from each file-type file.
     """
+    try:
+
+    except:
 
     pass
 
