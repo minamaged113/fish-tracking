@@ -10,6 +10,7 @@ from UI.FMainWindow import *
 ## Other entities dealing with the UI
 #   - File handler for opening SONAR Files
 from file_handler import *
+from pathlib import Path
 
 class FWelcomeScreen(QMainWindow):
     """This class holds the welcome window which will be used to 
@@ -153,7 +154,8 @@ class FWelcomeScreen(QMainWindow):
         print(text)
 
     def FOpenFile(self):
-        filePathTuple = QFileDialog.getOpenFileName(self, "Open File", "/home", "Sonar Files (*.aris *.ddf)")
+        home = str(Path.home())
+        filePathTuple = QFileDialog.getOpenFileName(self, "Open File", home, "Sonar Files (*.aris *.ddf)")
         if filePathTuple[0] != "" : 
             self.FFilePath = filePathTuple[0]
             self.FCentralScreen = FMainWindow(self)

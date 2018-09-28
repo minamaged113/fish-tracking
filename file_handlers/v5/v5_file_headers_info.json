@@ -1,7 +1,7 @@
 {
     "file": {
         "version": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" : 4,
             "location": 0,
             "title": "Version",
@@ -12,7 +12,7 @@
             "obsolete":null
         },
         "frameCount": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" : 4,
             "location": 4,
             "title": "frameCount",
@@ -23,7 +23,7 @@
             "obsolete": false
         },
         "frameRate": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" : 4,
             "location": 8,
             "title": "Frame rate",
@@ -34,7 +34,7 @@
             "obsolete":null
         },
         "highResolution": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" : 4,
             "location": 12,
             "title": "High resolution",
@@ -45,7 +45,7 @@
             "obsolete":null
         },
         "numRawBeams": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" : 4,
             "location": 16,
             "title": "Number of Beams",
@@ -56,7 +56,7 @@
             "obsolete":null
         },
         "sampleRate": {
-            "size": "32-bit float",
+            "size": "float",
             "bytes" : 4,
             "location": 20,
             "title": "Sample rate",
@@ -67,7 +67,7 @@
             "obsolete":null
         },
         "samplesPerChannel": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" : 4,
             "location":24 ,
             "title": "Samples per Channel",
@@ -78,7 +78,7 @@
             "obsolete":null
         },
         "receiverGain": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" : 4,
             "location": 28,
             "title": "Receiver Gain (dB)",
@@ -89,7 +89,7 @@
             "obsolete":null
         },
         "windowStart": {
-            "size": "32-bit float",
+            "size": "float",
             "bytes" : 4,
             "location": 32,
             "title": "Window start (m)",
@@ -100,7 +100,7 @@
             "obsolete":null
         },
         "windowLength": {
-            "size": "32-bit float",
+            "size": "float",
             "bytes" : 4,
             "location":36 ,
             "title": "Window length (m)",
@@ -111,7 +111,7 @@
             "obsolete":null
         },
         "reverse": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" : 4,
             "location":40 ,
             "title": "Lens position",
@@ -122,7 +122,7 @@
             "obsolete":null
         },
         "serialNumber": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" : 4,
             "location": 44,
             "title": "Serial Number",
@@ -133,7 +133,7 @@
             "obsolete":null
         },
         "strDate": {
-            "size": "32 unsigned bytes",
+            "size": "char[32]",
             "bytes" : 4,
             "location": 48,
             "title": "Date",
@@ -144,7 +144,7 @@
             "obsolete":null
         },
         "strHeaderID": {
-            "size": "256 unsigned bytes",
+            "size": "char[256]",
             "bytes" : 256,
             "location": 80, 
             "title": "Header ID",
@@ -155,7 +155,7 @@
             "obsolete":null
         },
         "userID1": {
-            "size": "32-bit signed integer",
+            "size": "int32_t",
             "bytes" : 4,
             "location": 336,
             "title": "User 1 ID",
@@ -166,7 +166,7 @@
             "obsolete":null
         },
         "userID2": {
-            "size": "32-bit signed integer",
+            "size": "int32_t",
             "bytes" : 4,
             "location": 340,
             "title": "User 2 ID",
@@ -177,7 +177,7 @@
             "obsolete":null
         },
         "userID3": {
-            "size": "32-bit signed integer",
+            "size": "int32_t",
             "bytes" : 4,
             "location": 344,
             "title": "User 3 ID",
@@ -188,7 +188,7 @@
             "obsolete":null
         },
         "userID4": {
-            "size": "32-bit signed integer",
+            "size": "int32_t",
             "bytes" : 4,
             "location": 348,
             "title": "User 4 ID",
@@ -199,7 +199,7 @@
             "obsolete":null
         },
         "startFrame": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" : 4,
             "location": 352,
             "title": "First frame #",
@@ -210,7 +210,7 @@
             "obsolete":null
         },
         "endFrame": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" : 4,
             "location":356 ,
             "title": "Last frame #",
@@ -221,7 +221,7 @@
             "obsolete":null
         },
         "timelapse": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" : 4,
             "location": 360,
             "title": "Timelapse",
@@ -232,7 +232,7 @@
             "obsolete": false
         },
         "recordInterval": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" : 4,
             "location": 364,
             "title": "Record Interval",
@@ -243,7 +243,7 @@
             "obsolete": false
         },
         "radioSecond": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" : 4,
             "location": 368,
             "title": "Radio Second",
@@ -254,7 +254,7 @@
             "obsolete": false
         },
         "frameInterval": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" : 4,
             "location": 372,
             "title": "Frame Interval",
@@ -265,7 +265,7 @@
             "obsolete": false
         },
         "flags": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" : 4,
             "location": 376,
             "title": "Flags",
@@ -276,7 +276,7 @@
             "obsolete": true
         },
         "auxFlags": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" : 4,
             "location": 380,
             "title": "Auxiliary Flags",
@@ -287,7 +287,7 @@
             "obsolete": true
         },
         "soundVelocity": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" : 4,
             "location": 384,
             "title": "Sound Velocity",
@@ -298,7 +298,7 @@
             "obsolete": true
         },
         "flags3D": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" :4 ,
             "location": 388,
             "title": "3D Flags",
@@ -309,7 +309,7 @@
             "obsolete": true
         },
         "softwareVersion": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" : 4,
             "location": 392,
             "title": "Software Version",
@@ -320,7 +320,7 @@
             "obsolete": false
         },
         "waterTemp": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" : 4,
             "location": 396,
             "title": "Water Temperature",
@@ -331,7 +331,7 @@
             "obsolete": false
         },
         "salinity": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" : 4,
             "location": 400,
             "title": "Salinity",
@@ -342,7 +342,7 @@
             "obsolete": false
         },
         "pulseLength": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" : 4,
             "location": 404,
             "title": "Pulse Length",
@@ -353,7 +353,7 @@
             "obsolete": true
         },
         "TxMode": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" : 4,
             "location": 408,
             "title": "Transmitter Mode",
@@ -364,7 +364,7 @@
             "obsolete": true
         },
         "versionFPGA": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" : 4,
             "location": 412,
             "title": "versionFPGA",
@@ -375,7 +375,7 @@
             "obsolete": true
         },
         "versionPSuC": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" : 4,
             "location": 416,
             "title": "VersionPSuC",
@@ -386,7 +386,7 @@
             "obsolete": true
         },
         "thumbnailFI": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" :4 ,
             "location": 420,
             "title": "Frame Index Thumbnail",
@@ -397,7 +397,7 @@
             "obsolete": false
         },
         "fileSize": {
-            "size": "64-bit unsigned integer",
+            "size": "uint64_t",
             "bytes" : 8,
             "location" : 424,
             "title": "File Size",
@@ -408,7 +408,7 @@
             "obsolete": true
         },
         "optionalHeaderSize": {
-            "size": "64-bit unsigned integer",
+            "size": "uint64_t",
             "bytes" :8 ,
             "location": 432,
             "title": "Optional Header Size",
@@ -419,7 +419,7 @@
             "obsolete": true
         },
         "optionalTailSize": {
-            "size": "64-bit unsigned integer",
+            "size": "uint64_t",
             "bytes" :8 ,
             "location": 440,
             "title": "Optional Tail Size",
@@ -430,7 +430,7 @@
             "obsolete": true
         },
         "versionMinor": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" :4 ,
             "location": 448,
             "title": "DIDSON Version Minor",
@@ -441,7 +441,7 @@
             "obsolete": true
         },
         "largeLens": {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes" :4 ,
             "location": 452,
             "title": "Large Lens",

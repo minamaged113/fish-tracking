@@ -3,6 +3,12 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 import cv2
 
+## library for reading SONAR files
+# SF: SONAR File
+import file_handler as SF
+from skimage.transform import rescale
+import numpy as np
+
 
 class FMainWindow(QDialog):
     """This class holds the main window which will be used to 
@@ -14,7 +20,7 @@ class FMainWindow(QDialog):
     fgbg = cv2.createBackgroundSubtractorMOG2()
     UI_FRAME_INDEX = 0
     FRAMES_LIST = list()
-    SCALE = 1.0/3.0
+    SCALE = 3.0/3.0
     def __init__(self, parent):
         """Initializes the window and loads the first frame and
         places the UI elements, each in its own place.
@@ -22,7 +28,7 @@ class FMainWindow(QDialog):
         self.FParent = parent
         
         ##  Reading the file
-        self.FLoadARISFile(self.FParent.FFilePath)
+        self.FLoadSONARFile(self.FParent.FFilePath)
         self.FParent.FStatusBarFrameNumber.setText("Frame : "+str(self.UI_FRAME_INDEX+1)+"/"+str(self.File.frameCount))
         QDialog.__init__(self)
         self.setWindowTitle("Fisher - " + self.FFilePath)
@@ -66,7 +72,7 @@ class FMainWindow(QDialog):
 
     def FDisplayImage(self):
         # self.Frame = self.File.readFrame(self.UI_FRAME_INDEX)
-        self.origImage = self.FFrames[self.UI_FRAME_INDEX]
+        self.origImage = self.FFrames[int(self.UI_FRAME_INDEX)]
         self.qformat =QImage.Format_Grayscale8
         
         self.origImage = rescale(self.origImage, self.SCALE, anti_aliasing=True)
@@ -84,16 +90,12 @@ class FMainWindow(QDialog):
         self.FParent.FStatusBarFrameNumber.setText("Frame : "+str(self.UI_FRAME_INDEX+1)+"/"+str(self.File.frameCount))
 
 
-    def FLoadARISFile(self, filePath):
+    def FLoadSONARFile(self, filePath):
         self.FFilePath = filePath
-        self.File = ARIS_File.ARIS_File(self.FFilePath)
-        if(self.File.fileVersion()):
-            print("file loaded successfully")
-        else:
-            print("some error happened")
-        self.FLoadARISFileProgress = QProgressDialog("Loading File...", "Cancel",0, self.File.frameCount,self.FParent)
-        self.FLoadARISFileProgress.setWindowTitle("Open File")
-        self.FFrames = self.File.getImages(self.FLoadARISFileProgress)
+        # SF: Sonar File Library
+        self.File = SF.FOpenSonarFile(filePath)
+
+        self.FFrames = self.File.FRAMES
         # print(json.dumps(self.File.getInfo(), indent = 4))
         # print(self.File.__repr__())
 

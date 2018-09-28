@@ -12,21 +12,21 @@ References:
 
 """
 import struct
-import aris_utils.error_description as err
-import aris_utils.frame_info as frame
+import file_handlers.error_description as err
+import file_handlers.v4.v4_frame_info as frame
 import os
 import json
-import aris_utils.utils as utils
-import aris_utils.beamLookUp as beamLookUp
+import file_handlers.utils as utils
+import file_handlers.beamLookUp as beamLookUp
 import numpy as np
 import re
 
 
 
 cwd = os.getcwd()
-JSON_FILE_PATH = cwd + "/aris_utils/file_headers_info.json"
+JSON_FILE_PATH = cwd + "/file_handlers/v4/v4_file_headers_info.json"
 
-class ARIS_File:
+class v4_File:
     """
     Abstraction of the ARIS file format.
 
@@ -36,7 +36,7 @@ class ARIS_File:
     file formats
 
     Example:
-    >>> file = ARIS_File("sample.aris")
+    >>> file = v4_File("sample.aris")
 
     Note:
         Naming Convention:

@@ -13,20 +13,20 @@ References:
 """
 import struct
 import json
-import aris_utils.utils as utils
+import file_handlers.utils as utils
 import numpy as np
-import aris_utils.error_description as err
+import file_handlers.error_description as err
 import os
 import datetime
 import pytz
-import aris_utils.beamLookUp as bl
+import file_handlers.beamLookUp as bl
 import cv2
 from skimage.transform import warp, rescale
 
 cwd = os.getcwd()
-JSON_FILE_PATH = cwd + "/aris_utils/frame_headers_info.json"
+JSON_FILE_PATH = cwd + "/file_handlers/v5/v5_frame_headers_info.json"
 
-class ARIS_Frame:
+class v5_Frame:
     FRAME_DATA = None
     BEAM_COUNT = None
     Tmatrix = None

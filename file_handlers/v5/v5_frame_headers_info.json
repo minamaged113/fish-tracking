@@ -1,7 +1,7 @@
 {
     "frame": {
         "frameIndex" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 0,
             "title": "Frame Index",
@@ -13,7 +13,7 @@
 
         },
         "frameTime" : {
-            "size": "64-bit unsigned integer",
+            "size": "uint64_t",
             "bytes": 8,
             "location": 4,
             "title": "Frame Time",
@@ -25,7 +25,7 @@
 
         },
         "version" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 12,
             "title": "Version",
@@ -37,7 +37,7 @@
 
         },
         "status" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 16,
             "title": "Status",
@@ -49,7 +49,7 @@
 
         },
         "sonarTimeStamp" : {
-            "size": "64-bit unsigned integer",
+            "size": "uint64_t",
             "bytes": 8,
             "location": 20,
             "title": "Sonar Timestamp",
@@ -61,7 +61,7 @@
 
         },
         "TS_Day" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 28,
             "title": "Timestamp (Day)",
@@ -73,7 +73,7 @@
 
         },
         "TS_Hour" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 32,
             "title": "Timestamp (Hour)",
@@ -85,7 +85,7 @@
 
         },
         "TS_Minute" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 36,
             "title": "Timestamp (Min.)",
@@ -97,7 +97,7 @@
 
         },
         "TS_Second" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 40,
             "title": "Timestamp (Sec.)",
@@ -109,7 +109,7 @@
 
         },
         "TS_Hsecond" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 44,
             "title": "Timestamp (Hsec.)",
@@ -121,7 +121,7 @@
 
         },
         "transmitMode" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 48,
             "title": "Transmit Mode",
@@ -133,7 +133,7 @@
 
         },
         "windowStart" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 52,
             "title": "Window Start",
@@ -145,7 +145,7 @@
 
         },
         "windowLength" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 56,
             "title": "Window Lenght",
@@ -157,7 +157,7 @@
 
         },
         "threshold" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 60,
             "title": "Threshold",
@@ -169,7 +169,7 @@
 
         },
         "intensity" : {
-            "size": "32-bit signed integer",
+            "size": "int32_t",
             "bytes": 4,
             "location": 64,
             "title": "Intensity",
@@ -181,7 +181,7 @@
 
         },
         "receiverGain" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 68,
             "title": "Receiver Gain",
@@ -193,7 +193,7 @@
 
         },
         "degC1" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 72,
             "title": "CPU Temp. (C)",
@@ -205,7 +205,7 @@
 
         },
         "degC2" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 76,
             "title": "PSU Temp. (C)",
@@ -217,7 +217,7 @@
 
         },
         "humidity" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 80,
             "title": "Humidity",
@@ -229,7 +229,7 @@
 
         },
         "focus" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 84,
             "title": "Focus",
@@ -241,7 +241,7 @@
 
         },
         "battery" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 88,
             "title": "Battery",
@@ -253,7 +253,7 @@
 
         },
         "userVal1" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 92,
             "title": "User Value #1",
@@ -265,7 +265,7 @@
 
         },
         "userVal2" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 96,
             "title": "User Value #2",
@@ -277,7 +277,7 @@
 
         },
         "userVal3" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 100,
             "title": "User Value #3",
@@ -289,7 +289,7 @@
 
         },
         "userVal4" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 104,
             "title": "User Value #4",
@@ -301,7 +301,7 @@
 
         },
         "userVal5" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 108,
             "title": "User Value #5",
@@ -313,7 +313,7 @@
 
         },
         "userVal6" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 112,
             "title": "User Value #6",
@@ -325,7 +325,7 @@
 
         },
         "userVal7" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 116,
             "title": "User Value #7",
@@ -337,7 +337,7 @@
 
         },
         "userVal8" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 120,
             "title": "User Value #8",
@@ -349,7 +349,7 @@
 
         },
         "velocity" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 124,
             "title": "Velocity",
@@ -361,7 +361,7 @@
 
         },
         "depth" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 128,
             "title": "Depth",
@@ -373,7 +373,7 @@
 
         },
         "altitude" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 132,
             "title": "Altitude",
@@ -385,7 +385,7 @@
 
         },
         "pitch" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 136,
             "title": "Pitch",
@@ -397,7 +397,7 @@
 
         },
         "pitchRate" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 140,
             "title": "Pitch Rate",
@@ -409,7 +409,7 @@
 
         },
         "roll" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 144,
             "title": "Roll",
@@ -421,7 +421,7 @@
 
         },
         "rollRate" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 148,
             "title": "Roll Rate",
@@ -433,7 +433,7 @@
 
         },
         "heading" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 152,
             "title": "Heading",
@@ -445,7 +445,7 @@
 
         },
         "headingRate" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 156,
             "title": "Heading Rate",
@@ -457,7 +457,7 @@
 
         },
         "compassHeading" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 160,
             "title": "Compass Heading",
@@ -469,7 +469,7 @@
 
         },
         "compassPitch" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 164,
             "title": "Compass Pitch",
@@ -481,7 +481,7 @@
 
         },
         "compassRoll" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 168,
             "title": "Compass Roll",
@@ -493,7 +493,7 @@
 
         },
         "latitude" : {
-            "size": "64-bit double",
+            "size": "double",
             "bytes": 8,
             "location": 172,
             "title": "Latitude",
@@ -505,7 +505,7 @@
 
         },
         "longitude" : {
-            "size": "64-bit double",
+            "size": "double",
             "bytes": 8,
             "location": 180,
             "title": "Longitude",
@@ -517,7 +517,7 @@
 
         },
         "sonarPosition" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 188,
             "title": "Sonar Pos.",
@@ -529,7 +529,7 @@
 
         },
         "configFlags" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 192,
             "title": "Config. Flags",
@@ -541,7 +541,7 @@
 
         },
         "beamTilt" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 196,
             "title": "Beam Tilt",
@@ -553,7 +553,7 @@
 
         },
         "targetRange" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 200,
             "title": "Target Range",
@@ -565,7 +565,7 @@
 
         },
         "targetBearing" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 204,
             "title": "Target Bearing",
@@ -577,7 +577,7 @@
 
         },
         "targetPresent" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 208,
             "title": "Target Present",
@@ -589,7 +589,7 @@
 
         },
         "firmwareRev" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 212,
             "title": "Firmware Rev.",
@@ -601,7 +601,7 @@
 
         },
         "flags" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 216,
             "title": "Flags",
@@ -613,7 +613,7 @@
 
         },
         "sourceFrame" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 220,
             "title": "Source Frame",
@@ -625,7 +625,7 @@
 
         },
         "waterTemp" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 224,
             "title": "Water Temp. (C)",
@@ -637,7 +637,7 @@
 
         },
         "timerPeriod" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 228,
             "title": "Timer Period",
@@ -649,7 +649,7 @@
 
         },
         "sonarX" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 232,
             "title": "Sonar X",
@@ -661,7 +661,7 @@
 
         },
         "sonarY" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 236,
             "title": "Sonar Y",
@@ -673,7 +673,7 @@
 
         },
         "sonarZ" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 240,
             "title": "Sonar Z",
@@ -685,7 +685,7 @@
 
         },
         "sonarPan" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 244,
             "title": "Sonar Pan",
@@ -697,7 +697,7 @@
 
         },
         "sonarTilt" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 248,
             "title": "Sonar Tilt",
@@ -709,7 +709,7 @@
 
         },
         "sonarRoll" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 252,
             "title": "Sonar Roll",
@@ -721,7 +721,7 @@
 
         },
         "panPNNL" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 256,
             "title": "Pan PNN",
@@ -733,7 +733,7 @@
 
         },
         "tiltPNNL" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 260,
             "title": "Tilt PNNL",
@@ -745,7 +745,7 @@
 
         },
         "rollPNNL" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 264,
             "title": "Roll PNNL",
@@ -757,7 +757,7 @@
 
         },
         "vehicleTime" : {
-            "size": "64-bit double",
+            "size": "double",
             "bytes": 8,
             "location": 268,
             "title": "Vehicle Time",
@@ -769,7 +769,7 @@
 
         },
         "timeGGK" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 276,
             "title": "Time GGK",
@@ -781,7 +781,7 @@
 
         },
         "dateGGK" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 280,
             "title": "Date GGK",
@@ -793,7 +793,7 @@
 
         },
         "qualityGGK" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 284,
             "title": "Quality GGK",
@@ -805,7 +805,7 @@
 
         },
         "numStatsGGK" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 288,
             "title": "Number Stats GGK",
@@ -817,7 +817,7 @@
 
         },
         "DOPGGK" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 292,
             "title": "DOP GGK",
@@ -829,7 +829,7 @@
 
         },
         "EHTGGK" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 296,
             "title": "EHT GGK",
@@ -841,7 +841,7 @@
 
         },
         "heaveTSS" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 300,
             "title": "Heave TSS",
@@ -853,7 +853,7 @@
 
         },
         "yearGPS" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 304,
             "title": "Year (GPS)",
@@ -865,7 +865,7 @@
 
         },
         "monthGPS" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 308,
             "title": "Month (GPS)",
@@ -877,7 +877,7 @@
 
         },
         "dayGPS" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 312,
             "title": "Day (GPS)",
@@ -889,7 +889,7 @@
 
         },
         "hourGPS" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 316,
             "title": "Hour (GPS)",
@@ -901,7 +901,7 @@
 
         },
         "minuteGPS" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 320,
             "title": "Min. (GPS)",
@@ -913,7 +913,7 @@
 
         },
         "secondGPS" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 324,
             "title": "Sec. (GPS)",
@@ -925,7 +925,7 @@
 
         },
         "HSecondGPS" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 328,
             "title": "H.Sec. (GPS)",
@@ -937,7 +937,7 @@
 
         },
         "sonarPanOffset" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 332,
             "title": "Sonar Pan Off. (m)",
@@ -949,7 +949,7 @@
 
         },
         "sonarTiltOffset" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 336,
             "title": "Sonar Tilt Off.",
@@ -961,7 +961,7 @@
 
         },
         "sonarRollOffset" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 340,
             "title": "Sonar Roll Off.",
@@ -973,7 +973,7 @@
 
         },
         "sonarXOffset" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 344,
             "title": "Sonar X Off.",
@@ -985,7 +985,7 @@
 
         },
         "sonarYOffset" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 348,
             "title": "Sonar Y Off.",
@@ -997,7 +997,7 @@
 
         },
         "sonarZOffset" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 352,
             "title": "Sonar Z Off.",
@@ -1021,7 +1021,7 @@
 
         },
         "sampleRate" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 420,
             "title": "Sample Rate",
@@ -1033,7 +1033,7 @@
 
         },
         "accelX" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 424,
             "title": "Acc. X",
@@ -1045,7 +1045,7 @@
 
         },
         "accelY" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 428,
             "title": "Acc. Y",
@@ -1057,7 +1057,7 @@
 
         },
         "accelZ" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 432,
             "title": "Acc. Z",
@@ -1069,7 +1069,7 @@
 
         },
         "pingMode" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 436,
             "title": "Ping Mode",
@@ -1081,7 +1081,7 @@
 
         },
         "freq" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 440,
             "title": "Frequency",
@@ -1093,7 +1093,7 @@
 
         },
         "pulseWidth" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 444,
             "title": "Pulse Width",
@@ -1105,7 +1105,7 @@
 
         },
         "cyclePeriod" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 448,
             "title": "Cycle Period",
@@ -1117,7 +1117,7 @@
 
         },
         "samplePeriod" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 452,
             "title": "Sample Period",
@@ -1129,7 +1129,7 @@
 
         },
         "transmitEnable" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 456,
             "title": "Transmission",
@@ -1141,7 +1141,7 @@
 
         },
         "frameRate" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 460,
             "title": "Frame Rate",
@@ -1153,7 +1153,7 @@
 
         },
         "soundSpeed" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 464,
             "title": "Sound Speed",
@@ -1165,7 +1165,7 @@
 
         },
         "samplesPerBeam" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 468,
             "title": "Samples per Beam",
@@ -1177,7 +1177,7 @@
 
         },
         "enable150V" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 472,
             "title": "Power Mode",
@@ -1189,7 +1189,7 @@
 
         },
         "sampleStartDelay" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 476,
             "title": "Sample start delay",
@@ -1201,7 +1201,7 @@
 
         },
         "largeLens" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 480,
             "title": "Lens Type",
@@ -1213,7 +1213,7 @@
 
         },
         "systemType" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 484,
             "title": "System Type",
@@ -1225,7 +1225,7 @@
 
         },
         "sonarSerialNumber" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 488,
             "title": "Serial Number",
@@ -1237,7 +1237,7 @@
 
         },
         "reservedEK" : {
-            "size": "64-bit unsigned integer",
+            "size": "uint64_t",
             "bytes": 8,
             "location": 496,
             "title": "Reserved",
@@ -1249,7 +1249,7 @@
 
         },
         "ARISErrorFlags" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 500,
             "title": "Error Flags",
@@ -1261,7 +1261,7 @@
 
         },
         "missedPackets" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 504,
             "title": "Missed Packets",
@@ -1273,7 +1273,7 @@
 
         },
         "ARISAppVersion" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 508,
             "title": "ARIS App. Version",
@@ -1285,7 +1285,7 @@
 
         },
         "available2" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 512,
             "title": "Reserved",
@@ -1297,7 +1297,7 @@
 
         },
         "reordered" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 516,
             "title": "Order",
@@ -1309,7 +1309,7 @@
 
         },
         "salinity" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 520,
             "title": "Salinity",
@@ -1321,7 +1321,7 @@
 
         },
         "pressure" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 524,
             "title": "Pressure (psi)",
@@ -1333,7 +1333,7 @@
 
         },
         "batteryVoltage" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 528,
             "title": "Battery (mV)",
@@ -1345,7 +1345,7 @@
 
         },
         "mainVoltage" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 532,
             "title": "Main Voltage (mV)",
@@ -1357,7 +1357,7 @@
 
         },
         "switchVoltage" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 536,
             "title": "Switch Voltage (mV)",
@@ -1369,7 +1369,7 @@
 
         },
         "focusMotorMoving" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 540,
             "title": "Autofocus",
@@ -1381,7 +1381,7 @@
 
         },
         "voltageChanging" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 544,
             "title": "Voltage Change",
@@ -1393,7 +1393,7 @@
 
         },
         "focusTimeoutFault" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 548,
             "title": "Focus Timeout",
@@ -1405,7 +1405,7 @@
 
         },
         "focusOverCurrentFault" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 552,
             "title": "Focus Over Current",
@@ -1417,7 +1417,7 @@
 
         },
         "focusNotFoundFault" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 556,
             "title": "Focus Not Found",
@@ -1429,7 +1429,7 @@
 
         },
         "focusStalledFault" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 560,
             "title": "Focus Stalled",
@@ -1441,7 +1441,7 @@
 
         },
         "FPGATimeoutFault" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 564,
             "title": "FPGA Timeout",
@@ -1453,7 +1453,7 @@
 
         },
         "FPGABusyFault" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 568,
             "title": "FPGA Busy",
@@ -1465,7 +1465,7 @@
 
         },
         "FPGAStuckFault" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 572,
             "title": "FPGA Stuck",
@@ -1477,7 +1477,7 @@
 
         },
         "CPUTempFault" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 576,
             "title": "CPU Temp.",
@@ -1489,7 +1489,7 @@
 
         },
         "PSUTempFault" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 580,
             "title": "PSU Temp.",
@@ -1501,7 +1501,7 @@
 
         },
         "waterTempFault" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 584,
             "title": "Water Temp.",
@@ -1513,7 +1513,7 @@
 
         },
         "humidityFault" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 588,
             "title": "Humidity",
@@ -1525,7 +1525,7 @@
 
         },
         "pressureFault" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 592,
             "title": "Pressure",
@@ -1537,7 +1537,7 @@
 
         },
         "voltageReadFault" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 596,
             "title": "Voltage Read",
@@ -1549,7 +1549,7 @@
 
         },
         "voltageWriteFault" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 600,
             "title": "Voltage Write",
@@ -1561,7 +1561,7 @@
 
         },
         "focusCurrentPosition" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 604,
             "title": "Focus Position",
@@ -1573,7 +1573,7 @@
 
         },
         "targetPan" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 608,
             "title": "Target Pan",
@@ -1585,7 +1585,7 @@
 
         },
         "targetTilt" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 612,
             "title": "Target Tilt",
@@ -1597,7 +1597,7 @@
 
         },
         "targetRoll" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 616,
             "title": "Target Roll",
@@ -1609,7 +1609,7 @@
 
         },
         "panMotorErrorCode" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 620,
             "title": "Pan Motor Error",
@@ -1621,7 +1621,7 @@
 
         },
         "tiltMotorErrorCode" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 624,
             "title": "Tilt Motor Error",
@@ -1633,7 +1633,7 @@
 
         },
         "rollMotorErrorCode" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 628,
             "title": "Roll Motor Error",
@@ -1645,7 +1645,7 @@
 
         },
         "panAbsPos" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 632,
             "title": "Pan Abs. Pos.",
@@ -1657,7 +1657,7 @@
 
         },
         "tiltAbsPos" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 636,
             "title": "Tilt Abs. Pos",
@@ -1669,7 +1669,7 @@
 
         },
         "rollAbsPos" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 640,
             "title": "Roll Abs. Pos.",
@@ -1681,7 +1681,7 @@
 
         },
         "panAccelX" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 644,
             "title": "Pan Accel. X",
@@ -1693,7 +1693,7 @@
 
         },
         "panAccelY" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 648,
             "title": "Pan Accel. Y",
@@ -1705,7 +1705,7 @@
 
         },
         "panAccelZ" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 652,
             "title": "Pan Accel. Z",
@@ -1717,7 +1717,7 @@
 
         },
         "tiltAccelX" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 656,
             "title": "Tilt Accel. X",
@@ -1729,7 +1729,7 @@
 
         },
         "tiltAccelY" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 660,
             "title": "Tilt Accel. Y",
@@ -1741,7 +1741,7 @@
 
         },
         "tiltAccelZ" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 664,
             "title": "Tilt Accel. Z",
@@ -1753,7 +1753,7 @@
 
         },
         "rollAccelX" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 668,
             "title": "Roll Accel. X",
@@ -1765,7 +1765,7 @@
 
         },
         "rollAccelY" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 672,
             "title": "Roll Accel. Y",
@@ -1777,7 +1777,7 @@
 
         },
         "rollAccelZ" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 676,
             "title": "Roll Accel. Z",
@@ -1789,7 +1789,7 @@
 
         },
         "appliedSett" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 680,
             "title": "Applied Settings",
@@ -1801,7 +1801,7 @@
 
         },
         "constrainedSett" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 684,
             "title": "Constrained Settings",
@@ -1813,7 +1813,7 @@
 
         },
         "invalidSett" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 688,
             "title": "Invalid Settings",
@@ -1825,7 +1825,7 @@
 
         },
         "enableInterpacketDelay" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 692,
             "title": "Interpacket Delay",
@@ -1837,7 +1837,7 @@
 
         },
         "interpacketDelayPeriod" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 696,
             "title": "Interpacket Delay Period (us)",
@@ -1849,7 +1849,7 @@
 
         },
         "uptime" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 700,
             "title": "Uptime (s)",
@@ -1861,7 +1861,7 @@
 
         },
         "ARISAppVersionMajor" : {
-            "size": "16-bit unsigned integer",
+            "size": "uint16_t",
             "bytes": 2,
             "location": 704,
             "title": "Version (Major)",
@@ -1873,7 +1873,7 @@
 
         },
         "ARISAppVersionMinor" : {
-            "size": "16-bit unsigned integer",
+            "size": "uint16_t",
             "bytes": 2,
             "location": 706,
             "title": "Version (Minor)",
@@ -1885,7 +1885,7 @@
 
         },
         "goTime" : {
-            "size": "64-bit unsigned integer",
+            "size": "uint64_t",
             "bytes": 8,
             "location": 708,
             "title": "Go Time",
@@ -1897,7 +1897,7 @@
 
         },
         "panVelocity" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 716,
             "title": "Pan Velocity (deg/s)",
@@ -1909,7 +1909,7 @@
 
         },
         "tiltVelocity" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 720,
             "title": "Tilt Velocity (deg/s)",
@@ -1921,7 +1921,7 @@
 
         },
         "rollVelocity" : {
-            "size": "32-bit float",
+            "size": "float",
             "bytes": 4,
             "location": 724,
             "title": "Roll Velocity (deg/s)",
@@ -1933,7 +1933,7 @@
 
         },
         "GPSTimeAge" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 728,
             "title": "GPS Time Age",
@@ -1945,7 +1945,7 @@
 
         },
         "systemVariant" : {
-            "size": "32-bit unsigned integer",
+            "size": "uint32_t",
             "bytes": 4,
             "location": 732,
             "title": "System Variant",
@@ -1957,7 +1957,7 @@
 
         },
         "padding" : {
-            "size": "288 bytes",
+            "size": "char[288]",
             "bytes": 288,
             "location": 736,
             "title": "Padding",

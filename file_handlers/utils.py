@@ -11,8 +11,117 @@ References:
 #   https://github.com/EminentCodfish/pyARIS
 """
 import struct
+import os
+import json
+
+CWD = os.getcwd()
+
+# {CWD}/file_handlers/v0/v0_frame_headers_info.json
+# {CWD}/file_handlers/v1/v1_frame_headers_info.json
+# {CWD}/file_handlers/v2/v2_frame_headers_info.json
+# {CWD}/file_handlers/v3/v3_frame_headers_info.json
+# {CWD}/file_handlers/v4/v4_frame_headers_info.json
+# {CWD}/file_handlers/v5/v5_frame_headers_info.json
+v0_FrameHeaderJSON = os.path.join(CWD, "file_handlers", "v0", "v0_frame_headers_info.json")
+v1_FrameHeaderJSON = os.path.join(CWD, "file_handlers", "v1", "v1_frame_headers_info.json")
+v2_FrameHeaderJSON = os.path.join(CWD, "file_handlers", "v2", "v2_frame_headers_info.json")
+v3_FrameHeaderJSON = os.path.join(CWD, "file_handlers", "v3", "v3_frame_headers_info.json")
+v4_FrameHeaderJSON = os.path.join(CWD, "file_handlers", "v4", "v4_frame_headers_info.json")
+v5_FrameHeaderJSON = os.path.join(CWD, "file_handlers", "v5", "v5_frame_headers_info.json")
+
+# {CWD}/file_handlers/v0/v0_file_headers_info.json
+# {CWD}/file_handlers/v1/v1_file_headers_info.json
+# {CWD}/file_handlers/v2/v2_file_headers_info.json
+# {CWD}/file_handlers/v3/v3_file_headers_info.json
+# {CWD}/file_handlers/v4/v4_file_headers_info.json
+# {CWD}/file_handlers/v5/v5_file_headers_info.json
+v0_FileHeaderJSON = os.path.join(CWD, "file_handlers", "v0", "v0_file_headers_info.json")
+v1_FileHeaderJSON = os.path.join(CWD, "file_handlers", "v1", "v1_file_headers_info.json")
+v2_FileHeaderJSON = os.path.join(CWD, "file_handlers", "v2", "v2_file_headers_info.json")
+v3_FileHeaderJSON = os.path.join(CWD, "file_handlers", "v3", "v3_file_headers_info.json")
+v4_FileHeaderJSON = os.path.join(CWD, "file_handlers", "v4", "v4_file_headers_info.json")
+v5_FileHeaderJSON = os.path.join(CWD, "file_handlers", "v5", "v5_file_headers_info.json")
+
+def getFrameHeaderValue(version, attributes):
+    """
+    Get the byte location of specific frame header value
+    """
+    versions = {
+        4604996:  v0_FrameHeaderJSON,
+        21382212: v1_FrameHeaderJSON,
+        38159428: v2_FrameHeaderJSON,
+        54936644: v3_FrameHeaderJSON,
+        71713860: v4_FrameHeaderJSON,
+        88491076: v5_FrameHeaderJSON
+    }
+    locationAndSize = dict()
+    filePath = versions[version]
+    try:
+        JSON = open(filePath)
+    except:
+        err.print_error(err.jsonData)
+        raise
+    
+    allFile = JSON.read()
+    frameHeaders = json.loads(allFile) 
+    for attribute in attributes:
+        headerLocation = frameHeaders["frame"][attribute]["location"]
+        headerSize = frameHeaders["frame"][attribute]["size"]
+        locationAndSize[attribute] = {}
+        locationAndSize[attribute]["location"] = headerLocation
+        locationAndSize[attribute]["size"] = headerSize
+    
+    return locationAndSize
+
+def getFileHeaderValue(version, attributes):
+    """
+    Get the byte location of specific file header value
+    and its size
+    """
+    versions = {
+        4604996:  v0_FileHeaderJSON,
+        21382212: v1_FileHeaderJSON,
+        38159428: v2_FileHeaderJSON,
+        54936644: v3_FileHeaderJSON,
+        71713860: v4_FileHeaderJSON,
+        88491076: v5_FileHeaderJSON
+    }
+    locationAndSize = dict()
+    filePath = versions[version]
+    try:
+        JSON = open(filePath)
+    except:
+        err.print_error(err.jsonData)
+        raise
+    
+    allFile = JSON.read()
+    fileHeaders = json.loads(allFile)
+    for attribute in attributes:
+        headerLocation = fileHeaders["file"][attribute]["location"]
+        headerSize = fileHeaders["file"][attribute]["size"]
+        locationAndSize[attribute] = {}
+        locationAndSize[attribute]["location"] = headerLocation
+        locationAndSize[attribute]["size"] = headerSize
+        
+    return locationAndSize
 
 def c(inpStr):
+    """
+    Takes a variable type from the cType dictionary and returns
+    the number of bytes which that exact variable occupies.
+    
+    Arguments:
+        inpStr {string} -- [string that indicates the type of
+                            variable that we need to calculate
+                            the size of]
+    
+    Returns:
+        [integer] -- [indicates the number of bytes that this
+                        variable occupies]
+
+    Reference: https://docs.python.org/3/library/struct.html
+    """
+
     return struct.calcsize(cType[inpStr])
 
 

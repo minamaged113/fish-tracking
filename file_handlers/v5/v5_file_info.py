@@ -12,21 +12,24 @@ References:
 
 """
 import struct
-import aris_utils.error_description as err
-import aris_utils.frame_info as frame
+import file_handlers.error_description as err
+import file_handlers.v5.v5_frame_info as frame
 import os
 import json
-import aris_utils.utils as utils
-import aris_utils.beamLookUp as beamLookUp
+import file_handlers.utils as utils
+import file_handlers.beamLookUp as beamLookUp
 import numpy as np
 import re
+from skimage.transform import warp
+import cv2
+
 
 
 
 cwd = os.getcwd()
-JSON_FILE_PATH = cwd + "/aris_utils/file_headers_info.json"
+JSON_FILE_PATH = cwd + "/file_handlers/v5/v5_file_headers_info.json"
 
-class ARIS_File:
+class v5_File:
     """
     Abstraction of the ARIS file format.
 
@@ -36,7 +39,7 @@ class ARIS_File:
     file formats
 
     Example:
-    >>> file = ARIS_File("sample.aris")
+    >>> file = v5_File("sample.aris")
 
     Note:
         Naming Convention:
@@ -328,22 +331,134 @@ class ARIS_File:
         pass
     
 
-def getAllFramesData(fileName, ):
+def v5_getAllFramesData(fhand, version):
     """Opens a .aris file and extracts all bytes for all frames and returns a
     list containing all frames data, to be used in drawing the images.
+    For images to be drawn from frames, the following attributes are needed
+    from this function:
+        - SONAR Sample Data     --> `allFrames`
+        - Number of Beams [fl]  --> `numRawBeams`
+        - Samples Per Beam [fl] --> `samplesPerChannel`
+        - Type of Lens  [fr]    --> `largeLens`
+        - Sample Start Delay[fr]--> `sampleStartDelay`
+        - Sound Velocity[fr]    --> `soundSpeed`
+        - Sample Period[fr]     --> `samplePeriod`
 
     """
+    
     ## TODO
-    allFrames = list()
-    try:
-        with open(fileName, 'rb') as fhand:
-            version = struct.unpack(
-                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
-            frameCount = struct.unpack(
-                    utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
-            frameoffset = (1024+(frameIndexInp*(1024+(frameSize))))
+    allFrames = dict()
 
-    except:
-        err.print_error(err.fileReadError)
-        raise
-    return
+    fileAttributesList = ["numRawBeams", "samplesPerChannel", "frameCount"]
+    frameAttributesList = ["largeLens", "sampleStartDelay", "soundSpeed", "samplePeriod"]
+
+    fileHeader = utils.getFileHeaderValue(version, fileAttributesList)
+    frameHeader = utils.getFrameHeaderValue(version, frameAttributesList)
+    print("inside v5_getAllFramesData(fhand)")
+    #   Reading Number of frames in the file [from file header]
+    fhand.seek(fileHeader["frameCount"]["location"], 0)
+    frameCount = struct.unpack(
+            utils.cType[fileHeader["frameCount"]["size"]],
+            fhand.read(utils.c(fileHeader["frameCount"]["size"])))[0]
+
+    #   Reading number of beams in each frame [from file header]
+    fhand.seek(fileHeader["numRawBeams"]["location"], 0)
+    numRawBeams = struct.unpack(
+            utils.cType[fileHeader["numRawBeams"]["size"]],
+            fhand.read(utils.c(fileHeader["numRawBeams"]["size"])))[0]
+
+    #   Reading number of samples in each beam [from file header]
+    fhand.seek(fileHeader["samplesPerChannel"]["location"], 0)
+    samplesPerChannel = struct.unpack(
+            utils.cType[fileHeader["samplesPerChannel"]["size"]],
+            fhand.read(utils.c(fileHeader["samplesPerChannel"]["size"])))[0]
+
+    #   Reading Sample Period [from frame header]
+    fhand.seek(1024 + fhand.seek(frameHeader["samplePeriod"]["location"], 0))
+    samplePeriod = struct.unpack(
+            utils.cType[frameHeader["samplePeriod"]["size"]],
+            fhand.read(utils.c(frameHeader["samplePeriod"]["size"])))[0]
+
+    #   Reading Sound Velocity in Water [from frame header]
+    fhand.seek(1024 + fhand.seek(frameHeader["soundSpeed"]["location"], 0))
+    soundSpeed = struct.unpack(
+            utils.cType[frameHeader["soundSpeed"]["size"]],
+            fhand.read(utils.c(frameHeader["soundSpeed"]["size"])))[0]
+    
+    #   Reading Sample Start Delay [from frame header]
+    fhand.seek(1024 + fhand.seek(frameHeader["sampleStartDelay"]["location"], 0))
+    sampleStartDelay = struct.unpack(
+            utils.cType[frameHeader["sampleStartDelay"]["size"]],
+            fhand.read(utils.c(frameHeader["sampleStartDelay"]["size"])))[0]
+
+    #   Reading availability of large lens [from frame header]
+    fhand.seek(1024 + fhand.seek(frameHeader["largeLens"]["location"], 0))
+    largeLens = struct.unpack(
+            utils.cType[frameHeader["largeLens"]["size"]],
+            fhand.read(utils.c(frameHeader["largeLens"]["size"])))[0]
+
+    frameSize = numRawBeams * samplesPerChannel
+    data = np.empty([samplesPerChannel, numRawBeams], dtype=np.uint8)
+    for frameIndexInp in range(frameCount):
+        frameoffset = (2048+(frameIndexInp*(1024+(frameSize))))
+        fhand.seek(frameoffset, 0)
+        print(frameIndexInp)
+        strCat = frameSize*"B"
+        temp = np.array(struct.unpack(strCat, fhand.read(frameSize)), dtype=np.uint8)
+        allFrames[frameIndexInp] = temp.reshape((samplesPerChannel, numRawBeams))
+    
+    dataAndParams = {
+        "data": allFrames,
+        "parameters":{
+            "frameCount": frameCount,
+            "numRawBeams" : numRawBeams,
+            "samplesPerChannel" : samplesPerChannel,
+            "samplePeriod" : samplePeriod,
+            "soundSpeed" : soundSpeed,
+            "sampleStartDelay" : sampleStartDelay,
+            "largeLens" : largeLens,
+            "DATA_SHAPE" : data.shape
+        }
+    }
+    return dataAndParams
+
+def v5_constructImages(cls):
+        # I = cls.FRAME_DATA.astype(np.uint8)
+        # I = cv2.flip( I, 0 )
+        allAngles = beamLookUp.BeamLookUp(cls.BEAM_COUNT, cls.largeLens)
+        
+        d0 = cls.sampleStartDelay * 0.000001 * cls.soundSpeed/2
+        dm = d0 + cls.samplePeriod * cls.samplesPerBeam * 0.000001 * cls.soundSpeed/2
+        am = allAngles[-1]
+        K = cls.samplesPerBeam
+        N, M = cls.DATA_SHAPE
+
+        xm = dm*np.tan(am/180*np.pi)
+        L = int(K/(dm-d0) * 2*xm)
+
+        sx = L/(2*xm)
+        sa = M/(2*am)
+        sd = N/(dm-d0)
+        O = sx*d0
+        Q = sd*d0
+
+        def invmap(inp):
+            xi = inp[:,0]
+            yi = inp[:,1]
+            xc = (xi - L/2)/sx
+            yc = (K + O - yi)/sx
+            dc = np.sqrt(xc**2 + yc**2)
+            ac = np.arctan(xc / yc)/np.pi*180
+            ap = ac*sa
+            dp = dc*sd
+            a = ap + M/2
+            d = N + Q - dp
+            outp = np.array((a,d)).T
+            return outp
+        
+        out = dict()
+        for frameIndexInp in range(cls.frameCount):
+            print(frameIndexInp)
+            out[frameIndexInp] = warp((cv2.flip(cls.FRAMES[frameIndexInp],0)),
+                                invmap, output_shape=(K, L))
+        return  out
