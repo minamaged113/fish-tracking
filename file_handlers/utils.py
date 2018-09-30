@@ -71,6 +71,7 @@ def getFrameHeaderValue(version, attributes):
         locationAndSize[attribute]["location"] = headerLocation
         locationAndSize[attribute]["size"] = headerSize
     
+    JSON.close()
     return locationAndSize
 
 def getFileHeaderValue(version, attributes):
@@ -102,7 +103,8 @@ def getFileHeaderValue(version, attributes):
         locationAndSize[attribute] = {}
         locationAndSize[attribute]["location"] = headerLocation
         locationAndSize[attribute]["size"] = headerSize
-        
+    
+    JSON.close()
     return locationAndSize
 
 def c(inpStr):

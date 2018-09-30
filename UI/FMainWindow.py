@@ -9,6 +9,11 @@ import file_handler as SF
 from skimage.transform import rescale
 import numpy as np
 
+## For showing images in matplotlib
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+from matplotlib.figure import Figure
+from matplotlib.pyplot import imshow
 
 class FMainWindow(QDialog):
     """This class holds the main window which will be used to 
@@ -20,7 +25,7 @@ class FMainWindow(QDialog):
     fgbg = cv2.createBackgroundSubtractorMOG2()
     UI_FRAME_INDEX = 0
     FRAMES_LIST = list()
-    SCALE = 3.0/3.0
+    SCALE = 1.0/3.0
     def __init__(self, parent):
         """Initializes the window and loads the first frame and
         places the UI elements, each in its own place.
@@ -41,9 +46,22 @@ class FMainWindow(QDialog):
         FPreviousBTN = QPushButton("Previous",self)
         FPreviousBTN.clicked.connect(self.FShowPreviousImage)
         FPreviousBTN.setShortcut(Qt.Key_Left)
+        
+        self.FFigure = Figure()
+        self.FCanvas = FigureCanvas(self.FFigure)
+        self.FToolbar = NavigationToolbar(self.FCanvas, self)
+        self.FToolbar.setOrientation(Qt.Vertical)
+        self.FToolbar.setMinimumSize(self.FToolbar.minimumSize())
+        self.FSlider = QSlider(Qt.Horizontal)
+        
 
-        self.FLayout.addWidget(FNextBTN,1,1)
-        self.FLayout.addWidget(FPreviousBTN,1,0)
+        self.FLayout.addWidget(self.FToolbar,0,0,3,1, Qt.AlignLeft)
+        self.FLayout.addWidget(self.FCanvas,0,1,1,2)
+        self.FLayout.addWidget(self.FSlider,1,1,1,2, Qt.AlignBottom)
+        self.FLayout.addWidget(FNextBTN,2,2)
+        self.FLayout.addWidget(FPreviousBTN,2,1)
+        
+
        
         self.FDisplayImage()
 
@@ -71,22 +89,16 @@ class FMainWindow(QDialog):
         self.FDisplayImage()
 
     def FDisplayImage(self):
-        # self.Frame = self.File.readFrame(self.UI_FRAME_INDEX)
-        self.origImage = self.FFrames[int(self.UI_FRAME_INDEX)]
-        self.qformat =QImage.Format_Grayscale8
+        if not (self.FLayout.isEmpty):
+            print("empty")
+            self.FLayout.removeWidget(0,0)
         
-        self.origImage = rescale(self.origImage, self.SCALE, anti_aliasing=True)
-        self.origImage = (self.origImage*255).astype(np.uint8)
+        self.origImage = self.FFrames[self.UI_FRAME_INDEX]
         
-        self.image = QImage(self.origImage,
-                            self.origImage.shape[1],
-                            self.origImage.shape[0],
-                            self.origImage.strides[0],
-                            self.qformat)
-        self.imageLabel = QLabel()
-        self.imageLabel.setPixmap(QPixmap.fromImage(self.image))
-        
-        self.FLayout.addWidget(self.imageLabel,0,0,1,2, Qt.AlignCenter)
+        ax = self.FFigure.add_subplot(111)
+        ax.clear()
+        ax.imshow(self.origImage, cmap = 'gray')
+        self.FCanvas.draw()
         self.FParent.FStatusBarFrameNumber.setText("Frame : "+str(self.UI_FRAME_INDEX+1)+"/"+str(self.File.frameCount))
 
 
@@ -94,20 +106,8 @@ class FMainWindow(QDialog):
         self.FFilePath = filePath
         # SF: Sonar File Library
         self.File = SF.FOpenSonarFile(filePath)
-
         self.FFrames = self.File.FRAMES
-        # print(json.dumps(self.File.getInfo(), indent = 4))
-        # print(self.File.__repr__())
-
-        # frame = file1.readFrame(46)
-        # frame.showImage()
-        # for i in range(file1.frameCount):
-        #     frame = file1.readFrame(i)
-        #     # frame.showImage()
-        #     ## uncomment the next part to save images on disk
-        #     image = frame.FRAME_DATA
-        #     image = np.array(image, dtype= np.uint8)
-        #     cv2.imwrite("frame_"+ str(i)+ "_data.jpg", image)
+        
 
     def loadFrameList(self):
         """Function that loads frames before and after the current

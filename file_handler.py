@@ -71,6 +71,7 @@ def FOpenSonarFile(filename):
     # read the first 4 bytes in the file to decide the version
     version = struct.unpack(cType["uint32_t"], fhand.read(c("uint32_t")))[0]
     versions[version]()
+    fhand.close()
     return SONAR_File
 
 def DIDSON_v0(fhand, version, cls):
@@ -105,10 +106,37 @@ def DIDSON_v3(fhand, version, cls):
 
 def DIDSON_v4(fhand, version, cls):
     """
-    This function will handle version 4 DIDSON Files
+    This function will handle version 5 DIDSON Files
+    version 5 of DIDSON format is also known as ARIS
+        dataAndParams = {
+            "data": allFrames,
+            "parameters":{
+                "frameCount": frameCount,
+                "numRawBeams" : numRawBeams,
+                "samplesPerChannel" : samplesPerChannel,
+                "samplePeriod" : samplePeriod,
+                "soundSpeed" : soundSpeed,
+                "sampleStartDelay" : sampleStartDelay,
+                "largeLens" : largeLens,
+                "DATA_SHAPE" : data.shape
+            }
+        }
     """
-    ## TODO
-    pass
+    print("inside DIDSON v5")
+    dataAndParams = v5_getAllFramesData(fhand, version)
+    cls.FILE_PATH = fhand.name
+    cls.BEAM_COUNT = dataAndParams["parameters"]["numRawBeams"]
+    cls.largeLens = dataAndParams["parameters"]["largeLens"]
+    cls.sampleStartDelay = dataAndParams["parameters"]["sampleStartDelay"]
+    cls.soundSpeed = dataAndParams["parameters"]["soundSpeed"]
+    cls.samplesPerBeam = dataAndParams["parameters"]["samplesPerChannel"]
+    cls.samplePeriod = dataAndParams["parameters"]["samplePeriod"]
+    cls.DATA_SHAPE = dataAndParams["parameters"]["DATA_SHAPE"]
+    cls.FRAMES = dataAndParams["data"]
+    cls.version = "ARIS"
+    cls.frameCount = dataAndParams["parameters"]["frameCount"]
+    cls.FRAMES = v5_constructImages(cls)
+    return
 
 
 def DIDSON_v5(fhand, version, cls):

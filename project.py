@@ -1,44 +1,83 @@
-import struct
-from file_handlers.file_handler import *
+import numpy as np
+import cv2
 import os
+import matplotlib.pyplot as plt
+from skimage.transform import warp
 
-filename = "/home/mghobria/Documents/work/Tornionjoki/2018-06-24_000000.ddf"
-fileSize = os.path.getsize(filename)
-fhand = open(filename, 'rb')
-version = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
 
-print('File version: ', hex(version))
-print('File size: ', fileSize, ' Bytes')
+def v5_constructImages(imagesArray):
+    d0 = 2.0
+    dm = 10.0
+    am = 13.762
+    K = 1000
+    N, M ,frames = imagesArray.shape
 
-FILE_HEADER_SIZE = 512
-FRAME_HEADER_SIZE = 256
+    xm = dm*np.tan(am/180*np.pi)
+    L = int(K/(dm-d0) * 2*xm)
 
-fhand.seek(16, 0)
+    sx = L/(2*xm)
+    sa = M/(2*am)
+    sd = N/(dm-d0)
+    O = sx*d0
+    Q = sd*d0
 
-numRawBeams = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+    def invmap(inp):
+        xi = inp[:,0]
+        yi = inp[:,1]
+        xc = (xi - L/2)/sx
+        yc = (K + O - yi)/sx
+        dc = np.sqrt(xc**2 + yc**2)
+        ac = np.arctan(xc / yc)/np.pi*180
+        ap = ac*sa
+        dp = dc*sd
+        a = ap + M/2
+        d = N + Q - dp
+        outp = np.array((a,d)).T
+        return outp
 
-fhand.seek(24, 0)
+    out = warp(imagesArray, invmap, output_shape=(K, L))
+    return  out
 
-samplePerBeam = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
 
-print("Frame Dimensions: ", numRawBeams ," x ", samplePerBeam)
+imagesPath = "/home/mghobria/Pictures/images_same_size/"
 
-frameSize = numRawBeams*samplePerBeam
+imagesList = os.listdir(imagesPath)
+numImages = len(imagesList)
+# TODO : check for the next line,  NOT FINISHED YET
+imagesArray = cv2.imread(os.path.join(imagesPath, imagesList[0]), cv2.IMREAD_GRAYSCALE)
+imagesList.pop(0)
+for i in imagesList:
+    imgPath = os.path.join(imagesPath, i)
 
-frameCount = (fileSize - FILE_HEADER_SIZE) / (FRAME_HEADER_SIZE + frameSize)
+    img = cv2.imread(imgPath, cv2.IMREAD_GRAYSCALE)
 
-print("Number of frames in file = ", frameCount)
+    imagesArray = np.dstack((imagesArray,img))
 
-for i in range(512):
-    if i<4:
-        continue
+    # cv2.imshow('frame', img)
+    # k = cv2.waitKey(0) & 0xff
+    # if k == 27:
+    #     cv2.destroyAllWindows()
 
-    fhand.seek(i,0)
-    data = struct.unpack(
-                    cType["uint32_t"], fhand.read(c("uint32_t")))[0]
+output = v5_constructImages(imagesArray)
+print("end")
 
-    if data == 11663:
-        print(i)
+# framesArray = np.dsplit(output, output.shape[2])
+# plt.imshow(np.squeeze(framesArray[frameIndex]))
+
+
+# cap = cv2.VideoCapture("/home/mghobria/Videos/Pexels Videos 1397052.mp4")
+
+# fgbg = cv2.createBackgroundSubtractorMOG2()
+
+# while(1):
+#     ret, frame = cap.read()
+    
+#     fgmask = fgbg.apply(frame)
+    
+#     cv2.imshow('frame', fgmask)
+#     k = cv2.waitKey(30) & 0xff
+#     if k == 27:
+#         break
+        
+# cap.release()
+# cv2.destroyAllWindows()
