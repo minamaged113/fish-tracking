@@ -39,26 +39,25 @@ def v5_constructImages(imagesArray):
     return  out
 
 
-imagesPath = "/home/mghobria/Pictures/images_same_size/"
+# imagesPath = "/home/mghobria/Pictures/images_same_size/"
 
-imagesList = os.listdir(imagesPath)
-numImages = len(imagesList)
-# TODO : check for the next line,  NOT FINISHED YET
-imagesArray = cv2.imread(os.path.join(imagesPath, imagesList[0]), cv2.IMREAD_GRAYSCALE)
-imagesList.pop(0)
-for i in imagesList:
-    imgPath = os.path.join(imagesPath, i)
+# imagesList = os.listdir(imagesPath)
+# numImages = len(imagesList)
+# imagesArray = cv2.imread(os.path.join(imagesPath, imagesList[0]), cv2.IMREAD_GRAYSCALE)
+# imagesList.pop(0)
+# for i in imagesList:
+#     imgPath = os.path.join(imagesPath, i)
 
-    img = cv2.imread(imgPath, cv2.IMREAD_GRAYSCALE)
+#     img = cv2.imread(imgPath, cv2.IMREAD_GRAYSCALE)
 
-    imagesArray = np.dstack((imagesArray,img))
+#     imagesArray = np.dstack((imagesArray,img))
 
     # cv2.imshow('frame', img)
     # k = cv2.waitKey(0) & 0xff
     # if k == 27:
     #     cv2.destroyAllWindows()
 
-output = v5_constructImages(imagesArray)
+# output = v5_constructImages(imagesArray)
 print("end")
 
 # framesArray = np.dsplit(output, output.shape[2])

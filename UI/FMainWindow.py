@@ -25,7 +25,7 @@ class FMainWindow(QDialog):
     fgbg = cv2.createBackgroundSubtractorMOG2()
     UI_FRAME_INDEX = 0
     FRAMES_LIST = list()
-    SCALE = 1.0/3.0
+    subtractBackground = 0
     def __init__(self, parent):
         """Initializes the window and loads the first frame and
         places the UI elements, each in its own place.
@@ -76,8 +76,10 @@ class FMainWindow(QDialog):
         self.UI_FRAME_INDEX +=1
         if (self.UI_FRAME_INDEX > self.File.frameCount-1):
             self.UI_FRAME_INDEX = 0
+        
+        self.FFrames = self.File.getFrame(self.UI_FRAME_INDEX)
         self.FDisplayImage()
-
+        self.FDisplayImage()
 
     def FShowPreviousImage(self):
         """Show the previous frame image
@@ -86,18 +88,19 @@ class FMainWindow(QDialog):
         self.UI_FRAME_INDEX -= 1
         if (self.UI_FRAME_INDEX < 0 ):
             self.UI_FRAME_INDEX = self.File.frameCount-1
+
+        self.FFrames = self.File.getFrame(self.UI_FRAME_INDEX)
         self.FDisplayImage()
 
     def FDisplayImage(self):
         if not (self.FLayout.isEmpty):
             print("empty")
             self.FLayout.removeWidget(0,0)
-        
-        self.origImage = self.FFrames[self.UI_FRAME_INDEX]
-        
+        if(self.subtractBackground):
+            self.FFrames = self.fgbg.apply(self.FFrames)
         ax = self.FFigure.add_subplot(111)
         ax.clear()
-        ax.imshow(self.origImage, cmap = 'gray')
+        ax.imshow(self.FFrames, cmap = 'gray')
         self.FCanvas.draw()
         self.FParent.FStatusBarFrameNumber.setText("Frame : "+str(self.UI_FRAME_INDEX+1)+"/"+str(self.File.frameCount))
 

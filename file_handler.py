@@ -32,13 +32,64 @@ class FSONAR_File():
         self.samplesPerBeam = None
         self.samplePeriod = None
         self.DATA_SHAPE = None
-        self.FRAMES = dict()
+        self.FRAMES = None
         self.version = None
+        self.FILE_HANDLE = None
+        self.FRAME_HEADER_SIZE = None
+        self.FILE_HEADER_SIZE = None
 
+    def getFrame(self, FI):
+        
+        frameSize = self.DATA_SHAPE[0] * self.DATA_SHAPE[1]
+        frameoffset = (self.FILE_HEADER_SIZE + self.FRAME_HEADER_SIZE +(FI*(self.FRAME_HEADER_SIZE+(frameSize))))
+        self.FILE_HANDLE.seek(frameoffset, 0)
+        strCat = frameSize*"B"
+        self.FRAMES = np.array(struct.unpack(strCat, self.FILE_HANDLE.read(frameSize)), dtype=np.uint8)
+        self.FRAMES = cv2.flip(self.FRAMES.reshape((self.DATA_SHAPE[0], self.DATA_SHAPE[1])), 0)
+        self.FRAMES = self.constructImages()
+        return self.FRAMES
+
+    def constructImages(self):
+        
+        allAngles = beamLookUp.BeamLookUp(self.BEAM_COUNT, self.largeLens)
+        
+        d0 = self.sampleStartDelay * 0.000001 * self.soundSpeed/2
+        dm = d0 + self.samplePeriod * self.samplesPerBeam * 0.000001 * self.soundSpeed/2
+        am = allAngles[-1]
+        K = self.samplesPerBeam
+        N, M = self.DATA_SHAPE
+
+        xm = dm*np.tan(am/180*np.pi)
+        L = int(K/(dm-d0) * 2*xm)
+
+        sx = L/(2*xm)
+        sa = M/(2*am)
+        sd = N/(dm-d0)
+        O = sx*d0
+        Q = sd*d0
+
+        def invmap(inp):
+            xi = inp[:,0]
+            yi = inp[:,1]
+            xc = (xi - L/2)/sx
+            yc = (K + O - yi)/sx
+            dc = np.sqrt(xc**2 + yc**2)
+            ac = np.arctan(xc / yc)/np.pi*180
+            ap = ac*sa
+            dp = dc*sd
+            a = ap + M/2
+            d = N + Q - dp
+            outp = np.array((a,d)).T
+            return outp
+        
+
+
+        out = warp( self.FRAMES, invmap, output_shape=(K, L))
+        out = (out/np.amax(out)*255).astype(np.uint8)
+        return out
 
 
 def FOpenSonarFile(filename):
-    ## TODO : function that opens sonar file
     """
     Opens a sonar file and decides which DIDSON version it is.
     DIDSON version 0: 0x0464444
@@ -71,7 +122,6 @@ def FOpenSonarFile(filename):
     # read the first 4 bytes in the file to decide the version
     version = struct.unpack(cType["uint32_t"], fhand.read(c("uint32_t")))[0]
     versions[version]()
-    fhand.close()
     return SONAR_File
 
 def DIDSON_v0(fhand, version, cls):
@@ -122,7 +172,7 @@ def DIDSON_v4(fhand, version, cls):
             }
         }
     """
-    print("inside DIDSON v5")
+    print("inside DIDSON v4")
     dataAndParams = v5_getAllFramesData(fhand, version)
     cls.FILE_PATH = fhand.name
     cls.BEAM_COUNT = dataAndParams["parameters"]["numRawBeams"]
@@ -158,18 +208,10 @@ def DIDSON_v5(fhand, version, cls):
         }
     """
     print("inside DIDSON v5")
-    dataAndParams = v5_getAllFramesData(fhand, version)
+    v5_getAllFramesData(fhand, version, cls)
     cls.FILE_PATH = fhand.name
-    cls.BEAM_COUNT = dataAndParams["parameters"]["numRawBeams"]
-    cls.largeLens = dataAndParams["parameters"]["largeLens"]
-    cls.sampleStartDelay = dataAndParams["parameters"]["sampleStartDelay"]
-    cls.soundSpeed = dataAndParams["parameters"]["soundSpeed"]
-    cls.samplesPerBeam = dataAndParams["parameters"]["samplesPerChannel"]
-    cls.samplePeriod = dataAndParams["parameters"]["samplePeriod"]
-    cls.DATA_SHAPE = dataAndParams["parameters"]["DATA_SHAPE"]
-    cls.FRAMES = dataAndParams["data"]
-    cls.version = "ARIS"
-    cls.frameCount = dataAndParams["parameters"]["frameCount"]
-    cls.FRAMES = v5_constructImages(cls)
+    cls.FILE_HANDLE = fhand
+    cls.FRAME_HEADER_SIZE = 1024
+    cls.FILE_HEADER_SIZE = 1024
     return
 
