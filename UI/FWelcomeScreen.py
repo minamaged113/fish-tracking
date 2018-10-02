@@ -31,11 +31,16 @@ class FWelcomeScreen(QMainWindow):
         
 
     def initUI(self):
-        self.setWindowIcon(QIcon("/home/mghobria/Desktop/fish-tracking/UI/UI_presentation/salmon/salmon_16"))
+        self.setWindowIcon(QIcon("/home/mghobria/Desktop/fish-tracking/UI/icons/salmon/salmon_64"))
         self.setWindowTitle("Fisher - Welcome Screen")
 
         self.FMainMenu_init()
-        self.showMaximized() 
+        self.showNormal()
+        self.width = 640
+        self.height = 400
+        self.left = 10
+        self.top = 10
+        self.setGeometry(self.left, self.top, self.width, self.height)
         self.FWelcomeInfo = FWelcomeInfo(self)
         self.setCentralWidget(self.FWelcomeInfo)
 
@@ -48,10 +53,10 @@ class FWelcomeScreen(QMainWindow):
         self.FEditMenu_init()
         self.FHelpMenu_init()
         self.FStatusBar = QStatusBar()
-        self.setStatusBar(self.FStatusBar)
         self.FStatusBarFrameNumber = QLabel()
         self.FStatusBarFrameNumber.setText("No File Loaded")
         self.FStatusBar.addPermanentWidget(self.FStatusBarFrameNumber)
+        self.setStatusBar(self.FStatusBar)
         return
 
     def FFileMenu_init(self):
@@ -154,8 +159,10 @@ class FWelcomeScreen(QMainWindow):
         print(text)
 
     def FOpenFile(self):
+        ## DEBUG : remove filePathTuple and uncomment filePathTuple
         home = str(Path.home())
-        filePathTuple = QFileDialog.getOpenFileName(self, "Open File", home, "Sonar Files (*.aris *.ddf)")
+        filePathTuple = ('/home/mghobria/Documents/work/data/data 1/data.aris',)
+        # filePathTuple = QFileDialog.getOpenFileName(self, "Open File", home, "Sonar Files (*.aris *.ddf)")
         if filePathTuple[0] != "" : 
             self.FFilePath = filePathTuple[0]
             self.FCentralScreen = FMainWindow(self)

@@ -22,10 +22,11 @@ class FMainWindow(QDialog):
     Arguments:
         QDialog {Class} -- inheriting from QDialog class.
     """
-    fgbg = cv2.createBackgroundSubtractorMOG2()
+    BGS_Threshold = 25
+    fgbg = cv2.createBackgroundSubtractorMOG2(varThreshold = BGS_Threshold)
     UI_FRAME_INDEX = 0
     FRAMES_LIST = list()
-    subtractBackground = 0
+    subtractBackground = False
     def __init__(self, parent):
         """Initializes the window and loads the first frame and
         places the UI elements, each in its own place.
@@ -47,17 +48,45 @@ class FMainWindow(QDialog):
         FPreviousBTN.clicked.connect(self.FShowPreviousImage)
         FPreviousBTN.setShortcut(Qt.Key_Left)
         
+        self.F_BGS_BTN = QPushButton(self)
+        self.F_BGS_BTN.setFlat(True)
+        self.F_BGS_BTN.setCheckable(True)
+        self.F_BGS_BTN.setIcon(QIcon("/home/mghobria/Desktop/fish-tracking/UI/icons/background_subtraction/black_32.png"))
+        self.F_BGS_BTN.clicked.connect(self.FBackgroundSubtract)
+        # self.F_BGS_BTN.setShortcut(Qt.Key_Left)
+
+        self.F_BGS_Slider = QSlider(Qt.Vertical)
+        self.F_BGS_Slider.setMinimum(0)
+        self.F_BGS_Slider.setMaximum(100)
+        self.F_BGS_Slider.setTickPosition(QSlider.TicksRight)
+        self.F_BGS_Slider.setTickInterval(10)
+        self.F_BGS_Slider.setValue(self.BGS_Threshold)
+        self.F_BGS_Slider.valueChanged.connect(self.F_BGS_SliderValueChanged)
+        self.F_BGS_Slider.setDisabled(True)
+
         self.FFigure = Figure()
         self.FCanvas = FigureCanvas(self.FFigure)
         self.FToolbar = NavigationToolbar(self.FCanvas, self)
+        self.FToolbar.addWidget(self.F_BGS_BTN)
+        self.FToolbar.addWidget(self.F_BGS_Slider)
         self.FToolbar.setOrientation(Qt.Vertical)
-        self.FToolbar.setMinimumSize(self.FToolbar.minimumSize())
-        self.FSlider = QSlider(Qt.Horizontal)
+        self.FToolbar.setFixedWidth(self.FToolbar.minimumSizeHint().width())
         
-
-        self.FLayout.addWidget(self.FToolbar,0,0,3,1, Qt.AlignLeft)
+        self.FSlider = QSlider(Qt.Horizontal)
+        self.FSlider.setMinimum(1)
+        self.FSlider.setMaximum(self.File.frameCount)
+        self.FSlider.setTickPosition(QSlider.TicksBelow)
+        self.FSlider.setTickInterval(int(0.05*self.File.frameCount))
+        self.FSlider.valueChanged.connect(self.FSliderValueChanged)
+        
+        
+        
+        self.FLayout.setContentsMargins(0,0,0,0)
+        self.FLayout.addWidget(self.FToolbar,0,0,3,1)
+        self.FLayout.setColumnStretch(0,0)
+        # self.FLayout.setColumnMinimumWidth(0, 0)
         self.FLayout.addWidget(self.FCanvas,0,1,1,2)
-        self.FLayout.addWidget(self.FSlider,1,1,1,2, Qt.AlignBottom)
+        self.FLayout.addWidget(self.FSlider,1,1,1,2)
         self.FLayout.addWidget(FNextBTN,2,2)
         self.FLayout.addWidget(FPreviousBTN,2,1)
         
@@ -77,8 +106,8 @@ class FMainWindow(QDialog):
         if (self.UI_FRAME_INDEX > self.File.frameCount-1):
             self.UI_FRAME_INDEX = 0
         
+        self.FSlider.setValue(self.UI_FRAME_INDEX)
         self.FFrames = self.File.getFrame(self.UI_FRAME_INDEX)
-        self.FDisplayImage()
         self.FDisplayImage()
 
     def FShowPreviousImage(self):
@@ -89,18 +118,29 @@ class FMainWindow(QDialog):
         if (self.UI_FRAME_INDEX < 0 ):
             self.UI_FRAME_INDEX = self.File.frameCount-1
 
+        self.FSlider.setValue(self.UI_FRAME_INDEX)
         self.FFrames = self.File.getFrame(self.UI_FRAME_INDEX)
         self.FDisplayImage()
 
     def FDisplayImage(self):
-        if not (self.FLayout.isEmpty):
-            print("empty")
-            self.FLayout.removeWidget(0,0)
         if(self.subtractBackground):
-            self.FFrames = self.fgbg.apply(self.FFrames)
-        ax = self.FFigure.add_subplot(111)
-        ax.clear()
-        ax.imshow(self.FFrames, cmap = 'gray')
+            self.FFigure.clf()
+            ax = self.FFigure.add_subplot(122)
+            # ax.remove()
+            ax.clear()
+            ax.set_title("Original")
+            ax.imshow(self.FFrames, cmap = 'gray')
+            fgbg_FFrames = self.fgbg.apply(self.FFrames)
+            ax = self.FFigure.add_subplot(121)
+            ax.set_title("Background removed")
+            ax.imshow(fgbg_FFrames, cmap = 'gray')
+        else:
+            self.FFigure.clf()
+            ax = self.FFigure.add_subplot(111)
+            ax.clear()
+            ax.set_title("Original")
+            ax.imshow(self.FFrames, cmap = 'gray')
+
         self.FCanvas.draw()
         self.FParent.FStatusBarFrameNumber.setText("Frame : "+str(self.UI_FRAME_INDEX+1)+"/"+str(self.File.frameCount))
 
@@ -131,3 +171,27 @@ class FMainWindow(QDialog):
             framesIndices.append()
             
         pass
+    
+    def FBackgroundSubtract(self):
+        """
+        This function enables and disables background
+        subtraction in the UI.
+        it is called from F_BGS_BTN QPushButton.
+        """
+        if (self.F_BGS_BTN.isChecked()):
+            self.subtractBackground = True
+            self.F_BGS_Slider.setDisabled(False)
+            self.FDisplayImage()
+        else:
+            self.subtractBackground = False
+            self.F_BGS_Slider.setDisabled(True)
+            self.FDisplayImage()
+
+    def FSliderValueChanged(self):
+        self.UI_FRAME_INDEX = self.FSlider.value()
+        self.FFrames = self.File.getFrame(self.UI_FRAME_INDEX)
+        self.FDisplayImage()
+
+    def F_BGS_SliderValueChanged(self):
+        value = self.F_BGS_Slider.value()
+        self.fgbg.setVarThreshold(value)
