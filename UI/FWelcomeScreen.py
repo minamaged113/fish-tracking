@@ -12,6 +12,9 @@ from UI.FMainWindow import *
 from file_handler import *
 from pathlib import Path
 
+import os
+import cv2
+
 class FWelcomeScreen(QMainWindow):
     """This class holds the welcome window which will be used to 
     open ARIS and DIDSON files and show statistics and information
@@ -84,6 +87,16 @@ class FWelcomeScreen(QMainWindow):
         saveFileAsAction.setStatusTip("Saves current work as new file.")
         saveFileAsAction.triggered.connect(lambda : self.print_stat_msg("Save file as pressed."))
 
+        ## TODO : add signal handler to export image as JPG
+        exportAsJPGAction = QAction("Export as JPG", self)
+        exportAsJPGAction.setStatusTip("Saves number of images on the drive in a given directory.")
+        exportAsJPGAction.triggered.connect(self.exportAsJPGActionFunction)
+
+        ## TODO : add signal handler to export BGS as JPG
+        export_BGS_AsJPGAction = QAction("Export BGS as JPG", self)
+        export_BGS_AsJPGAction.setStatusTip("Saves number of backgrounf subtracted images on the drive in a given directory.")
+        export_BGS_AsJPGAction.triggered.connect(self.export_BGS_AsJPGActionFunction)
+
         exitAction = QAction("Exit", self)
         exitAction.setShortcut("Ctrl+Q")
         exitAction.setStatusTip("Exits the application.")
@@ -94,6 +107,8 @@ class FWelcomeScreen(QMainWindow):
         fileMenu.addAction(openFolderAction)
         fileMenu.addAction(saveFileAction)
         fileMenu.addAction(saveFileAsAction)
+        fileMenu.addAction(exportAsJPGAction)
+        fileMenu.addAction(export_BGS_AsJPGAction)
         fileMenu.addSeparator()
         fileMenu.addAction(exitAction)
 
@@ -161,10 +176,37 @@ class FWelcomeScreen(QMainWindow):
     def FOpenFile(self):
         ## DEBUG : remove filePathTuple and uncomment filePathTuple
         home = str(Path.home())
-        filePathTuple = ('/home/mghobria/Documents/work/data/data 1/data.aris',)
-        # filePathTuple = QFileDialog.getOpenFileName(self, "Open File", home, "Sonar Files (*.aris *.ddf)")
+        # filePathTuple = ('/home/mghobria/Documents/work/data/data.aris',)
+        filePathTuple = QFileDialog.getOpenFileName(self, "Open File", home, "Sonar Files (*.aris *.ddf)")
         if filePathTuple[0] != "" : 
             self.FFilePath = filePathTuple[0]
             self.FCentralScreen = FMainWindow(self)
             self.setCentralWidget(self.FCentralScreen)
             self.setWindowTitle("Fisher - " + self.FFilePath)
+
+    def exportAsJPGActionFunction(self):
+        file = FOpenSonarFile(self.FFilePath)
+        numberOfImagesToSave = file.frameCount
+        numOfDigits = str(len(str(numberOfImagesToSave)))
+        imagesExportDirectory = "/home/mghobria/Pictures/SONAR_Images"
+        for i in range(numberOfImagesToSave):
+            frame = file.getFrame(i)
+            imgNmbr = format(i, "0"+numOfDigits+"d")
+            cv2.imwrite((os.path.join( imagesExportDirectory, "IMG_"+imgNmbr+".jpg")), frame)
+            print("Saving : ", str(i))
+
+        return
+
+    def export_BGS_AsJPGActionFunction(self):
+        file = FOpenSonarFile(self.FFilePath)
+        numberOfImagesToSave = file.frameCount
+        imagesExportDirectory = "/home/mghobria/Pictures/SONAR_Images"
+        BGS_Threshold = 25
+        fgbg = cv2.createBackgroundSubtractorMOG2(varThreshold = BGS_Threshold)
+        for i in range(numberOfImagesToSave):
+            frame = file.getFrame(i)
+            frame = fgbg.apply(frame)
+            cv2.imwrite((os.path.join( imagesExportDirectory, "IMG_BGS_"+str(i)+".jpg")), frame)
+            print("Saving : ", str(i))
+
+        return

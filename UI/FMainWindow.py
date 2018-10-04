@@ -32,7 +32,6 @@ class FMainWindow(QDialog):
         places the UI elements, each in its own place.
         """
         self.FParent = parent
-        
         ##  Reading the file
         self.FLoadSONARFile(self.FParent.FFilePath)
         self.FParent.FStatusBarFrameNumber.setText("Frame : "+str(self.UI_FRAME_INDEX+1)+"/"+str(self.File.frameCount))
@@ -49,6 +48,7 @@ class FMainWindow(QDialog):
         FPreviousBTN.setShortcut(Qt.Key_Left)
         
         self.F_BGS_BTN = QPushButton(self)
+        self.F_BGS_BTN.setObjectName("Subtract Background")
         self.F_BGS_BTN.setFlat(True)
         self.F_BGS_BTN.setCheckable(True)
         self.F_BGS_BTN.setIcon(QIcon("/home/mghobria/Desktop/fish-tracking/UI/icons/background_subtraction/black_32.png"))
