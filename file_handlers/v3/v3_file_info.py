@@ -20,7 +20,7 @@ import file_handlers.utils as utils
 import file_handlers.beamLookUp as beamLookUp
 import numpy as np
 import re
-
+import cv2
 
 
 cwd = os.getcwd()
@@ -324,3 +324,84 @@ class v3_File:
     def play(self):
         pass
     
+
+def v3_getAllFramesData(fhand, version, cls):
+    """Opens a .aris file and extracts all bytes for all frames and returns a
+    list containing all frames data, to be used in drawing the images.
+    For images to be drawn from frames, the following attributes are needed
+    from this function:
+        - SONAR Sample Data     --> `allFrames`
+        - Number of Beams [fl]  --> `numRawBeams`
+        - Samples Per Beam [fl] --> `samplesPerChannel`
+        - Type of Lens  [fr]    --> `largeLens`
+        - Sample Start Delay[fr]--> `sampleStartDelay`
+        - Sound Velocity[fr]    --> `soundSpeed`
+        - Sample Period[fr]     --> `samplePeriod`
+
+    """
+    
+    ## TODO
+    
+    cls.version = "DDF_03"
+    fileAttributesList = ["numRawBeams", "samplesPerChannel", "frameCount"]
+    frameAttributesList = ["largeLens", "sampleStartDelay", "soundSpeed", "samplePeriod"]
+
+    fileHeader = utils.getFileHeaderValue(version, fileAttributesList)
+    frameHeader = utils.getFrameHeaderValue(version, frameAttributesList)
+    print("inside v3_getAllFramesData(fhand)")
+    #   Reading Number of frames in the file [from file header]
+    fhand.seek(fileHeader["frameCount"]["location"], 0)
+    cls.frameCount = struct.unpack(
+            utils.cType[fileHeader["frameCount"]["size"]],
+            fhand.read(utils.c(fileHeader["frameCount"]["size"])))[0]
+
+    #   Reading number of beams in each frame [from file header]
+    fhand.seek(fileHeader["numRawBeams"]["location"], 0)
+    cls.BEAM_COUNT = struct.unpack(
+            utils.cType[fileHeader["numRawBeams"]["size"]],
+            fhand.read(utils.c(fileHeader["numRawBeams"]["size"])))[0]
+
+    #   Reading number of samples in each beam [from file header]
+    fhand.seek(fileHeader["samplesPerChannel"]["location"], 0)
+    cls.samplesPerBeam = struct.unpack(
+            utils.cType[fileHeader["samplesPerChannel"]["size"]],
+            fhand.read(utils.c(fileHeader["samplesPerChannel"]["size"])))[0]
+
+
+    frameoffset = 512
+    #   Reading Sample Period [from frame header]
+    fhand.seek(frameoffset + fhand.seek(frameHeader["samplePeriod"]["location"], 0))
+    cls.samplePeriod = struct.unpack(
+            utils.cType[frameHeader["samplePeriod"]["size"]],
+            fhand.read(utils.c(frameHeader["samplePeriod"]["size"])))[0]
+
+    #   Reading Sound Velocity in Water [from frame header]
+    fhand.seek(frameoffset + fhand.seek(frameHeader["soundSpeed"]["location"], 0))
+    cls.soundSpeed = struct.unpack(
+            utils.cType[frameHeader["soundSpeed"]["size"]],
+            fhand.read(utils.c(frameHeader["soundSpeed"]["size"])))[0]
+    
+    #   Reading Sample Start Delay [from frame header]
+    fhand.seek(frameoffset + fhand.seek(frameHeader["sampleStartDelay"]["location"], 0))
+    cls.sampleStartDelay = struct.unpack(
+            utils.cType[frameHeader["sampleStartDelay"]["size"]],
+            fhand.read(utils.c(frameHeader["sampleStartDelay"]["size"])))[0]
+
+    #   Reading availability of large lens [from frame header]
+    fhand.seek(frameoffset + fhand.seek(frameHeader["largeLens"]["location"], 0))
+    cls.largeLens = struct.unpack(
+            utils.cType[frameHeader["largeLens"]["size"]],
+            fhand.read(utils.c(frameHeader["largeLens"]["size"])))[0]
+
+    frameSize = cls.BEAM_COUNT * cls.samplesPerBeam
+    # the first frame data offset from file start is 2048
+    
+
+    frameoffset = 512 + 256
+    fhand.seek(frameoffset, 0)
+    strCat = frameSize*"B"
+    cls.FRAMES = np.array(struct.unpack(strCat, fhand.read(frameSize)), dtype=np.uint8)
+    cls.FRAMES = cv2.flip(cls.FRAMES.reshape((cls.samplesPerBeam, cls.BEAM_COUNT)), 0)
+    cls.DATA_SHAPE = cls.FRAMES.shape
+    cls.FRAMES = cls.constructImages()
+    return

@@ -14,6 +14,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 from matplotlib.pyplot import imshow
+import time
 
 class FMainWindow(QDialog):
     """This class holds the main window which will be used to 
@@ -107,8 +108,13 @@ class FMainWindow(QDialog):
             self.UI_FRAME_INDEX = 0
         
         self.FSlider.setValue(self.UI_FRAME_INDEX)
+        tick1 = time.time()
         self.FFrames = self.File.getFrame(self.UI_FRAME_INDEX)
+        tick2 = time.time()
         self.FDisplayImage()
+        tick3 = time.time()
+        print('time to fetch frame = ', tick2-tick1)
+        print('time to show frame = ', tick3-tick2)
 
     def FShowPreviousImage(self):
         """Show the previous frame image
@@ -119,8 +125,13 @@ class FMainWindow(QDialog):
             self.UI_FRAME_INDEX = self.File.frameCount-1
 
         self.FSlider.setValue(self.UI_FRAME_INDEX)
+        tick1 = time.time()
         self.FFrames = self.File.getFrame(self.UI_FRAME_INDEX)
+        tick2 = time.time()
         self.FDisplayImage()
+        tick3 = time.time()
+        print('time to fetch frame = ', tick2-tick1)
+        print('time to show frame = ', tick3-tick2)
 
     def FDisplayImage(self):
         if(self.subtractBackground):

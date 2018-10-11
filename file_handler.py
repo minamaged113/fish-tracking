@@ -150,8 +150,14 @@ def DIDSON_v3(fhand, version, cls):
     """
     This function will handle version 3 DIDSON Files
     """
-    ## TODO
-    pass
+    print("inside DIDSON v3")
+    v3_getAllFramesData(fhand, version, cls)
+    cls.FILE_PATH = fhand.name
+    cls.FILE_HANDLE = fhand
+    cls.FRAME_HEADER_SIZE = 256
+    cls.FILE_HEADER_SIZE = 512
+    
+    return
 
 
 def DIDSON_v4(fhand, version, cls):
@@ -173,19 +179,12 @@ def DIDSON_v4(fhand, version, cls):
         }
     """
     print("inside DIDSON v4")
-    dataAndParams = v5_getAllFramesData(fhand, version)
+    v4_getAllFramesData(fhand, version, cls)
     cls.FILE_PATH = fhand.name
-    cls.BEAM_COUNT = dataAndParams["parameters"]["numRawBeams"]
-    cls.largeLens = dataAndParams["parameters"]["largeLens"]
-    cls.sampleStartDelay = dataAndParams["parameters"]["sampleStartDelay"]
-    cls.soundSpeed = dataAndParams["parameters"]["soundSpeed"]
-    cls.samplesPerBeam = dataAndParams["parameters"]["samplesPerChannel"]
-    cls.samplePeriod = dataAndParams["parameters"]["samplePeriod"]
-    cls.DATA_SHAPE = dataAndParams["parameters"]["DATA_SHAPE"]
-    cls.FRAMES = dataAndParams["data"]
-    cls.version = "ARIS"
-    cls.frameCount = dataAndParams["parameters"]["frameCount"]
-    cls.FRAMES = v5_constructImages(cls)
+    cls.FILE_HANDLE = fhand
+    cls.FRAME_HEADER_SIZE = 1024
+    cls.FILE_HEADER_SIZE = 1024
+    
     return
 
 
