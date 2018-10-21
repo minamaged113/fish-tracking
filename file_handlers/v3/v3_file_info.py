@@ -325,8 +325,32 @@ class v3_File:
         pass
     
 
+def setWindowStart(configFlags, highResolution,cls):
+    if((configFlags == 1) or (configFlags == 3)):
+        cls.windowStart = cls.windowStart*(0.375 + (highResolution == 0)*0.375)
+    if((configFlags == 0) or (configFlags == 2)):
+        cls.windowStart = cls.windowStart*(0.419 + (highResolution == 0)*0.419)
+    else:
+        raise ValueError("configuration flag has irrelevant value.")
+    return
+
+def setWindowLength(configFlags, index, cls):
+    winLengthsLists = {
+        0 : [0.83, 2.5, 5, 10, 20, 40],
+        1 : [1.125, 2.25, 4.5, 9, 18, 36],
+        2 : [2.5, 5, 10, 20, 40, 70],
+        3 : [2.25, 4.5, 9, 18, 36, 72]
+    }
+    cls.windowLength = winLengthsLists[configFlags][index]
+    return
+
+def setFirstBeamAngle(highResolution, cls):
+    cls.firstBeamAngle = beamLookUp.BeamLookUp(cls.BEAM_COUNT, highResolution)[-1]
+
+    return    
+
 def v3_getAllFramesData(fhand, version, cls):
-    """Opens a .aris file and extracts all bytes for all frames and returns a
+    """Opens a .ddf file and extracts all bytes for all frames and returns a
     list containing all frames data, to be used in drawing the images.
     For images to be drawn from frames, the following attributes are needed
     from this function:
@@ -343,8 +367,8 @@ def v3_getAllFramesData(fhand, version, cls):
     ## TODO
     
     cls.version = "DDF_03"
-    fileAttributesList = ["numRawBeams", "samplesPerChannel", "frameCount"]
-    frameAttributesList = ["largeLens", "sampleStartDelay", "soundSpeed", "samplePeriod"]
+    fileAttributesList = ["numRawBeams", "samplesPerChannel", "frameCount", "highResolution", "serialNumber"]
+    frameAttributesList = ["configFlags", "windowStart", "windowLengthIndex"]
 
     fileHeader = utils.getFileHeaderValue(version, fileAttributesList)
     frameHeader = utils.getFrameHeaderValue(version, frameAttributesList)
@@ -354,6 +378,13 @@ def v3_getAllFramesData(fhand, version, cls):
     cls.frameCount = struct.unpack(
             utils.cType[fileHeader["frameCount"]["size"]],
             fhand.read(utils.c(fileHeader["frameCount"]["size"])))[0]
+
+    #   Reading highResolution value to detect whether Hi/Lo frequency
+    #   [from file header]
+    fhand.seek(fileHeader["highResolution"]["location"], 0)
+    highResolution = struct.unpack(
+            utils.cType[fileHeader["highResolution"]["size"]],
+            fhand.read(utils.c(fileHeader["highResolution"]["size"])))[0]
 
     #   Reading number of beams in each frame [from file header]
     fhand.seek(fileHeader["numRawBeams"]["location"], 0)
@@ -367,41 +398,66 @@ def v3_getAllFramesData(fhand, version, cls):
             utils.cType[fileHeader["samplesPerChannel"]["size"]],
             fhand.read(utils.c(fileHeader["samplesPerChannel"]["size"])))[0]
 
+    #   Reading Serial number of file format to decide configuration flags later
+    #   [from file header]
+    fhand.seek(fileHeader["serialNumber"]["location"], 0)
+    serialNumber = struct.unpack(
+            utils.cType[fileHeader["serialNumber"]["size"]],
+            fhand.read(utils.c(fileHeader["serialNumber"]["size"])))[0]
 
-    frameoffset = 512
+    frameoffset = cls.FILE_HEADER_SIZE
     #   Reading Sample Period [from frame header]
-    fhand.seek(frameoffset + fhand.seek(frameHeader["samplePeriod"]["location"], 0))
-    cls.samplePeriod = struct.unpack(
-            utils.cType[frameHeader["samplePeriod"]["size"]],
-            fhand.read(utils.c(frameHeader["samplePeriod"]["size"])))[0]
+    # fhand.seek(frameoffset + fhand.seek(frameHeader["samplePeriod"]["location"], 0))
+    # cls.samplePeriod = struct.unpack(
+    #         utils.cType[frameHeader["samplePeriod"]["size"]],
+    #         fhand.read(utils.c(frameHeader["samplePeriod"]["size"])))[0]
 
-    #   Reading Sound Velocity in Water [from frame header]
-    fhand.seek(frameoffset + fhand.seek(frameHeader["soundSpeed"]["location"], 0))
-    cls.soundSpeed = struct.unpack(
-            utils.cType[frameHeader["soundSpeed"]["size"]],
-            fhand.read(utils.c(frameHeader["soundSpeed"]["size"])))[0]
+    #   Reading window start length [from frame header]
+    fhand.seek(frameoffset + fhand.seek(frameHeader["windowStart"]["location"], 0))
+    cls.windowStart = struct.unpack(
+            utils.cType[frameHeader["windowStart"]["size"]],
+            fhand.read(utils.c(frameHeader["windowStart"]["size"])))[0]
     
-    #   Reading Sample Start Delay [from frame header]
-    fhand.seek(frameoffset + fhand.seek(frameHeader["sampleStartDelay"]["location"], 0))
-    cls.sampleStartDelay = struct.unpack(
-            utils.cType[frameHeader["sampleStartDelay"]["size"]],
-            fhand.read(utils.c(frameHeader["sampleStartDelay"]["size"])))[0]
+    #   Reading window length index [from frame header]
+    #   will be modified and used to determine window length later
+    fhand.seek(frameoffset + fhand.seek(frameHeader["windowLengthIndex"]["location"], 0))
+    windowLengthIndex = struct.unpack(
+            utils.cType[frameHeader["windowLengthIndex"]["size"]],
+            fhand.read(utils.c(frameHeader["windowLengthIndex"]["size"])))[0]
 
-    #   Reading availability of large lens [from frame header]
-    fhand.seek(frameoffset + fhand.seek(frameHeader["largeLens"]["location"], 0))
-    cls.largeLens = struct.unpack(
-            utils.cType[frameHeader["largeLens"]["size"]],
-            fhand.read(utils.c(frameHeader["largeLens"]["size"])))[0]
+    #   Reading configuration flags [from frame header]
+    if (serialNumber < 19):
+        configFlags = 1
+    elif (serialNumber == 15):
+        configFlags = 3
+    else:
+        fhand.seek(frameoffset + fhand.seek(frameHeader["configFlags"]["location"], 0))
+        configFlags = struct.unpack(
+                utils.cType[frameHeader["configFlags"]["size"]],
+                fhand.read(utils.c(frameHeader["configFlags"]["size"])))[0]
+        ## bit0: 1=classic, 0=extended windows; bit1: 0=Standard, 1=LR
+        configFlagsStr = bin(configFlags)
+        configFlags = 2 * int(configFlagsStr[-2]) + int(configFlagsStr[-1])
+        ## TODO : this needs to be completed
+
+    
+    
+    
+    windowLengthIndex = windowLengthIndex + 1 + 2 * (cls.highResolution == 0)
+    
+
+    setWindowLength(configFlags, windowLengthIndex, cls)
+    setWindowStart(configFlags, highResolution, cls)
+    setFirstBeamAngle(not highResolution, cls)
 
     frameSize = cls.BEAM_COUNT * cls.samplesPerBeam
-    # the first frame data offset from file start is 2048
-    
-
-    frameoffset = 512 + 256
+    frameoffset = cls.FILE_HEADER_SIZE + cls.FRAME_HEADER_SIZE
     fhand.seek(frameoffset, 0)
     strCat = frameSize*"B"
+    
     cls.FRAMES = np.array(struct.unpack(strCat, fhand.read(frameSize)), dtype=np.uint8)
     cls.FRAMES = cv2.flip(cls.FRAMES.reshape((cls.samplesPerBeam, cls.BEAM_COUNT)), 0)
     cls.DATA_SHAPE = cls.FRAMES.shape
+    
     cls.FRAMES = cls.constructImages()
     return

@@ -264,15 +264,15 @@
             "order": 23,
             "obsolete": false
         },
-        "flags": {
-            "size": null,
-            "bytes" : null,
-            "location": null,
-            "title": null,
+        "padding": {
+            "size": "char[136]",
+            "bytes" : 136,
+            "location": 376,
+            "title": "User assigned padding",
             "description": null,
             "default": null,
             "more": null,
-            "order": null,
+            "order": 24,
             "obsolete": true
         },
         "auxFlags": {

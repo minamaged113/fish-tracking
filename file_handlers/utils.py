@@ -109,6 +109,55 @@ def getFileHeaderValue(version, attributes):
     JSON.close()
     return locationAndSize
 
+
+def getFrameHeaderSize(version):
+    versions = {
+        4604996:  v0_FrameHeaderJSON,
+        21382212: v1_FrameHeaderJSON,
+        38159428: v2_FrameHeaderJSON,
+        54936644: v3_FrameHeaderJSON,
+        71713860: v4_FrameHeaderJSON,
+        88491076: v5_FrameHeaderJSON
+    }
+    filePath = versions[version]
+    try:
+        JSON = open(filePath)
+    except:
+        err.print_error(err.jsonData)
+        raise
+    
+    allFile = JSON.read()
+    frameHeaders = json.loads(allFile) 
+    size = frameHeaders["headerSize"]["size"]
+    JSON.close()
+    return size
+
+def getFileHeaderSize(version):
+    versions = {
+        4604996:  v0_FileHeaderJSON,
+        21382212: v1_FileHeaderJSON,
+        38159428: v2_FileHeaderJSON,
+        54936644: v3_FileHeaderJSON,
+        71713860: v4_FileHeaderJSON,
+        88491076: v5_FileHeaderJSON
+    }
+    locationAndSize = dict()
+    filePath = versions[version]
+    try:
+        JSON = open(filePath)
+    except:
+        err.print_error(err.jsonData)
+        raise
+    
+    allFile = JSON.read()
+    fileHeaders = json.loads(allFile)
+
+    size = fileHeaders["headerSize"]["size"]
+    JSON.close()
+    return size
+
+
+
 def c(inpStr):
     """
     Takes a variable type from the cType dictionary and returns
@@ -130,15 +179,19 @@ def c(inpStr):
 
 
 cType = {
-    "uint32_t":   "I",
-    "float":   "f",
-    "int32_t":   "i",
-    "uint64_t":   "Q",
-    "char[32]":   "32s",
-    "char[256]":   "256s",
-    "char[568]":   "568s",
-    "char[288]": "288s",
-    "uint16_t": "H",
-    "uint8_t": "B",
-    "double": "d"
+    "uint32_t":     "I",
+    "float":        "f",
+    "int32_t":      "i",
+    "uint64_t":     "Q",
+    "char[8]":      "8s",
+    "char[16]":     "16s",
+    "char[32]":     "32s",
+    "char[60]":     "60s",
+    "char[136]":    "136s",
+    "char[256]":    "256s",
+    "char[568]":    "568s",
+    "char[288]":    "288s",
+    "uint16_t":     "H",
+    "uint8_t":      "B",
+    "double":       "d"
 }

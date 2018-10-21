@@ -66,7 +66,7 @@ class v3_Frame:
                     utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.windowStart = struct.unpack(
                     utils.cType["float"], fhand.read(utils.c("float")))[0]
-                self.windowLength = struct.unpack(
+                self.windowLengthIndex = struct.unpack(
                     utils.cType["float"], fhand.read(utils.c("float")))[0]
                 self.threshold = struct.unpack(
                     utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]

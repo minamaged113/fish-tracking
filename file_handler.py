@@ -27,6 +27,8 @@ class FSONAR_File():
         self.frameCount = None
         self.BEAM_COUNT = None
         self.largeLens = None
+        self.highResolution = None
+        self.serialNumber = None
         self.sampleStartDelay = None
         self.soundSpeed = None
         self.samplesPerBeam = None
@@ -37,6 +39,11 @@ class FSONAR_File():
         self.FILE_HANDLE = None
         self.FRAME_HEADER_SIZE = None
         self.FILE_HEADER_SIZE = None
+        # arguments used in image remapping to real-life coordinates
+        self.windowStart = None
+        self.windowLength = None
+        self.firstBeamAngle = None
+
 
     def getFrame(self, FI):
         
@@ -49,13 +56,27 @@ class FSONAR_File():
         self.FRAMES = self.constructImages()
         return self.FRAMES
 
-    def constructImages(self):
+    def constructImages(self, d0 = None, dm = None, am= None):
+        """This function works on mapping the original samples
+        inside the file frames, to the actual real-life coordinates.
         
+        Keyword Arguments:
+            d0 {[type]} -- [description] (default: {None})
+            dm {[type]} -- [description] (default: {None})
+            am {[type]} -- [description] (default: {None})
+        
+        Returns:
+            [type] -- [description]
+        """
+
         allAngles = beamLookUp.BeamLookUp(self.BEAM_COUNT, self.largeLens)
         
-        d0 = self.sampleStartDelay * 0.000001 * self.soundSpeed/2
-        dm = d0 + self.samplePeriod * self.samplesPerBeam * 0.000001 * self.soundSpeed/2
-        am = allAngles[-1]
+        # d0 = self.sampleStartDelay * 0.000001 * self.soundSpeed/2
+        d0 = self.windowStart
+        # dm = d0 + self.samplePeriod * self.samplesPerBeam * 0.000001 * self.soundSpeed/2
+        dm = self.windowStart + self.windowLength
+        # am = allAngles[-1]
+        am = self.firstBeamAngle
         K = self.samplesPerBeam
         N, M = self.DATA_SHAPE
 
@@ -151,11 +172,12 @@ def DIDSON_v3(fhand, version, cls):
     This function will handle version 3 DIDSON Files
     """
     print("inside DIDSON v3")
+    cls.FRAME_HEADER_SIZE = getFrameHeaderSize(version)
+    cls.FILE_HEADER_SIZE = getFileHeaderSize(version)
     v3_getAllFramesData(fhand, version, cls)
     cls.FILE_PATH = fhand.name
     cls.FILE_HANDLE = fhand
-    cls.FRAME_HEADER_SIZE = 256
-    cls.FILE_HEADER_SIZE = 512
+    
     
     return
 
@@ -179,11 +201,11 @@ def DIDSON_v4(fhand, version, cls):
         }
     """
     print("inside DIDSON v4")
+    cls.FRAME_HEADER_SIZE = getFrameHeaderSize(version)
+    cls.FILE_HEADER_SIZE = getFileHeaderSize(version)
     v4_getAllFramesData(fhand, version, cls)
     cls.FILE_PATH = fhand.name
     cls.FILE_HANDLE = fhand
-    cls.FRAME_HEADER_SIZE = 1024
-    cls.FILE_HEADER_SIZE = 1024
     
     return
 
@@ -207,10 +229,10 @@ def DIDSON_v5(fhand, version, cls):
         }
     """
     print("inside DIDSON v5")
+    cls.FRAME_HEADER_SIZE = getFrameHeaderSize(version)
+    cls.FILE_HEADER_SIZE = getFileHeaderSize(version)
     v5_getAllFramesData(fhand, version, cls)
     cls.FILE_PATH = fhand.name
     cls.FILE_HANDLE = fhand
-    cls.FRAME_HEADER_SIZE = 1024
-    cls.FILE_HEADER_SIZE = 1024
     return
 

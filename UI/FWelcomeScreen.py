@@ -185,14 +185,19 @@ class FWelcomeScreen(QMainWindow):
             self.setWindowTitle("Fisher - " + self.FFilePath)
 
     def exportAsJPGActionFunction(self):
+        name = QFileDialog.getSaveFileName(self, 'Save all frames')[0]
+        if not os.path.exists(name):
+            os.makedirs(name)
         file = FOpenSonarFile(self.FFilePath)
         numberOfImagesToSave = file.frameCount
         numOfDigits = str(len(str(numberOfImagesToSave)))
-        imagesExportDirectory = "/home/mghobria/Pictures/SONAR_Images"
+        fileName = os.path.splitext(os.path.basename(file.FILE_PATH))[0]
+        
         for i in range(numberOfImagesToSave):
+        
             frame = file.getFrame(i)
             imgNmbr = format(i, "0"+numOfDigits+"d")
-            cv2.imwrite((os.path.join( imagesExportDirectory, "IMG_"+imgNmbr+".jpg")), frame)
+            cv2.imwrite((os.path.join( name,  fileName+ "_"+imgNmbr+".jpg")), frame)
             print("Saving : ", str(i))
 
         return

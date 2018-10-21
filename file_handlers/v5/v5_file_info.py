@@ -374,25 +374,25 @@ def v5_getAllFramesData(fhand, version, cls):
             fhand.read(utils.c(fileHeader["samplesPerChannel"]["size"])))[0]
 
     #   Reading Sample Period [from frame header]
-    fhand.seek(1024 + fhand.seek(frameHeader["samplePeriod"]["location"], 0))
+    fhand.seek(cls.FILE_HEADER_SIZE + fhand.seek(frameHeader["samplePeriod"]["location"], 0))
     cls.samplePeriod = struct.unpack(
             utils.cType[frameHeader["samplePeriod"]["size"]],
             fhand.read(utils.c(frameHeader["samplePeriod"]["size"])))[0]
 
     #   Reading Sound Velocity in Water [from frame header]
-    fhand.seek(1024 + fhand.seek(frameHeader["soundSpeed"]["location"], 0))
+    fhand.seek(cls.FILE_HEADER_SIZE + fhand.seek(frameHeader["soundSpeed"]["location"], 0))
     cls.soundSpeed = struct.unpack(
             utils.cType[frameHeader["soundSpeed"]["size"]],
             fhand.read(utils.c(frameHeader["soundSpeed"]["size"])))[0]
     
     #   Reading Sample Start Delay [from frame header]
-    fhand.seek(1024 + fhand.seek(frameHeader["sampleStartDelay"]["location"], 0))
+    fhand.seek(cls.FILE_HEADER_SIZE + fhand.seek(frameHeader["sampleStartDelay"]["location"], 0))
     cls.sampleStartDelay = struct.unpack(
             utils.cType[frameHeader["sampleStartDelay"]["size"]],
             fhand.read(utils.c(frameHeader["sampleStartDelay"]["size"])))[0]
 
     #   Reading availability of large lens [from frame header]
-    fhand.seek(1024 + fhand.seek(frameHeader["largeLens"]["location"], 0))
+    fhand.seek(cls.FILE_HEADER_SIZE + fhand.seek(frameHeader["largeLens"]["location"], 0))
     cls.largeLens = struct.unpack(
             utils.cType[frameHeader["largeLens"]["size"]],
             fhand.read(utils.c(frameHeader["largeLens"]["size"])))[0]
@@ -405,13 +405,10 @@ def v5_getAllFramesData(fhand, version, cls):
     cls.FRAMES = np.array(struct.unpack(strCat, fhand.read(frameSize)), dtype=np.uint8)
     cls.FRAMES = cv2.flip(cls.FRAMES.reshape((cls.samplesPerBeam, cls.BEAM_COUNT)), 0)
     cls.DATA_SHAPE = cls.FRAMES.shape
+    cls.windowStart = cls.sampleStartDelay * 0.000001 * cls.soundSpeed/2
+    cls.windowLength = cls.samplePeriod * cls.samplesPerBeam * 0.000001 * cls.soundSpeed/2
+    cls.firstBeamAngle = beamLookUp.BeamLookUp(cls.BEAM_COUNT, cls.largeLens)[-1]
     cls.FRAMES = cls.constructImages()
-    # for frameIndexInp in range(100)[1:]:
-    #     frameoffset = (2048+(frameIndexInp*(1024+(frameSize))))
-    #     fhand.seek(frameoffset, 0)
-    #     temp = np.array(struct.unpack(strCat, fhand.read(frameSize)), dtype=np.uint8)
-    #     cls.FRAMES = np.dstack((allFrames, cv2.flip(temp.reshape((cls.samplesPerBeam, numRawBeams)), 0)))
-    
     
     return
 
