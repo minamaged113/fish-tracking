@@ -63,7 +63,6 @@ class FWelcomeScreen(QMainWindow):
         return
 
     def FFileMenu_init(self):
-        ## TODO : add signal handler to open user files
         openFileAction = QAction("Open File", self)
         openFileAction.setShortcut("Ctrl+O")
         openFileAction.setStatusTip("Loads a new file to the program.")
@@ -74,28 +73,33 @@ class FWelcomeScreen(QMainWindow):
         openFolderAction.setShortcut("Ctrl+Shift+O")
         openFolderAction.setStatusTip("Opens a whole folder and loads it to the program.")
         openFolderAction.triggered.connect(lambda : self.print_stat_msg("Open Folder pressed."))
+        openFolderAction.setEnabled(False)
 
         ## TODO : add signal handler to save file after editing.
         saveFileAction = QAction("Save", self)
         saveFileAction.setShortcut("Ctrl+S")
         saveFileAction.setStatusTip("Saves the current file.")
         saveFileAction.triggered.connect(lambda : self.print_stat_msg("save file pressed."))
+        saveFileAction.setEnabled(False)
 
         ## TODO : add signal handler to save file as new file 
         saveFileAsAction = QAction("Save as ...", self)
         saveFileAsAction.setShortcut("Ctrl+Shift+S")
         saveFileAsAction.setStatusTip("Saves current work as new file.")
         saveFileAsAction.triggered.connect(lambda : self.print_stat_msg("Save file as pressed."))
+        saveFileAsAction.setEnabled(False)
 
-        ## TODO : add signal handler to export image as JPG
+        ## TODO : setEnabled(True) only when the user opens a new file.
         exportAsJPGAction = QAction("Export as JPG", self)
         exportAsJPGAction.setStatusTip("Saves number of images on the drive in a given directory.")
         exportAsJPGAction.triggered.connect(self.exportAsJPGActionFunction)
+        exportAsJPGAction.setEnabled(True)
 
-        ## TODO : add signal handler to export BGS as JPG
+        ## TODO : setEnabled(True) only when the user opens a new file.
         export_BGS_AsJPGAction = QAction("Export BGS as JPG", self)
         export_BGS_AsJPGAction.setStatusTip("Saves number of backgrounf subtracted images on the drive in a given directory.")
         export_BGS_AsJPGAction.triggered.connect(self.export_BGS_AsJPGActionFunction)
+        exportAsJPGAction.setEnabled(True)
 
         exitAction = QAction("Exit", self)
         exitAction.setShortcut("Ctrl+Q")
@@ -117,27 +121,31 @@ class FWelcomeScreen(QMainWindow):
         aboutAction = QAction("About", self)
         aboutAction.setStatusTip("Opens a webpage contains all info about the project.")
         aboutAction.triggered.connect(lambda: self.print_stat_msg("About pressed"))
+        aboutAction.setEnabled(False)
 
         ## TODO : add signal handler to check for updates
         checkForUpdatesAction = QAction("Check for updates", self)
         checkForUpdatesAction.setStatusTip("Check for updates online")
         checkForUpdatesAction.triggered.connect(lambda: self.print_stat_msg("Check for updates pressed."))
+        checkForUpdatesAction.setEnabled(False)
 
         ## TODO : add signal handler to show license file.
         viewLicenseAction = QAction("View License", self)
         viewLicenseAction.setStatusTip("Shows the licenses for the whole software.")
         viewLicenseAction.triggered.connect(lambda: self.print_stat_msg("view license pressed."))
+        viewLicenseAction.setEnabled(False)
 
         ## TODO : add signal handler to report an issue with the software
         reportAction = QAction("Report Issue", self)
         reportAction.setStatusTip("Report an issue to the developers.")
         reportAction.triggered.connect(lambda : self.print_stat_msg("reprot issure pressed."))
+        reportAction.setEnabled(False)
         
         ## TODO : add signal handler to show statistics
         showStatisticsAction = QAction("Statistics", self)
         showStatisticsAction.setStatusTip("Shows statistics about old processed files.")
         showStatisticsAction.triggered.connect(lambda : self.print_stat_msg("Statistics pressed."))
-
+        showStatisticsAction.setEnabled(False)
 
         helpMenu = self.mainMenu.addMenu("&Help")
         helpMenu.addAction(showStatisticsAction)
@@ -167,7 +175,7 @@ class FWelcomeScreen(QMainWindow):
         editMenu.addAction(redoAction)
 
 
-        pass
+
     
     def print_stat_msg(self, text):
         ## TODO : delete this function
