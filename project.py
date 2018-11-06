@@ -80,7 +80,10 @@ while (True):
     centroids   = candidatesInfo[3] # floating point centroid (x,y) output for each label, including the background label
 
     if ret == 1:
-        count = count + 1
+        if (desc):
+            count = count - 1
+        else:
+            count = count + 1
         continue
 
     label_hue = np.uint8(179*labels/np.max(labels))
