@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import *
 ## Pages of the application
 from UI.FWelcomeInfo import *
 from UI.FWelcomeScreen import *
-from UI.FMainWindow import *
+from UI.FViewer import *
 
 
 ## UI functions

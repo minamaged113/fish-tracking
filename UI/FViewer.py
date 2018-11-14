@@ -16,7 +16,7 @@ from matplotlib.figure import Figure
 from matplotlib.pyplot import imshow
 import time
 
-class FMainWindow(QDialog):
+class FViewer(QDialog):
     """This class holds the main window which will be used to 
     show the SONAR images, analyze them and edit images.
     
