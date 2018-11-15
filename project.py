@@ -6,7 +6,9 @@ import json
 
 def main():
     # filesPath = "/home/mghobria/Pictures/SONAR_Images" ## laptop
-    filesPath = "C:\\Users\\mghobria\\Downloads\\aris\\F" ## windows home PC
+    # filesPath = "C:\\Users\\mghobria\\Downloads\\aris\\F" ## windows home PC
+    filesPath = "C:\\Users\\Mina Ghobrial\\Downloads\\SONAR" ## windows Laptop PC
+
 
     imagesList = os.listdir(filesPath)
     imagesList.sort()
@@ -46,7 +48,10 @@ def main():
     while (True):
     # while (count<100):
         # get image path
-        imgPath = os.path.join(filesPath, imgList[count][1]) 
+        try:
+            imgPath = os.path.join(filesPath, imgList[count][1]) 
+        except:
+            break
         
         # read the image from disk
         img = cv2.imread(imgPath, cv2.IMREAD_GRAYSCALE)
@@ -124,7 +129,7 @@ def main():
         cv2.imshow("frames and BGS frames",np.hstack((labeled_img, colored_img)))
 
 
-        k = cv2.waitKey(30 * play) & 0xff
+        k = cv2.waitKey(1 * play) & 0xff
 
         if k == 27:
             break
@@ -145,14 +150,15 @@ def main():
         elif k == 0x20:
             print("Pause/Play")
             play = not play
-        # elif k!= dummy:
-        #     dummy = k
-        #     print(hex(k))
+        elif k!= dummy:
+            dummy = k
+            print(hex(k))
         count = count + 1
         # if count > number-1:
         #     count = 
     print(tracker.archive)
     print(tracker.objects)
+
 class centroidTracker():
     # number of pixels around centroid to look at
     searchArea = 30

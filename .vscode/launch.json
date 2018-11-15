@@ -9,7 +9,10 @@
             "type": "python",
             "request": "launch",
             "pythonPath": "${config:python.pythonPath}",
-            "program": "${file}"
+            "program": "${file}",
+            "windows": {
+                "pythonPath": "${config:python.pythonPath}"
+            }
         },
         {
             "name": "test",
