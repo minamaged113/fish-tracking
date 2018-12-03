@@ -8,7 +8,7 @@ for i,iconType in enumerate(iconsDirList):
     temp = os.listdir(os.path.join(iconsDir, iconType))
     temp.sort()
     icons[iconType] = temp
-def getIcon(name,iconsDir = iconsDir, icons = icons, theme = "black", resolution = 32):
+def FGetIcon(name,iconsDir = iconsDir, icons = icons, theme = "black", resolution = 32):
     """function used to get path of icons based on each OS.
     and the give the path of the icon to the caller function.
     
@@ -47,6 +47,6 @@ def getIcon(name,iconsDir = iconsDir, icons = icons, theme = "black", resolution
 
     
     iconName = str(theme) + "_" + str(resolution) + ".png"
-    iconPath = os.path.join(iconsDir, icons['name'], icons['name'][4] )
+    iconPath = os.path.join(iconsDir, name, icons[name][4] )
     return iconPath
-print(iconsDirList)
+# print(getIcon('file'))

@@ -2,6 +2,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 import cv2
+from UI.iconsLauncher import *
 
 ## library for reading SONAR files
 # SF: SONAR File
@@ -52,7 +53,7 @@ class FViewer(QDialog):
         self.F_BGS_BTN.setObjectName("Subtract Background")
         self.F_BGS_BTN.setFlat(True)
         self.F_BGS_BTN.setCheckable(True)
-        self.F_BGS_BTN.setIcon(QIcon("/home/mghobria/Desktop/fish-tracking/UI/icons/background_subtraction/black_32.png"))
+        self.F_BGS_BTN.setIcon(QIcon(FGetIcon("background_subtraction")))
         self.F_BGS_BTN.clicked.connect(self.FBackgroundSubtract)
         # self.F_BGS_BTN.setShortcut(Qt.Key_Left)
 

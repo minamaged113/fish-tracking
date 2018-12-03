@@ -6,8 +6,8 @@ import json
 
 def main():
     # filesPath = "/home/mghobria/Pictures/SONAR_Images" ## laptop
-    # filesPath = "C:\\Users\\mghobria\\Downloads\\aris\\F" ## windows home PC
-    filesPath = "C:\\Users\\Mina Ghobrial\\Downloads\\SONAR" ## windows Laptop PC
+    filesPath = "C:\\Users\\mghobria\\Downloads\\aris\\F" ## windows home PC
+    # filesPath = "C:\\Users\\Mina Ghobrial\\Downloads\\SONAR" ## windows Laptop PC
 
 
     imagesList = os.listdir(filesPath)
@@ -133,12 +133,12 @@ def main():
 
         if k == 27:
             break
-        elif k == 0x53:
+        elif k == 0x6e:
             print("right")
             desc = False
             count = count + 1
             continue
-        elif k == 0x51:
+        elif k == 0x62:
             print("left")
             desc = True
             count = count - 1
