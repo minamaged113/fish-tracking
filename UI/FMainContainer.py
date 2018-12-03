@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import *
 ## Other windows connected to this one
 from UI.FWelcomeInfo import *
 from UI.FViewer import *
-
+from UI.iconsLauncher import *
 
 ## Other entities dealing with the UI
 #   - File handler for opening SONAR Files
@@ -13,9 +13,10 @@ from file_handler import *
 from pathlib import Path
 
 import os
+import sys
 import cv2
 
-class FWelcomeScreen(QMainWindow):
+class FMainContainer(QMainWindow):
     """This class holds the welcome window which will be used to 
     open ARIS and DIDSON files and show statistics and information
     about the project and the developers.
@@ -34,15 +35,15 @@ class FWelcomeScreen(QMainWindow):
         
 
     def initUI(self):
-        self.setWindowIcon(QIcon("/home/mghobria/Desktop/fish-tracking/UI/icons/salmon/salmon_64"))
+        self.setWindowIcon(QIcon(FGetIcon("salmon", OS = sys.platform)))
         self.setWindowTitle("Fisher - Welcome Screen")
 
         self.FMainMenu_init()
         self.showNormal()
         self.width = 640
         self.height = 400
-        self.left = 10
-        self.top = 10
+        self.left = 100
+        self.top = 100
         self.setGeometry(self.left, self.top, self.width, self.height)
         self.FWelcomeInfo = FWelcomeInfo(self)
         self.setCentralWidget(self.FWelcomeInfo)

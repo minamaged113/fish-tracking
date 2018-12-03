@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import *
 
 ## Pages of the application
 from UI.FWelcomeInfo import *
-from UI.FWelcomeScreen import *
+from UI.FMainContainer import *
 from UI.FViewer import *
 
 

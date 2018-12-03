@@ -18,8 +18,8 @@ from file_handler import *
 def run():
     cwd = os.getcwd()
     app = QApplication(sys.argv)
-    MainWindow = FWelcomeScreen()
+    MainWindow = FMainContainer()
     sys.exit(app.exec_())
-    print(cwd)
+    return
 
 run()
