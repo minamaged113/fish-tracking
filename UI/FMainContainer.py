@@ -41,7 +41,7 @@ class FMainContainer(QMainWindow):
         self.FMainMenu_init()
         self.showNormal()
         self.width = 640
-        self.height = 400
+        self.height = 600
         self.left = 100
         self.top = 100
         self.setGeometry(self.left, self.top, self.width, self.height)
@@ -64,116 +64,116 @@ class FMainContainer(QMainWindow):
         return
 
     def FFileMenu_init(self):
-        openFileAction = QAction("Open File", self)
-        openFileAction.setShortcut("Ctrl+O")
-        openFileAction.setStatusTip("Loads a new file to the program.")
-        openFileAction.triggered.connect(self.FOpenFile)
+        self.openFileAction = QAction("Open File", self)
+        self.openFileAction.setShortcut("Ctrl+O")
+        self.openFileAction.setStatusTip("Loads a new file to the program.")
+        self.openFileAction.triggered.connect(self.FOpenFile)
 
         ## TODO : load a folder for a day processing
-        openFolderAction = QAction("Open Folder", self)
-        openFolderAction.setShortcut("Ctrl+Shift+O")
-        openFolderAction.setStatusTip("Opens a whole folder and loads it to the program.")
-        openFolderAction.triggered.connect(lambda : self.print_stat_msg("Open Folder pressed."))
-        openFolderAction.setEnabled(False)
+        self.openFolderAction = QAction("Open Folder", self)
+        self.openFolderAction.setShortcut("Ctrl+Shift+O")
+        self.openFolderAction.setStatusTip("Opens a whole folder and loads it to the program.")
+        self.openFolderAction.triggered.connect(lambda : self.print_stat_msg("Open Folder pressed."))
+        self.openFolderAction.setEnabled(False)
 
         ## TODO : add signal handler to save file after editing.
-        saveFileAction = QAction("Save", self)
-        saveFileAction.setShortcut("Ctrl+S")
-        saveFileAction.setStatusTip("Saves the current file.")
-        saveFileAction.triggered.connect(lambda : self.print_stat_msg("save file pressed."))
-        saveFileAction.setEnabled(False)
+        self.saveFileAction = QAction("Save", self)
+        self.saveFileAction.setShortcut("Ctrl+S")
+        self.saveFileAction.setStatusTip("Saves the current file.")
+        self.saveFileAction.triggered.connect(lambda : self.print_stat_msg("save file pressed."))
+        self.saveFileAction.setEnabled(False)
 
         ## TODO : add signal handler to save file as new file 
-        saveFileAsAction = QAction("Save as ...", self)
-        saveFileAsAction.setShortcut("Ctrl+Shift+S")
-        saveFileAsAction.setStatusTip("Saves current work as new file.")
-        saveFileAsAction.triggered.connect(lambda : self.print_stat_msg("Save file as pressed."))
-        saveFileAsAction.setEnabled(False)
+        self.saveFileAsAction = QAction("Save as ...", self)
+        self.saveFileAsAction.setShortcut("Ctrl+Shift+S")
+        self.saveFileAsAction.setStatusTip("Saves current work as new file.")
+        self.saveFileAsAction.triggered.connect(lambda : self.print_stat_msg("Save file as pressed."))
+        self.saveFileAsAction.setEnabled(False)
 
         ## TODO : setEnabled(True) only when the user opens a new file.
-        exportAsJPGAction = QAction("Export as JPG", self)
-        exportAsJPGAction.setStatusTip("Saves number of images on the drive in a given directory.")
-        exportAsJPGAction.triggered.connect(self.exportAsJPGActionFunction)
-        exportAsJPGAction.setEnabled(True)
+        self.exportAsJPGAction = QAction("Export as JPG", self)
+        self.exportAsJPGAction.setStatusTip("Saves number of images on the drive in a given directory.")
+        self.exportAsJPGAction.triggered.connect(self.exportAsJPGActionFunction)
+        self.exportAsJPGAction.setEnabled(True)
 
         ## TODO : setEnabled(True) only when the user opens a new file.
-        export_BGS_AsJPGAction = QAction("Export BGS as JPG", self)
-        export_BGS_AsJPGAction.setStatusTip("Saves number of backgrounf subtracted images on the drive in a given directory.")
-        export_BGS_AsJPGAction.triggered.connect(self.export_BGS_AsJPGActionFunction)
-        exportAsJPGAction.setEnabled(True)
+        self.export_BGS_AsJPGAction = QAction("Export BGS as JPG", self)
+        self.export_BGS_AsJPGAction.setStatusTip("Saves number of backgrounf subtracted images on the drive in a given directory.")
+        self.export_BGS_AsJPGAction.triggered.connect(self.export_BGS_AsJPGActionFunction)
+        self.exportAsJPGAction.setEnabled(True)
 
-        exitAction = QAction("Exit", self)
-        exitAction.setShortcut("Ctrl+Q")
-        exitAction.setStatusTip("Exits the application.")
-        exitAction.triggered.connect(QCoreApplication.instance().quit)
+        self.exitAction = QAction("Exit", self)
+        self.exitAction.setShortcut("Ctrl+Q")
+        self.exitAction.setStatusTip("Exits the application.")
+        self.exitAction.triggered.connect(QCoreApplication.instance().quit)
 
-        fileMenu = self.mainMenu.addMenu("&File")
-        fileMenu.addAction(openFileAction)
-        fileMenu.addAction(openFolderAction)
-        fileMenu.addAction(saveFileAction)
-        fileMenu.addAction(saveFileAsAction)
-        fileMenu.addAction(exportAsJPGAction)
-        fileMenu.addAction(export_BGS_AsJPGAction)
-        fileMenu.addSeparator()
-        fileMenu.addAction(exitAction)
+        self.fileMenu = self.mainMenu.addMenu("&File")
+        self.fileMenu.addAction(self.openFileAction)
+        self.fileMenu.addAction(self.openFolderAction)
+        self.fileMenu.addAction(self.saveFileAction)
+        self.fileMenu.addAction(self.saveFileAsAction)
+        self.fileMenu.addAction(self.exportAsJPGAction)
+        self.fileMenu.addAction(self.export_BGS_AsJPGAction)
+        self.fileMenu.addSeparator()
+        self.fileMenu.addAction(self.exitAction)
 
     def FHelpMenu_init(self):
         ## TODO : add signal handler to open webpage
-        aboutAction = QAction("About", self)
-        aboutAction.setStatusTip("Opens a webpage contains all info about the project.")
-        aboutAction.triggered.connect(lambda: self.print_stat_msg("About pressed"))
-        aboutAction.setEnabled(False)
+        self.aboutAction = QAction("About", self)
+        self.aboutAction.setStatusTip("Opens a webpage contains all info about the project.")
+        self.aboutAction.triggered.connect(lambda: self.print_stat_msg("About pressed"))
+        self.aboutAction.setEnabled(False)
 
         ## TODO : add signal handler to check for updates
-        checkForUpdatesAction = QAction("Check for updates", self)
-        checkForUpdatesAction.setStatusTip("Check for updates online")
-        checkForUpdatesAction.triggered.connect(lambda: self.print_stat_msg("Check for updates pressed."))
-        checkForUpdatesAction.setEnabled(False)
+        self.checkForUpdatesAction = QAction("Check for updates", self)
+        self.checkForUpdatesAction.setStatusTip("Check for updates online")
+        self.checkForUpdatesAction.triggered.connect(lambda: self.print_stat_msg("Check for updates pressed."))
+        self.checkForUpdatesAction.setEnabled(False)
 
         ## TODO : add signal handler to show license file.
-        viewLicenseAction = QAction("View License", self)
-        viewLicenseAction.setStatusTip("Shows the licenses for the whole software.")
-        viewLicenseAction.triggered.connect(lambda: self.print_stat_msg("view license pressed."))
-        viewLicenseAction.setEnabled(False)
+        self.viewLicenseAction = QAction("View License", self)
+        self.viewLicenseAction.setStatusTip("Shows the licenses for the whole software.")
+        self.viewLicenseAction.triggered.connect(lambda: self.print_stat_msg("view license pressed."))
+        self.viewLicenseAction.setEnabled(False)
 
         ## TODO : add signal handler to report an issue with the software
-        reportAction = QAction("Report Issue", self)
-        reportAction.setStatusTip("Report an issue to the developers.")
-        reportAction.triggered.connect(lambda : self.print_stat_msg("reprot issure pressed."))
-        reportAction.setEnabled(False)
+        self.reportAction = QAction("Report Issue", self)
+        self.reportAction.setStatusTip("Report an issue to the developers.")
+        self.reportAction.triggered.connect(lambda : self.print_stat_msg("reprot issure pressed."))
+        self.reportAction.setEnabled(False)
         
         ## TODO : add signal handler to show statistics
-        showStatisticsAction = QAction("Statistics", self)
-        showStatisticsAction.setStatusTip("Shows statistics about old processed files.")
-        showStatisticsAction.triggered.connect(lambda : self.print_stat_msg("Statistics pressed."))
-        showStatisticsAction.setEnabled(False)
+        self.showStatisticsAction = QAction("Statistics", self)
+        self.showStatisticsAction.setStatusTip("Shows statistics about old processed files.")
+        self.showStatisticsAction.triggered.connect(lambda : self.print_stat_msg("Statistics pressed."))
+        self.showStatisticsAction.setEnabled(False)
 
-        helpMenu = self.mainMenu.addMenu("&Help")
-        helpMenu.addAction(showStatisticsAction)
-        helpMenu.addSeparator()
-        helpMenu.addAction(reportAction)
-        helpMenu.addAction(viewLicenseAction)
-        helpMenu.addAction(checkForUpdatesAction)
-        helpMenu.addSeparator()
-        helpMenu.addAction(aboutAction)
+        self.helpMenu = self.mainMenu.addMenu("&Help")
+        self.helpMenu.addAction(self.showStatisticsAction)
+        self.helpMenu.addSeparator()
+        self.helpMenu.addAction(self.reportAction)
+        self.helpMenu.addAction(self.viewLicenseAction)
+        self.helpMenu.addAction(self.checkForUpdatesAction)
+        self.helpMenu.addSeparator()
+        self.helpMenu.addAction(self.aboutAction)
 
 
     def FEditMenu_init(self):
         ## TODO : implement undo function
-        undoAction = QAction("Undo", self)
-        undoAction.setShortcut("Ctrl+Z")
-        undoAction.setStatusTip("Undoes the last action.")
-        undoAction.triggered.connect(lambda: self.print_stat_msg("Undo pressed."))
+        self.undoAction = QAction("Undo", self)
+        self.undoAction.setShortcut("Ctrl+Z")
+        self.undoAction.setStatusTip("Undoes the last action.")
+        self.undoAction.triggered.connect(lambda: self.print_stat_msg("Undo pressed."))
 
         ## TODO : implement redo function
-        redoAction = QAction("Redo", self)
-        redoAction.setShortcut("Ctrl+Y")
-        redoAction.setStatusTip("Redoes the last action.")
-        redoAction.triggered.connect(lambda: self.print_stat_msg("Redo pressed."))
+        self.redoAction = QAction("Redo", self)
+        self.redoAction.setShortcut("Ctrl+Y")
+        self.redoAction.setStatusTip("Redoes the last action.")
+        self.redoAction.triggered.connect(lambda: self.print_stat_msg("Redo pressed."))
 
-        editMenu = self.mainMenu.addMenu("&Edit")
-        editMenu.addAction(undoAction)
-        editMenu.addAction(redoAction)
+        self.editMenu = self.mainMenu.addMenu("&Edit")
+        self.editMenu.addAction(self.undoAction)
+        self.editMenu.addAction(self.redoAction)
 
 
 
@@ -187,7 +187,9 @@ class FMainContainer(QMainWindow):
         home = str(Path.home())
         # filePathTuple = ('/home/mghobria/Documents/work/data/data.aris',) # laptop
         # filePathTuple = ('data.aris',) # Home PC
-        filePathTuple = QFileDialog.getOpenFileName(self, "Open File", home, "Sonar Files (*.aris *.ddf)")
+        filePathTuple = ('/home/mghobria/Documents/work/data/data 1/data.aris',) # work PC
+        
+        # filePathTuple = QFileDialog.getOpenFileName(self, "Open File", home, "Sonar Files (*.aris *.ddf)")
         if filePathTuple[0] != "" : 
             self.FFilePath = filePathTuple[0]
             self.FCentralScreen = FViewer(self)

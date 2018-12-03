@@ -3,7 +3,7 @@ import os
 
 iconsDir = os.path.join("UI","icons")
 
-def FGetIcon(name,iconsDir = iconsDir, theme = "black", resolution = 32, OS='linux'):
+def FGetIcon(name,iconsDir = iconsDir, theme = "black", resolution = 256, OS='linux'):
     """function used to get path of icons based on each OS.
     and the give the path of the icon to the caller function.
     

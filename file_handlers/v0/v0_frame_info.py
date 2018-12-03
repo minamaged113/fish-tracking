@@ -22,7 +22,7 @@ import pytz
 import file_handlers.beamLookUp as bl
 import math
 import cv2
-from skimage.transform import warp, rescale
+from skimage.transform import warp
 
 cwd = os.getcwd()
 JSON_FILE_PATH = cwd + "/file_handlers/v0/v0_frame_headers_info.json"

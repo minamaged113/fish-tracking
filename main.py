@@ -9,7 +9,6 @@ import cv2
 import json
 import numpy as np
 import matplotlib.pyplot as plt
-from skimage.transform import rescale
 from UI_handler import *
 from file_handler import *
 

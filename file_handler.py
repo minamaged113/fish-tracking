@@ -139,7 +139,7 @@ def FOpenSonarFile(filename):
         
     except:
         err.print_error(err.fileReadError)
-        raise
+        raise ValueError("No such file or directory.\nSpecified path: {}".format(filename))
     # read the first 4 bytes in the file to decide the version
     version = struct.unpack(cType["uint32_t"], fhand.read(c("uint32_t")))[0]
     versions[version]()

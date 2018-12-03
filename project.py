@@ -3,16 +3,11 @@ import os
 import numpy as np
 import copy
 import json
+# SF: Sonar File Library
+import file_handler as SF
+import numpy as np
 
-def main():
-    # filesPath = "/home/mghobria/Pictures/SONAR_Images" ## laptop
-    filesPath = "C:\\Users\\mghobria\\Downloads\\aris\\F" ## windows home PC
-    # filesPath = "C:\\Users\\Mina Ghobrial\\Downloads\\SONAR" ## windows Laptop PC
-
-
-    imagesList = os.listdir(filesPath)
-    imagesList.sort()
-
+def FAnalyze():
     font = cv2.FONT_HERSHEY_SIMPLEX
     threshold = 25
     fgbg = cv2.createBackgroundSubtractorMOG2()
@@ -25,9 +20,7 @@ def main():
     k = 30
     play = False
     desc = False
-    # maximum number of images
-    number = max(enumerate(imagesList,1))[0]
-    imgList = list(enumerate(imagesList,1))
+    
     count =1
     padding = 30
 
@@ -47,14 +40,8 @@ def main():
 
     while (True):
     # while (count<100):
-        # get image path
-        try:
-            imgPath = os.path.join(filesPath, imgList[count][1]) 
-        except:
-            break
-        
         # read the image from disk
-        img = cv2.imread(imgPath, cv2.IMREAD_GRAYSCALE)
+        img = fetchFrame(count)
         
         # Blur the image to help in object detection
         frameBlur = cv2.blur(img, (5,5))
@@ -103,23 +90,6 @@ def main():
                 x = int(fishes['objects'][fish].locations[-1][0])
                 y = int(fishes['objects'][fish].locations[-1][1])
                 center = (x,y)
-                # x1 = stats[i,0]-padding       # left
-                # y1 = stats[i,1]-padding       # top
-                # x2 = stats[i,0] + stats[i, 2]+ padding #  left + width
-                # y2 = stats[i,1] + stats[i, 3]+ padding
-                # if x1 < 0:
-                #     x1 = 0
-                # if y1 < 0:
-                #     y1 = 0
-                # if x2 > mask.shape[1]:
-                #     x2 = mask.shape[1]
-                # if y2 > mask.shape[0]:
-                #     y2 = mask.shape[0]
-
-                # topLeft = (x1, y1)
-                # bottomRight = ( x2, y2)
-
-                # cv2.rectangle(labeled_img, topLeft, bottomRight, (0,255,0),1)
                 cv2.circle(labeled_img, center, tracker.searchArea, (0,255,0), 1)
         cv2.putText(labeled_img,"Objects: "+str(fishes["objects"].__len__()),(10,100), font, 1,(255,255,255),2,cv2.LINE_AA)
         cv2.putText(labeled_img,str(count),(10,50), font, 1,(255,255,255),2,cv2.LINE_AA)
@@ -291,7 +261,31 @@ class Fish():
             self.minAppear -= 1
             return
     
+def fetchFrame(count, readFromFile=False, filePath = False):
+    if not readFromFile:
+        filesPath = "/home/mghobria/Pictures/SONAR_Images" ## laptop
+        # filesPath = "C:\\Users\\mghobria\\Downloads\\aris\\F" ## windows home PC
+        # filesPath = "C:\\Users\\Mina Ghobrial\\Downloads\\SONAR" ## windows Laptop PC
+
+        imagesList = os.listdir(filesPath)
+        imagesList.sort()
+        # maximum number of images
+        number = max(enumerate(imagesList,1))[0]
+        imgList = list(enumerate(imagesList,1))
+        
+        # get image path
+        try:
+            imgPath = os.path.join(filesPath, imgList[count][1]) 
+        except:
+            raise Exception("Could not load image from disk.\nDirectory to load from: {}\n".format(filesPath))
+        
+        # read the image from disk
+        img = cv2.imread(imgPath, cv2.IMREAD_GRAYSCALE)
+
+    else:
+        File = SF.FOpenSonarFile(filePath)
+        return
+    return img
 
 
-
-main()
+FAnalyze()

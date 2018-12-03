@@ -7,7 +7,6 @@ from UI.iconsLauncher import *
 ## library for reading SONAR files
 # SF: SONAR File
 import file_handler as SF
-from skimage.transform import rescale
 import numpy as np
 
 ## For showing images in matplotlib
@@ -41,21 +40,27 @@ class FViewer(QDialog):
         self.setWindowTitle("Fisher - " + self.FFilePath)
         self.FLayout = QGridLayout()
 
-        FNextBTN = QPushButton("Next",self)
+        FNextBTN = QPushButton(self)
         FNextBTN.clicked.connect(self.FShowNextImage)
         FNextBTN.setShortcut(Qt.Key_Right)
+        FNextBTN.setIcon(QIcon(FGetIcon('next')))
         
-        FPreviousBTN = QPushButton("Previous",self)
+        FPreviousBTN = QPushButton(self)
         FPreviousBTN.clicked.connect(self.FShowPreviousImage)
         FPreviousBTN.setShortcut(Qt.Key_Left)
+        FPreviousBTN.setIcon(QIcon(FGetIcon('previous')))
         
+        self.FPlayBTN = QPushButton(self)
+        self.FPlayBTN.clicked.connect(self.FPlay)
+        self.FPlayBTN.setShortcut(Qt.Key_Space)
+        self.FPlayBTN.setIcon(QIcon(FGetIcon('play')))
+
         self.F_BGS_BTN = QPushButton(self)
         self.F_BGS_BTN.setObjectName("Subtract Background")
         self.F_BGS_BTN.setFlat(True)
         self.F_BGS_BTN.setCheckable(True)
         self.F_BGS_BTN.setIcon(QIcon(FGetIcon("background_subtraction")))
         self.F_BGS_BTN.clicked.connect(self.FBackgroundSubtract)
-        # self.F_BGS_BTN.setShortcut(Qt.Key_Left)
 
         self.F_BGS_Slider = QSlider(Qt.Vertical)
         self.F_BGS_Slider.setMinimum(0)
@@ -70,6 +75,7 @@ class FViewer(QDialog):
         self.FCanvas = FigureCanvas(self.FFigure)
         self.FToolbar = NavigationToolbar(self.FCanvas, self)
         self.FToolbar.addWidget(self.F_BGS_BTN)
+        # self.FToolbar.add
         self.FToolbar.addWidget(self.F_BGS_Slider)
         self.FToolbar.setOrientation(Qt.Vertical)
         self.FToolbar.setFixedWidth(self.FToolbar.minimumSizeHint().width())
@@ -87,11 +93,11 @@ class FViewer(QDialog):
         self.FLayout.addWidget(self.FToolbar,0,0,3,1)
         self.FLayout.setColumnStretch(0,0)
         # self.FLayout.setColumnMinimumWidth(0, 0)
-        self.FLayout.addWidget(self.FCanvas,0,1,1,2)
-        self.FLayout.addWidget(self.FSlider,1,1,1,2)
-        self.FLayout.addWidget(FNextBTN,2,2)
+        self.FLayout.addWidget(self.FCanvas,0,1,1,3)
+        self.FLayout.addWidget(self.FSlider,1,1,1,3)
         self.FLayout.addWidget(FPreviousBTN,2,1)
-        
+        self.FLayout.addWidget(self.FPlayBTN, 2, 2)
+        self.FLayout.addWidget(FNextBTN,2,3)
 
        
         self.FDisplayImage()
@@ -103,7 +109,7 @@ class FViewer(QDialog):
     def FShowNextImage(self):
         """Show the next frame image.
         """
-
+        self.FFigure.clf()
         self.UI_FRAME_INDEX +=1
         if (self.UI_FRAME_INDEX > self.File.frameCount-1):
             self.UI_FRAME_INDEX = 0
@@ -116,6 +122,7 @@ class FViewer(QDialog):
         tick3 = time.time()
         print('time to fetch frame = ', tick2-tick1)
         print('time to show frame = ', tick3-tick2)
+        return
 
     def FShowPreviousImage(self):
         """Show the previous frame image
@@ -142,10 +149,14 @@ class FViewer(QDialog):
             ax.clear()
             ax.set_title("Original")
             ax.imshow(self.FFrames, cmap = 'gray')
-            fgbg_FFrames = self.fgbg.apply(self.FFrames)
+            frameBlur = cv2.blur(self.FFrames, (5,5))
+            mask = self.fgbg.apply(frameBlur)
+            mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, self.kernel)
+            mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, self.kernel)
+            mask = cv2.threshold(mask, 128, 255, cv2.THRESH_BINARY)[1]
             ax = self.FFigure.add_subplot(121)
             ax.set_title("Background removed")
-            ax.imshow(fgbg_FFrames, cmap = 'gray')
+            ax.imshow(mask, cmap = 'gray')
         else:
             self.FFigure.clf()
             ax = self.FFigure.add_subplot(111)
@@ -174,7 +185,7 @@ class FViewer(QDialog):
                     the memory.
 
         """
-
+        ## TODO
         framesIndices = list()
         range = 10
         if range > (self.File.FRAME_COUNT+1):
@@ -193,6 +204,7 @@ class FViewer(QDialog):
         if (self.F_BGS_BTN.isChecked()):
             self.subtractBackground = True
             self.F_BGS_Slider.setDisabled(False)
+            self.kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (10,2))
             self.FDisplayImage()
         else:
             self.subtractBackground = False
@@ -207,3 +219,9 @@ class FViewer(QDialog):
     def F_BGS_SliderValueChanged(self):
         value = self.F_BGS_Slider.value()
         self.fgbg.setVarThreshold(value)
+
+    def FPlay(self):
+        self.FPlayBTN.setIcon(QIcon(FGetIcon('pause')))
+        while(self.UI_FRAME_INDEX<self.File.frameCount):
+            self.FShowNextImage()
+        return
