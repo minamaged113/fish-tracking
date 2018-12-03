@@ -2,13 +2,8 @@ import json
 import os
 
 iconsDir = os.path.join("UI","icons")
-iconsDirList = os.listdir(iconsDir)
-icons = dict()
-for i,iconType in enumerate(iconsDirList):
-    temp = os.listdir(os.path.join(iconsDir, iconType))
-    temp.sort()
-    icons[iconType] = temp
-def FGetIcon(name,iconsDir = iconsDir, icons = icons, theme = "black", resolution = 32, OS='linux'):
+
+def FGetIcon(name,iconsDir = iconsDir, theme = "black", resolution = 32, OS='linux'):
     """function used to get path of icons based on each OS.
     and the give the path of the icon to the caller function.
     
@@ -48,9 +43,8 @@ def FGetIcon(name,iconsDir = iconsDir, icons = icons, theme = "black", resolutio
 
     if(OS == 'linux'):
         iconName = str(theme) + "_" + str(resolution) + ".png"
-        iconPath = os.path.join(iconsDir, name, icons[name][4] )
+        iconPath = os.path.join(iconsDir, name, iconName )
     elif(OS == 'win32'):
         iconName = str(theme) + "_" + str(resolution) + ".ico"
-        iconPath = os.path.join(iconsDir, name, icons[name][4] )
+        iconPath = os.path.join(iconsDir, name, iconName )
     return iconPath
-# print(getIcon('file'))
