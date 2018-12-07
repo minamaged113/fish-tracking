@@ -38,6 +38,9 @@ def FAnalyze():
     # variables for trakcers:
     tracker = centroidTracker()
 
+    # Kalman Filter
+    kf = cv2.KalmanFilter(2,1,0)
+
     while (True):
     # while (count<100):
         # read the image from disk
@@ -126,8 +129,7 @@ def FAnalyze():
         count = count + 1
         # if count > number-1:
         #     count = 
-    print(tracker.archive)
-    print(tracker.objects)
+    FSaveOutput(tracker, "/home/mghobria/Pictures/SONAR_Images")
 
 class centroidTracker():
     # number of pixels around centroid to look at
@@ -169,10 +171,10 @@ class centroidTracker():
         for i in range(npArrayOfObjects.shape[0]):
             NNLocation = self.NAN(npArrayOfCentroids[i])
             if not NNLocation:
-                newFish = Fish(npArrayOfCentroids[i], frameIndex)
+                newFish = Fish(npArrayOfCentroids[i], frameIndex, npArrayOfObjects[i])
                 self.psuedoObjects['objects'][newFish.id] = newFish
             else:
-                self.psuedoObjects['objects'][NNLocation].updateInfo(npArrayOfCentroids[i], frameIndex)
+                self.psuedoObjects['objects'][NNLocation].updateInfo(npArrayOfCentroids[i], frameIndex, npArrayOfObjects[i])
         
 
         self.delete(frameIndex)
@@ -230,7 +232,7 @@ class Fish():
     maxDisappear = 5
     minAppear = 30
     
-    def __init__(self, centroid, firstFrame):
+    def __init__(self, centroid, firstFrame, connectedLabelsWStats):
         # ID given to the fish during first detection
         self.id = Fish.ID
         # Maximum number of frames the fish has to disappear to be deleted from the list
@@ -243,21 +245,32 @@ class Fish():
         self.locations.append(centroid)
         self.frames = list()
         self.frames.append(firstFrame)
+        self.left = list()
+        self.left.append(connectedLabelsWStats[0])
+        self.top = list()
+        self.top.append(connectedLabelsWStats[1])
+        self.width = list()
+        self.width.append(connectedLabelsWStats[2])
+        self.height = list()
+        self.height.append(connectedLabelsWStats[3])
+        self.area = list()
+        self.area.append(connectedLabelsWStats[4])
         Fish.ID += 1
-        self.attributes = {
-            "ID" : self.id,
-            "locations": self.locations,
-            "framesVisible": self.frames
-        }
+        
         return 
 
     def getLastLocation(self):
         return self.locations[-1]
 
-    def updateInfo(self, centroid = None, currentFrame= None):
-        if ( (centroid is not None) and (currentFrame is not None)):
+    def updateInfo(self, centroid = None, currentFrame= None, objProps = None):
+        if ( (centroid is not None) and (currentFrame is not None) and (objProps is not None)):
             self.locations.append(centroid)
             self.frames.append(currentFrame)
+            self.left.append(objProps[0])
+            self.top.append(objProps[1])
+            self.width.append(objProps[2])
+            self.height.append(objProps[3])
+            self.area.append(objProps[4])
             self.minAppear -= 1
             return
     
@@ -287,5 +300,44 @@ def fetchFrame(count, readFromFile=False, filePath = False):
         return
     return img
 
+def FSaveOutput(cls, path):
+    """
+    Takes the ouput of the tracking process and saves it into
+    the same path as the stored images.
+    Data saved is in the form of a JSON file.
+    the data has the following format:
+    {
+        "fishes": {
+            <fishNumber> : {
+                "ID": cls.id,
+                "locations": cls.locations,
+                "frames": cls.frames,
+                "objProps": cls.objProps
+            }
+            .
+            .
+            .
+        }
+    }
+    """
+    print(cls.archive)
+    print(cls.objects)
+    data = dict()
+    for n in cls.archive['objects'].keys():
+        data[str(n)] = {
+                "ID" : cls.archive['objects'][n].id,
+                "locations" : tuple(map(tuple, cls.archive['objects'][n].locations)),
+                "frames" : cls.archive['objects'][n].frames,
+                "left": list(map(int, cls.archive['objects'][n].left)),
+                "top": list(map(int, cls.archive['objects'][n].top)),
+                "width": list(map(int, cls.archive['objects'][n].width)),
+                "height" : list(map(int, cls.archive['objects'][n].height)),
+                "area": list(map(int, cls.archive['objects'][n].area))
+
+            }
+    path = os.path.join(path, "out.json")            
+    with open(path, 'w') as outFile:
+        json.dump(data, outFile)
+    return
 
 FAnalyze()
