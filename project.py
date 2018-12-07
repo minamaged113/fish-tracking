@@ -7,7 +7,19 @@ import json
 import file_handler as SF
 import numpy as np
 
+<<<<<<< Updated upstream
 def FAnalyze():
+=======
+def main():
+    filesPath = "/home/mghobria/Pictures/SONAR_Images" ## laptop linux
+    # filesPath = "C:\\Users\\mghobria\\Downloads\\aris\\F" ## windows home PC
+    # filesPath = "C:\\Users\\Mina Ghobrial\\Downloads\\SONAR" ## windows Laptop PC
+
+
+    imagesList = os.listdir(filesPath)
+    imagesList.sort()
+
+>>>>>>> Stashed changes
     font = cv2.FONT_HERSHEY_SIMPLEX
     threshold = 25
     fgbg = cv2.createBackgroundSubtractorMOG2()
@@ -15,6 +27,7 @@ def FAnalyze():
     # kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (10,5))
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (10,2))
 
+    kf = cv2.KalmanFilter()
     ## variables for displaying frames
     dummy = 0
     k = 30
@@ -94,6 +107,7 @@ def FAnalyze():
                 y = int(fishes['objects'][fish].locations[-1][1])
                 center = (x,y)
                 cv2.circle(labeled_img, center, tracker.searchArea, (0,255,0), 1)
+                cv2.circle(colored_img, center, tracker.searchArea, (0,255,0), 1)
         cv2.putText(labeled_img,"Objects: "+str(fishes["objects"].__len__()),(10,100), font, 1,(255,255,255),2,cv2.LINE_AA)
         cv2.putText(labeled_img,str(count),(10,50), font, 1,(255,255,255),2,cv2.LINE_AA)
         cv2.namedWindow("frames and BGS frames", cv2.WND_PROP_FULLSCREEN)
