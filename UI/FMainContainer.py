@@ -31,6 +31,7 @@ class FMainContainer(QMainWindow):
         ##  UI elements description
         QMainWindow.__init__(self)
         self.initUI()
+        return
         
         
 
@@ -185,9 +186,9 @@ class FMainContainer(QMainWindow):
     def FOpenFile(self):
         ## DEBUG : remove filePathTuple and uncomment filePathTuple
         home = str(Path.home())
-        # filePathTuple = ('/home/mghobria/Documents/work/data/data.aris',) # laptop
+        filePathTuple = ('/home/mghobria/Documents/work/data/data.aris',) # laptop
         # filePathTuple = ('data.aris',) # Home PC
-        filePathTuple = ('/home/mghobria/Documents/work/data/data 1/data.aris',) # work PC
+        # filePathTuple = ('/home/mghobria/Documents/work/data/data 1/data.aris',) # work PC
         
         # filePathTuple = QFileDialog.getOpenFileName(self, "Open File", home, "Sonar Files (*.aris *.ddf)")
         if filePathTuple[0] != "" : 

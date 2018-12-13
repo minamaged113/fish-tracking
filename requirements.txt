@@ -13,6 +13,7 @@ networkx==2.1
 numpy==1.14.5
 opencv-python==3.4.1.15
 Pillow==5.2.0
+progressbar==2.5
 pylint==2.1.1
 pyparsing==2.2.0
 python-dateutil==2.7.3

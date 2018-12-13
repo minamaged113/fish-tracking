@@ -1,9 +1,5 @@
 {
-<<<<<<< Updated upstream
-    "python.pythonPath": "venv/bin/python",
-=======
     "python.pythonPath": "${workspaceFolder}/venv/bin/python",
->>>>>>> Stashed changes
     "python.linting.enabled": false,
     "python.linting.pylintPath": "pylint"
 }

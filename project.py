@@ -6,20 +6,9 @@ import json
 # SF: Sonar File Library
 import file_handler as SF
 import numpy as np
+from time import sleep
 
-<<<<<<< Updated upstream
-def FAnalyze():
-=======
-def main():
-    filesPath = "/home/mghobria/Pictures/SONAR_Images" ## laptop linux
-    # filesPath = "C:\\Users\\mghobria\\Downloads\\aris\\F" ## windows home PC
-    # filesPath = "C:\\Users\\Mina Ghobrial\\Downloads\\SONAR" ## windows Laptop PC
-
-
-    imagesList = os.listdir(filesPath)
-    imagesList.sort()
-
->>>>>>> Stashed changes
+def FAnalyze(cls):
     font = cv2.FONT_HERSHEY_SIMPLEX
     threshold = 25
     fgbg = cv2.createBackgroundSubtractorMOG2()
@@ -27,7 +16,6 @@ def main():
     # kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (10,5))
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (10,2))
 
-    kf = cv2.KalmanFilter()
     ## variables for displaying frames
     dummy = 0
     k = 30
@@ -51,17 +39,22 @@ def main():
     # variables for trakcers:
     tracker = centroidTracker()
 
-    # Kalman Filter
-    kf = cv2.KalmanFilter(2,1,0)
-
     while (True):
     # while (count<100):
         # read the image from disk
-        img = fetchFrame(count)
+        readFromFile = False
+        img = fetchFrame(count, readFromFile= readFromFile)
+        if(img is None):
+            if readFromFile:
+                FSaveOutput(tracker, "./", os.path.basename(cls.FFilePath).split(".")[0] + ".json")
+                break
+            else:
+                FSaveOutput(tracker, "./", "test.json")
+                break
         
         # Blur the image to help in object detection
         frameBlur = cv2.blur(img, (5,5))
-
+        
         # apply background subtraction to get moving objects
         # the image produced has the objects and shadows
         # background value #0
@@ -115,7 +108,7 @@ def main():
         # cv2.imshow("frames and BGS frames",np.hstack((mask, img)))
         cv2.imshow("frames and BGS frames",np.hstack((labeled_img, colored_img)))
 
-
+        
         k = cv2.waitKey(1 * play) & 0xff
 
         if k == 27:
@@ -140,10 +133,16 @@ def main():
         elif k!= dummy:
             dummy = k
             print(hex(k))
+
         count = count + 1
         # if count > number-1:
         #     count = 
-    FSaveOutput(tracker, "/home/mghobria/Pictures/SONAR_Images")
+    if readFromFile:
+        detectedFish = FSaveOutput(tracker, "./", os.path.basename(cls.FFilePath).split(".")[0] + ".json")
+    else:
+        detectedFish = FSaveOutput(tracker, "./", "test.json")
+    cv2.destroyWindow("frames and BGS frames")
+    return detectedFish
 
 class centroidTracker():
     # number of pixels around centroid to look at
@@ -303,18 +302,19 @@ def fetchFrame(count, readFromFile=False, filePath = False):
         # get image path
         try:
             imgPath = os.path.join(filesPath, imgList[count][1]) 
+            img = cv2.imread(imgPath, cv2.IMREAD_GRAYSCALE)
         except:
             raise Exception("Could not load image from disk.\nDirectory to load from: {}\n".format(filesPath))
         
         # read the image from disk
-        img = cv2.imread(imgPath, cv2.IMREAD_GRAYSCALE)
+        
 
     else:
         File = SF.FOpenSonarFile(filePath)
         return
     return img
 
-def FSaveOutput(cls, path):
+def FSaveOutput(cls, path, fileName):
     """
     Takes the ouput of the tracking process and saves it into
     the same path as the stored images.
@@ -349,9 +349,20 @@ def FSaveOutput(cls, path):
                 "area": list(map(int, cls.archive['objects'][n].area))
 
             }
-    path = os.path.join(path, "out.json")            
+    for n in cls.objects['objects'].keys():
+        if str(n) not in data:
+            data[str(n)] = {
+                "ID" : cls.objects['objects'][n].id,
+                "locations" : tuple(map(tuple, cls.objects['objects'][n].locations)),
+                "frames" : cls.objects['objects'][n].frames,
+                "left": list(map(int, cls.objects['objects'][n].left)),
+                "top": list(map(int, cls.objects['objects'][n].top)),
+                "width": list(map(int, cls.objects['objects'][n].width)),
+                "height" : list(map(int, cls.objects['objects'][n].height)),
+                "area": list(map(int, cls.objects['objects'][n].area))
+
+            }
+    path = os.path.join(path, fileName)            
     with open(path, 'w') as outFile:
         json.dump(data, outFile)
-    return
-
-FAnalyze()
+    return data

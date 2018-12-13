@@ -3,6 +3,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 import cv2
 from UI.iconsLauncher import *
+import project
 
 ## library for reading SONAR files
 # SF: SONAR File
@@ -16,6 +17,27 @@ from matplotlib.figure import Figure
 from matplotlib.pyplot import imshow
 import time
 
+class FFishListItem():
+    def __init__(self, cls, inputDict, fishNumber):
+        self.fishNumber = fishNumber
+        self.inputDict = inputDict
+        self.listItem = QListWidgetItem()
+        self.FWdiget = QWidget()
+        self.FWdigetText = QLabel("Fish #{}".format(self.fishNumber))
+        self.FWdigetBTN = QPushButton("Show")
+        self.FWdigetBTN.clicked.connect(lambda: cls.showFish(self.fishNumber, self.inputDict))
+        self.FWdigetLayout = QVBoxLayout()
+        self.FWdigetLayout.addWidget(self.FWdigetText)
+        self.FWdigetLayout.addWidget(self.FWdigetBTN)
+        self.FWdigetLayout.addStretch()
+        self.FWdigetLayout.setSizeConstraint(QLayout.SetFixedSize)
+        self.FWdiget.setLayout(self.FWdigetLayout)
+        self.listItem.setSizeHint(self.FWdiget.sizeHint())
+
+
+    
+
+
 class FViewer(QDialog):
     """This class holds the main window which will be used to 
     show the SONAR images, analyze them and edit images.
@@ -28,10 +50,14 @@ class FViewer(QDialog):
     UI_FRAME_INDEX = 0
     FRAMES_LIST = list()
     subtractBackground = False
-    def __init__(self, parent):
+    postAnalysisViewer = False
+
+    def __init__(self, parent, resultsView = False, results=False):
         """Initializes the window and loads the first frame and
         places the UI elements, each in its own place.
         """
+        self.postAnalysisViewer = resultsView
+        self.FDetectedDict = results
         self.FParent = parent
         ##  Reading the file
         self.FLoadSONARFile(self.FParent.FFilePath)
@@ -54,6 +80,9 @@ class FViewer(QDialog):
         self.FPlayBTN.clicked.connect(self.FPlay)
         self.FPlayBTN.setShortcut(Qt.Key_Space)
         self.FPlayBTN.setIcon(QIcon(FGetIcon('play')))
+        self.FPlayBTN.setCheckable(True)
+        
+        
 
         self.F_BGS_BTN = QPushButton(self)
         self.F_BGS_BTN.setObjectName("Subtract Background")
@@ -98,6 +127,8 @@ class FViewer(QDialog):
         self.FLayout.addWidget(FPreviousBTN,2,1)
         self.FLayout.addWidget(self.FPlayBTN, 2, 2)
         self.FLayout.addWidget(FNextBTN,2,3)
+        if self.postAnalysisViewer:
+            self.FListDetected()
 
        
         self.FDisplayImage()
@@ -144,6 +175,7 @@ class FViewer(QDialog):
     def FDisplayImage(self):
         if(self.subtractBackground):
             self.FFigure.clf()
+            self.FFigure.clear()
             ax = self.FFigure.add_subplot(122)
             # ax.remove()
             ax.clear()
@@ -159,6 +191,7 @@ class FViewer(QDialog):
             ax.imshow(mask, cmap = 'gray')
         else:
             self.FFigure.clf()
+            self.FFigure.clear()
             ax = self.FFigure.add_subplot(111)
             ax.clear()
             ax.set_title("Original")
@@ -221,7 +254,37 @@ class FViewer(QDialog):
         self.fgbg.setVarThreshold(value)
 
     def FPlay(self):
-        self.FPlayBTN.setIcon(QIcon(FGetIcon('pause')))
-        while(self.UI_FRAME_INDEX<self.File.frameCount):
-            self.FShowNextImage()
+        ## problem
+        # self.FPlayBTN.setIcon(QIcon(FGetIcon('pause')))
+        # self.FLayout.addWidget(self.FPlayBTN, 2, 2)
+        # while(self.UI_FRAME_INDEX<self.File.frameCount):
+        #     self.FShowNextImage()
+        #     if (not self.FPlayBTN.is):
+        #         print("1")
+        #     else:
+        #         print("0")
+        
+        self.FDetectedDict = project.FAnalyze(self)
+        if(len(self.FDetectedDict)):
+            self.FResultsViewer = FViewer(self.FParent, resultsView= True, results=self.FDetectedDict)
+            self.FParent.setCentralWidget(self.FResultsViewer)
+
+        return
+
+    def FListDetected(self):
+        count = 1
+        listOfFish = list()
+        self.FList = QListWidget()
+        for fish in self.FDetectedDict.keys():
+            listItem = FFishListItem(self, self.FDetectedDict[fish], count)
+            self.FList.addItem(listItem.listItem)
+            self.FList.setItemWidget(listItem.listItem, listItem.FWdiget)
+            listOfFish.append(listItem)
+            count += 1
+
+        self.FLayout.addWidget(self.FList, 0,4,5,1)
+        return
+
+    def showFish(self, fishNumber, inputDict):
+        print("Fish = ", fishNumber)
         return

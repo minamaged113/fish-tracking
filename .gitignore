@@ -1,7 +1,7 @@
 prof.out
 Fishing-contest-badges.zip
 venv
-.vscode/settings.json
+.vscode
 UI/__pycache__
 skimage_warp.py 
 __pycache__
