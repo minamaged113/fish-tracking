@@ -17,6 +17,56 @@ from matplotlib.figure import Figure
 from matplotlib.pyplot import imshow
 import time
 
+class checkPlayBTNThread(QThread):
+    def __init__(self, cls):
+        QThread.__init__(self)
+        self.parent = cls
+
+    def __del__(self):
+        self.wait()
+
+    def run(self):
+        if (not self.parent.FPlayBTN.isChecked()):
+            self.parent.FPlayBTN.setIcon(QIcon(FGetIcon('play')))
+            self.parent.FLayout.addWidget(self.parent.FPlayBTN, 2, 2)
+            self.parent.FPlayThread.terminate()
+        
+class FPlayThread(QThread):
+    repaintSignal = pyqtSignal()
+    listOfAllThreads = list()
+    def __init__(self, cls):
+        QThread.__init__(self)
+        self.parent = cls
+
+    def __del__(self):
+        self.wait()
+
+    def run(self):
+        self.listOfAllThreads.append(self)
+        while(self.parent.UI_FRAME_INDEX<self.parent.File.frameCount):
+            self.parent.FShowNextImage()
+            # self.parent.FFigure.repaint()
+            self.repaintSignal.connect(self.FRepaint)
+            self.repaintSignal.emit()
+            if (not self.parent.FPlayBTN.isChecked()):
+                self.parent.FPlayBTN.setIcon(QIcon(FGetIcon('play')))
+                self.parent.FLayout.addWidget(self.parent.FPlayBTN, 2, 2)
+                self.destruct()
+                break
+            
+        return
+
+    def FRepaint(self):
+        self.parent.FFigure.repaint()
+
+    def destruct(self):
+        for i in self.listOfAllThreads:
+            if(i.isRunning()):
+                continue
+            i.terminate()
+        return
+
+
 class FFishListItem():
     def __init__(self, cls, inputDict, fishNumber):
         self.fishNumber = fishNumber
@@ -51,6 +101,7 @@ class FViewer(QDialog):
     FRAMES_LIST = list()
     subtractBackground = False
     postAnalysisViewer = False
+    play = False
 
     def __init__(self, parent, resultsView = False, results=False):
         """Initializes the window and loads the first frame and
@@ -100,9 +151,8 @@ class FViewer(QDialog):
         self.F_BGS_Slider.valueChanged.connect(self.F_BGS_SliderValueChanged)
         self.F_BGS_Slider.setDisabled(True)
 
-        self.FFigure = Figure()
-        self.FCanvas = FigureCanvas(self.FFigure)
-        self.FToolbar = NavigationToolbar(self.FCanvas, self)
+        self.FFigure = QLabel("Frame Viewer", self)
+        self.FToolbar = QToolBar(self)
         self.FToolbar.addWidget(self.F_BGS_BTN)
         # self.FToolbar.add
         self.FToolbar.addWidget(self.F_BGS_Slider)
@@ -122,7 +172,7 @@ class FViewer(QDialog):
         self.FLayout.addWidget(self.FToolbar,0,0,3,1)
         self.FLayout.setColumnStretch(0,0)
         # self.FLayout.setColumnMinimumWidth(0, 0)
-        self.FLayout.addWidget(self.FCanvas,0,1,1,3)
+        self.FLayout.addWidget(self.FFigure,0,1,1,3)
         self.FLayout.addWidget(self.FSlider,1,1,1,3)
         self.FLayout.addWidget(FPreviousBTN,2,1)
         self.FLayout.addWidget(self.FPlayBTN, 2, 2)
@@ -140,7 +190,6 @@ class FViewer(QDialog):
     def FShowNextImage(self):
         """Show the next frame image.
         """
-        self.FFigure.clf()
         self.UI_FRAME_INDEX +=1
         if (self.UI_FRAME_INDEX > self.File.frameCount-1):
             self.UI_FRAME_INDEX = 0
@@ -153,7 +202,7 @@ class FViewer(QDialog):
         tick3 = time.time()
         print('time to fetch frame = ', tick2-tick1)
         print('time to show frame = ', tick3-tick2)
-        return
+        # return
 
     def FShowPreviousImage(self):
         """Show the previous frame image
@@ -173,31 +222,33 @@ class FViewer(QDialog):
         print('time to show frame = ', tick3-tick2)
 
     def FDisplayImage(self):
+        self.FFigure.clear()
+
+        qformat = QImage.Format_Indexed8
+
+        if len(self.FFrames.shape)==3:
+            if self.FFrames.shape[2]==4:
+                qformat = QImage.Format_RGBA8888
+            else:
+                qformat = QImage.Format_RGB888
+        
         if(self.subtractBackground):
-            self.FFigure.clf()
-            self.FFigure.clear()
-            ax = self.FFigure.add_subplot(122)
-            # ax.remove()
-            ax.clear()
-            ax.set_title("Original")
-            ax.imshow(self.FFrames, cmap = 'gray')
+            
             frameBlur = cv2.blur(self.FFrames, (5,5))
             mask = self.fgbg.apply(frameBlur)
             mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, self.kernel)
             mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, self.kernel)
             mask = cv2.threshold(mask, 128, 255, cv2.THRESH_BINARY)[1]
-            ax = self.FFigure.add_subplot(121)
-            ax.set_title("Background removed")
-            ax.imshow(mask, cmap = 'gray')
-        else:
-            self.FFigure.clf()
-            self.FFigure.clear()
-            ax = self.FFigure.add_subplot(111)
-            ax.clear()
-            ax.set_title("Original")
-            ax.imshow(self.FFrames, cmap = 'gray')
-
-        self.FCanvas.draw()
+        
+            img = np.hstack((mask, self.FFrames))
+            img = QImage(img, img.shape[1], img.shape[0], img.strides[0], qformat)
+        
+        else:    
+            img = QImage(self.FFrames, self.FFrames.shape[1], self.FFrames.shape[0], self.FFrames.strides[0], qformat)
+        
+        img = img.rgbSwapped()
+        self.FFigure.setPixmap(QPixmap.fromImage(img).scaled(self.FFigure.width(), self.FFigure.height(), Qt.KeepAspectRatio))
+        self.FFigure.setAlignment(Qt.AlignCenter)
         self.FParent.FStatusBarFrameNumber.setText("Frame : "+str(self.UI_FRAME_INDEX+1)+"/"+str(self.File.frameCount))
 
 
@@ -255,20 +306,28 @@ class FViewer(QDialog):
 
     def FPlay(self):
         ## problem
-        # self.FPlayBTN.setIcon(QIcon(FGetIcon('pause')))
-        # self.FLayout.addWidget(self.FPlayBTN, 2, 2)
-        # while(self.UI_FRAME_INDEX<self.File.frameCount):
-        #     self.FShowNextImage()
-        #     if (not self.FPlayBTN.is):
-        #         print("1")
-        #     else:
-        #         print("0")
-        
-        self.FDetectedDict = project.FAnalyze(self)
-        if(len(self.FDetectedDict)):
-            self.FResultsViewer = FViewer(self.FParent, resultsView= True, results=self.FDetectedDict)
-            self.FParent.setCentralWidget(self.FResultsViewer)
-
+        self.play = not self.play
+        if self.play:
+            self.FPlayBTN.setIcon(QIcon(FGetIcon('pause')))
+            self.FLayout.addWidget(self.FPlayBTN, 2, 2)
+            # while(self.UI_FRAME_INDEX<self.File.frameCount):
+            #     self.FShowNextImage()
+            #     self.FFigure.repaint()
+                
+            # self.FDetectedDict = project.FAnalyze(self)
+            # if(len(self.FDetectedDict)):
+            #     self.FResultsViewer = FViewer(self.FParent, resultsView= True, results=self.FDetectedDict)
+            #     self.FParent.setCentralWidget(self.FResultsViewer)
+            playThread = FPlayThread(self)
+            playThread.start()
+            self.FPlayBTN.clicked.connect(self.FPlay)
+            # self.buttonCheckThread = checkPlayBTNThread(self)
+            # self.buttonCheckThread.start()
+        else:
+            self.FPlayBTN.setIcon(QIcon(FGetIcon('play')))
+            self.FLayout.addWidget(self.FPlayBTN, 2, 2)
+            # time.sleep(0.2)
+            
         return
 
     def FListDetected(self):
@@ -288,3 +347,4 @@ class FViewer(QDialog):
     def showFish(self, fishNumber, inputDict):
         print("Fish = ", fishNumber)
         return
+
