@@ -23,7 +23,7 @@ class checkPlayBTNThread(QThread):
         if (not self.parent.FPlayBTN.isChecked()):
             self.parent.FPlayBTN.setIcon(QIcon(FGetIcon('play')))
             self.parent.FLayout.addWidget(self.parent.FPlayBTN, 2, 2)
-            self.parent.FPlayThread.terminate()
+            self.parent.FPlayThread.destruct()
         
 class FPlayThread(QThread):
     repaintSignal = pyqtSignal()
@@ -37,11 +37,14 @@ class FPlayThread(QThread):
 
     def run(self):
         self.listOfAllThreads.append(self)
-        while(self.parent.UI_FRAME_INDEX<self.parent.File.frameCount) and (self.parent.FPlayBTN.isChecked()):
+        while(self.parent.UI_FRAME_INDEX<self.parent.File.frameCount):
             self.parent.FShowNextImage()
-            self.parent.FFigure.update()
-            # self.repaintSignal.connect(self.FRepaint)
-            # self.repaintSignal.emit()
+            # self.parent.FFigure.repaint()
+            # k = cv2.waitKey(20) & 0xff
+            # if k == 0x20 or not self.parent.FPlayBTN.isChecked():
+            #     break
+            self.repaintSignal.connect(self.FRepaint)
+            self.repaintSignal.emit()
         # self.parent.FPlayBTN.setIcon(QIcon(FGetIcon('play')))
         # self.parent.FLayout.addWidget(self.parent.FPlayBTN, 2, 2)
         # self.destruct()
@@ -74,7 +77,7 @@ class FFishListItem():
         self.FWdigetLayout.addWidget(self.FWdigetText)
         self.FWdigetLayout.addWidget(self.FWdigetBTN)
         self.FWdigetLayout.addStretch()
-        self.FWdigetLayout.setSizeConstraint(QLayout.SetFixedSize)
+        # self.FWdigetLayout.setSizeConstraint(QLayout.SetFixedSize)
         self.FWdiget.setLayout(self.FWdigetLayout)
         self.listItem.setSizeHint(self.FWdiget.sizeHint())
 
@@ -127,7 +130,10 @@ class FViewer(QDialog):
         self.FPlayBTN.setIcon(QIcon(FGetIcon('play')))
         self.FPlayBTN.setCheckable(True)
         
-        
+        self.FAutoAnalizerBTN = QPushButton(self)        
+        self.FAutoAnalizerBTN.setObjectName("Automatic Analyzer")
+        self.FAutoAnalizerBTN.setIcon(QIcon(FGetIcon('analyze')))
+        self.FAutoAnalizerBTN.clicked.connect(self.FAutoAnalizer)
 
         self.F_BGS_BTN = QPushButton(self)
         self.F_BGS_BTN.setObjectName("Subtract Background")
@@ -148,6 +154,7 @@ class FViewer(QDialog):
         self.FFigure = QLabel("Frame Viewer", self)
         self.FFigure.setUpdatesEnabled(True)
         self.FToolbar = QToolBar(self)
+        self.FToolbar.addWidget(self.FAutoAnalizerBTN)
         self.FToolbar.addWidget(self.F_BGS_BTN)
         # self.FToolbar.add
         self.FToolbar.addWidget(self.F_BGS_Slider)
@@ -172,6 +179,7 @@ class FViewer(QDialog):
         self.FLayout.addWidget(FPreviousBTN,2,1)
         self.FLayout.addWidget(self.FPlayBTN, 2, 2)
         self.FLayout.addWidget(FNextBTN,2,3)
+        
         if self.postAnalysisViewer:
             self.FListDetected()
 
@@ -299,6 +307,71 @@ class FViewer(QDialog):
         value = self.F_BGS_Slider.value()
         self.fgbg.setVarThreshold(value)
 
+    def FAutoAnalizer(self):
+        ## TODO : Documentation
+        self.popup = QDialog(self)
+        self.popupLayout = QFormLayout()
+        # kernel size and shape {default: ellipse, (10,2)}
+        self.morphStructLabel = QLabel("Morphological Structuring Element")
+        self.morphStruct = QComboBox(self)
+        self.morphStruct.addItem("Rectangle")
+        self.morphStruct.addItem("Ellipse")
+        self.morphStruct.addItem("Cross")
+        self.morphStructDim = QLabel("Structuring Element Dimension")
+        self.morphStructDimInp = QLineEdit()
+        self.morphStructDimInp.setPlaceholderText("(10,2)")
+        self.popupLayout.addRow(self.morphStructLabel, self.morphStruct)
+        self.popupLayout.addRow(self.morphStructDim, self.morphStructDimInp)
+        # start frame {default: 1}
+        self.startFrame = QLabel("Start Frame")
+        self.startFrameInp = QLineEdit()
+        self.startFrameInp.setPlaceholderText("1")
+        self.popupLayout.addRow(self.startFrame, self.startFrameInp)
+        # blur value {default: (5,5)}
+        self.blurVal = QLabel("Blur Value")
+        self.blurValInp = QLineEdit()
+        self.blurValInp.setPlaceholderText("(5,5)")
+        self.popupLayout.addRow(self.blurVal, self.blurValInp)
+        # background threshold Value {default: 25}
+        self.bgTh = QLabel("Background Threshold")
+        self.bgThInp = QLineEdit()
+        self.bgThInp.setPlaceholderText("25")
+        self.popupLayout.addRow(self.bgTh, self.bgThInp)
+        # minimum appearance {default: 30}
+        self.maxApp = QLabel("Maximum Appearance")
+        self.maxAppInp = QLineEdit()
+        self.maxAppInp.setPlaceholderText("30 frames")
+        self.popupLayout.addRow(self.maxApp, self.maxAppInp)
+        # maximum disappearance {default: 5}
+        self.maxDis = QLabel("Maximum Disappearance")
+        self.maxDisInp = QLineEdit()
+        self.maxDisInp.setPlaceholderText("5 frames")
+        self.popupLayout.addRow(self.maxDis, self.maxDisInp)
+        # tracker search area {default: 30px}
+        self.radiusInput = QLineEdit()
+        self.radiusLabel = QLabel("search radius")
+        self.radiusInput.setPlaceholderText("default is 30 px")
+        self.popupLayout.addRow(self.radiusLabel, self.radiusInput)
+        # show images while processing? takes longer time
+        self.showImages = QCheckBox("Show images while processing. (takes longer time)")
+        self.showImages.setChecked(True)
+        self.popupLayout.addRow(self.showImages)
+        # accept or use defaults
+        self.apply = QPushButton("Apply")
+        self.apply.clicked.connect(self.handleAnalyzerInput)
+        self.popupLayout.addRow(QLabel(), self.apply)
+        self.popup.setLayout(self.popupLayout)
+        self.popup.show()
+        return
+
+    def handleAnalyzerInput(self):
+        ## TODO : function to take input from popup dialog box
+        self.FDetectedDict = project.FAnalyze(self)
+        if(len(self.FDetectedDict)):
+            self.FResultsViewer = FViewer(self.FParent, resultsView= True, results=self.FDetectedDict)
+            self.FParent.setCentralWidget(self.FResultsViewer)
+        pass
+
     def FPlay(self):
         ## problem
         self.play = not self.play
@@ -309,13 +382,13 @@ class FViewer(QDialog):
             #     self.FShowNextImage()
             #     self.FFigure.repaint()
                 
-            # self.FDetectedDict = project.FAnalyze(self)
-            # if(len(self.FDetectedDict)):
-            #     self.FResultsViewer = FViewer(self.FParent, resultsView= True, results=self.FDetectedDict)
-            #     self.FParent.setCentralWidget(self.FResultsViewer)
+            
             playThread = FPlayThread(self)
             playThread.start()
-            self.FPlayBTN.clicked.connect(self.FPlay)
+            while(checkPlayBTNThread(self).start()):
+                continue
+            return
+
             # self.buttonCheckThread = checkPlayBTNThread(self)
             # self.buttonCheckThread.start()
         else:
@@ -326,17 +399,17 @@ class FViewer(QDialog):
         return
 
     def FListDetected(self):
-        count = 1
+        index = 1
         listOfFish = list()
         self.FList = QListWidget()
         for fish in self.FDetectedDict.keys():
-            listItem = FFishListItem(self, self.FDetectedDict[fish], count)
+            listItem = FFishListItem(self, self.FDetectedDict[fish], index)
             self.FList.addItem(listItem.listItem)
             self.FList.setItemWidget(listItem.listItem, listItem.FWdiget)
             listOfFish.append(listItem)
-            count += 1
+            index += 1
 
-        self.FLayout.addWidget(self.FList, 0,4,5,1)
+        self.FLayout.addWidget(self.FList, 0,4,3,1, Qt.AlignRight)
         return
 
     def showFish(self, fishNumber, inputDict):

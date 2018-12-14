@@ -17,24 +17,23 @@ def FAnalyze(cls):
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (10,2))
 
     ## variables for displaying frames
+    
+    # for the key presses {
+    # dummy: for getting key hex values,
+    # k : for inputing key strokes}
     dummy = 0
     k = 30
-    play = False
+
+    # for the Play|Pause operations {
+    # play = False --> pause,
+    # play = True --> playing}
+    play = True
+
+    # playing in desc|asce orders {
+    # desc = False --> playing in ascending order,
+    # }
     desc = False
-    
     count =1
-    padding = 30
-
-
-    ## variables for object detection
-    # objectDetected = False
-    debugMode = True
-    # trackingEnabled = False
-    # fr = list()
-    # differenceImage = None
-    # thresholdImage = None
-    # sensitivity = 80
-
 
     # variables for trakcers:
     tracker = centroidTracker()
