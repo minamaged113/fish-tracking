@@ -8,7 +8,6 @@ import os
 import cv2
 import json
 import numpy as np
-import matplotlib.pyplot as plt
 from UI_handler import *
 from file_handler import *
 
@@ -18,7 +17,8 @@ def run():
     cwd = os.getcwd()
     app = QApplication(sys.argv)
     MainWindow = FMainContainer()
-    sys.exit(app.exec_())
+    app.exec_()
+    sys.exit()
     return
 
 run()

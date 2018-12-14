@@ -9,12 +9,6 @@ import project
 # SF: SONAR File
 import file_handler as SF
 import numpy as np
-
-## For showing images in matplotlib
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-from matplotlib.figure import Figure
-from matplotlib.pyplot import imshow
 import time
 
 class checkPlayBTNThread(QThread):
@@ -43,16 +37,16 @@ class FPlayThread(QThread):
 
     def run(self):
         self.listOfAllThreads.append(self)
-        while(self.parent.UI_FRAME_INDEX<self.parent.File.frameCount):
+        while(self.parent.UI_FRAME_INDEX<self.parent.File.frameCount) and (self.parent.FPlayBTN.isChecked()):
             self.parent.FShowNextImage()
-            # self.parent.FFigure.repaint()
-            self.repaintSignal.connect(self.FRepaint)
-            self.repaintSignal.emit()
-            if (not self.parent.FPlayBTN.isChecked()):
-                self.parent.FPlayBTN.setIcon(QIcon(FGetIcon('play')))
-                self.parent.FLayout.addWidget(self.parent.FPlayBTN, 2, 2)
-                self.destruct()
-                break
+            self.parent.FFigure.update()
+            # self.repaintSignal.connect(self.FRepaint)
+            # self.repaintSignal.emit()
+        # self.parent.FPlayBTN.setIcon(QIcon(FGetIcon('play')))
+        # self.parent.FLayout.addWidget(self.parent.FPlayBTN, 2, 2)
+        # self.destruct()
+        # self.terminate()
+                # break
             
         return
 
@@ -152,6 +146,7 @@ class FViewer(QDialog):
         self.F_BGS_Slider.setDisabled(True)
 
         self.FFigure = QLabel("Frame Viewer", self)
+        self.FFigure.setUpdatesEnabled(True)
         self.FToolbar = QToolBar(self)
         self.FToolbar.addWidget(self.F_BGS_BTN)
         # self.FToolbar.add
