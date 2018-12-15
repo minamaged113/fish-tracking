@@ -409,10 +409,26 @@ class FViewer(QDialog):
             listOfFish.append(listItem)
             index += 1
 
-        self.FLayout.addWidget(self.FList, 0,4,3,1, Qt.AlignRight)
+        self.FShowSelectedBTN = QPushButton("Show Selected")
+        self.FShowSelectedBTN.clicked.connect(self.showSelectedFish)
+        
+        self.FApplyBTN = QPushButton("Apply")
+        self.FApplyBTN.clicked.connect(self.FApply)
+
+        self.FLayout.addWidget(self.FShowSelectedBTN, 2, 4)
+        self.FLayout.addWidget(self.FApplyBTN, 2, 5)
+        self.FLayout.addWidget(self.FList, 0,4,2,2, Qt.AlignRight)
         return
 
     def showFish(self, fishNumber, inputDict):
+        ## TODO
         print("Fish = ", fishNumber)
         return
 
+    def showSelectedFish(self):
+        ## TODO
+        pass
+
+    def FApply(self):
+        ## TODO
+        pass
