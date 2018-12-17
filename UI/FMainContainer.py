@@ -188,8 +188,8 @@ class FMainContainer(QMainWindow):
         home = str(Path.home())
         # filePathTuple = ('/home/mghobria/Documents/work/data/data.aris',) # laptop
         # filePathTuple = ('data.aris',) # Home PC
-        filePathTuple = ('/home/mghobria/Documents/work/data/data 1/data.aris',) # work PC
-        
+        # filePathTuple = ('/home/mghobria/Documents/work/data/data 1/data.aris',) # work PC
+        filePathTuple = ("C:\\Users\\mghobria\\Downloads\\data.aris",) # Home PC windows
         # filePathTuple = QFileDialog.getOpenFileName(self, "Open File", home, "Sonar Files (*.aris *.ddf)")
         if filePathTuple[0] != "" : 
             self.FFilePath = filePathTuple[0]

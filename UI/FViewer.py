@@ -83,6 +83,26 @@ class FFishListItem():
 
 
     
+class MyFigure(QLabel):
+    isPlaying = False
+    __parent = None
+
+    def __init__(self, parent):
+        self.__parent = parent
+        QLabel.__init__(self, parent)
+
+    #def __del__(self):
+    #    self.wait()
+    
+    def paintEvent(self, paintEvent):
+        if isinstance(self.__parent, FViewer):
+            fviewer = self.__parent
+            if fviewer.play:
+                fviewer.FShowNextImage()
+            fviewer.FDisplayImage(self)
+
+        QLabel.paintEvent(self, paintEvent)
+
 
 
 class FViewer(QDialog):
@@ -99,6 +119,7 @@ class FViewer(QDialog):
     subtractBackground = False
     postAnalysisViewer = False
     play = False
+    frameIndexChange = pyqtSignal()
 
     def __init__(self, parent, resultsView = False, results=False):
         """Initializes the window and loads the first frame and
@@ -151,8 +172,13 @@ class FViewer(QDialog):
         self.F_BGS_Slider.valueChanged.connect(self.F_BGS_SliderValueChanged)
         self.F_BGS_Slider.setDisabled(True)
 
-        self.FFigure = QLabel("Frame Viewer", self)
-        self.FFigure.setUpdatesEnabled(True)
+        #self.FFigure = QLabel("Frame Viewer", self)
+        #self.FFigure.setUpdatesEnabled(True)
+        
+        self.MyFigureObject = MyFigure(self)
+        self.MyFigureObject.setUpdatesEnabled(True)
+        self.MyFigureObject.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+
         self.FToolbar = QToolBar(self)
         self.FToolbar.addWidget(self.FAutoAnalizerBTN)
         self.FToolbar.addWidget(self.F_BGS_BTN)
@@ -168,28 +194,49 @@ class FViewer(QDialog):
         self.FSlider.setTickInterval(int(0.05*self.File.frameCount))
         self.FSlider.valueChanged.connect(self.FSliderValueChanged)
         
+        #self.autoPlayTimer = QTimer(self)
+        #self.autoPlayTimer.timeout.connect(self.FShowNextImage)
         
+        #self.LowerToolbar = QHBoxLayout(self)
+        #self.LowerToolbar.addWidget(FPreviousBTN)
+        #self.LowerToolbar.addWidget(self.FPlayBTN)
+        #self.LowerToolbar.addWidget(FNextBTN)
+        #self.LowerToolbar.setOrientation(Qt.Horizontal)
+
+        self.FLayout.addWidget(self.FToolbar,0,0,3,1)
+        self.FLayout.addWidget(self.MyFigureObject,0,1,1,3)
+        self.FLayout.addWidget(self.FSlider,1,1,1,3)
+        #self.FLayout.addLayout(self.LowerToolbar, 2,1, Qt.AlignBottom)
+        self.FLayout.addWidget(FPreviousBTN, 2,1)
+        self.FLayout.addWidget(self.FPlayBTN, 2,2)
+        self.FLayout.addWidget(FNextBTN, 2,3)
         
         self.FLayout.setContentsMargins(0,0,0,0)
-        self.FLayout.addWidget(self.FToolbar,0,0,3,1)
         self.FLayout.setColumnStretch(0,0)
-        # self.FLayout.setColumnMinimumWidth(0, 0)
-        self.FLayout.addWidget(self.FFigure,0,1,1,3)
-        self.FLayout.addWidget(self.FSlider,1,1,1,3)
-        self.FLayout.addWidget(FPreviousBTN,2,1)
-        self.FLayout.addWidget(self.FPlayBTN, 2, 2)
-        self.FLayout.addWidget(FNextBTN,2,3)
-        
+        self.FLayout.setColumnStretch(1,1)
+        self.FLayout.setColumnStretch(2,1)
+        self.FLayout.setColumnStretch(3,1)
+        self.FLayout.setRowStretch(0,1)
+        self.FLayout.setRowStretch(1,0)
+        self.FLayout.setRowStretch(2,0)
+        #self.FLayout.setColumnMinimumWidth(1, 100)
+        #self.FLayout.setColumnMinimumWidth(2, 100)
+        #self.FLayout.setColumnMinimumWidth(3, 100)
+        #self.FLayout.addWidget(self.FFigure,0,1,1,3)
+        self.FLayout.setSizeConstraint(QLayout.SetMinimumSize)
+
+        #self.frameIndexChange.connect(self.UpdateFrameSlider)        
         if self.postAnalysisViewer:
             self.FListDetected()
 
        
-        self.FDisplayImage()
+        #self.FDisplayImage()
 
         self.setLayout(self.FLayout)
 
-
-
+    #def UpdateFrameSlider(self):
+    #    self.FSlider.setValue(self.UI_FRAME_INDEX)
+        
     def FShowNextImage(self):
         """Show the next frame image.
         """
@@ -197,14 +244,14 @@ class FViewer(QDialog):
         if (self.UI_FRAME_INDEX > self.File.frameCount-1):
             self.UI_FRAME_INDEX = 0
         
-        self.FSlider.setValue(self.UI_FRAME_INDEX)
-        tick1 = time.time()
-        self.FFrames = self.File.getFrame(self.UI_FRAME_INDEX)
-        tick2 = time.time()
-        self.FDisplayImage()
-        tick3 = time.time()
-        print('time to fetch frame = ', tick2-tick1)
-        print('time to show frame = ', tick3-tick2)
+        self.FSlider.setValue(self.UI_FRAME_INDEX+1)
+        #tick1 = time.time()
+        #self.FFrames = self.File.getFrame(self.UI_FRAME_INDEX)
+        #tick2 = time.time()
+        #self.FDisplayImage()
+        #tick3 = time.time()
+        #print('time to fetch frame = ', tick2-tick1)
+        #print('time to show frame = ', tick3-tick2)
         # return
 
     def FShowPreviousImage(self):
@@ -215,17 +262,20 @@ class FViewer(QDialog):
         if (self.UI_FRAME_INDEX < 0 ):
             self.UI_FRAME_INDEX = self.File.frameCount-1
 
-        self.FSlider.setValue(self.UI_FRAME_INDEX)
-        tick1 = time.time()
-        self.FFrames = self.File.getFrame(self.UI_FRAME_INDEX)
-        tick2 = time.time()
-        self.FDisplayImage()
-        tick3 = time.time()
-        print('time to fetch frame = ', tick2-tick1)
-        print('time to show frame = ', tick3-tick2)
+        self.FSlider.setValue(self.UI_FRAME_INDEX+1)
+        #tick1 = time.time()
+        #self.FFrames = self.File.getFrame(self.UI_FRAME_INDEX)
+        #tick2 = time.time()
+        #self.FDisplayImage()
+        #tick3 = time.time()
+        #print('time to fetch frame = ', tick2-tick1)
+        #print('time to show frame = ', tick3-tick2)
 
-    def FDisplayImage(self):
-        self.FFigure.clear()
+    def FDisplayImage(self, ffigure = None):
+        if ffigure is None:
+            ffigure = self.FFigure
+        ffigure.setUpdatesEnabled(False)
+        ffigure.clear()
 
         qformat = QImage.Format_Indexed8
 
@@ -250,9 +300,10 @@ class FViewer(QDialog):
             img = QImage(self.FFrames, self.FFrames.shape[1], self.FFrames.shape[0], self.FFrames.strides[0], qformat)
         
         img = img.rgbSwapped()
-        self.FFigure.setPixmap(QPixmap.fromImage(img).scaled(self.FFigure.width(), self.FFigure.height(), Qt.KeepAspectRatio))
-        self.FFigure.setAlignment(Qt.AlignCenter)
+        ffigure.setPixmap(QPixmap.fromImage(img).scaled(ffigure.width(), ffigure.height(), Qt.KeepAspectRatio))
+        ffigure.setAlignment(Qt.AlignCenter)
         self.FParent.FStatusBarFrameNumber.setText("Frame : "+str(self.UI_FRAME_INDEX+1)+"/"+str(self.File.frameCount))
+        ffigure.setUpdatesEnabled(True)
 
 
     def FLoadSONARFile(self, filePath):
@@ -292,16 +343,23 @@ class FViewer(QDialog):
             self.subtractBackground = True
             self.F_BGS_Slider.setDisabled(False)
             self.kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (10,2))
-            self.FDisplayImage()
+            #self.FDisplayImage()
         else:
             self.subtractBackground = False
             self.F_BGS_Slider.setDisabled(True)
-            self.FDisplayImage()
+            #self.FDisplayImage()
 
-    def FSliderValueChanged(self):
-        self.UI_FRAME_INDEX = self.FSlider.value()
+    def FSliderValueChanged(self, value):
+        self.UI_FRAME_INDEX = value - 1
+        tick1 = time.time()
         self.FFrames = self.File.getFrame(self.UI_FRAME_INDEX)
-        self.FDisplayImage()
+        tick2 = time.time()
+        #self.FDisplayImage()
+        #tick3 = time.time()
+        print('time to fetch frame = ', tick2-tick1)
+        
+        #self.FFrames = self.File.getFrame(self.UI_FRAME_INDEX)
+        #self.FDisplayImage()
 
     def F_BGS_SliderValueChanged(self):
         value = self.F_BGS_Slider.value()
@@ -377,23 +435,28 @@ class FViewer(QDialog):
         self.play = not self.play
         if self.play:
             self.FPlayBTN.setIcon(QIcon(FGetIcon('pause')))
-            self.FLayout.addWidget(self.FPlayBTN, 2, 2)
+
+            #self.autoPlayTimer.start()
+            
+            #self.FLayout.addWidget(self.FPlayBTN, 2, 2)
             # while(self.UI_FRAME_INDEX<self.File.frameCount):
             #     self.FShowNextImage()
             #     self.FFigure.repaint()
                 
             
-            playThread = FPlayThread(self)
-            playThread.start()
-            while(checkPlayBTNThread(self).start()):
-                continue
-            return
+            #self.playThread = FPlayThread(self)
+            #self.playThread.start()
+            #while(checkPlayBTNThread(self).start()):
+            #    continue
+            #return
 
             # self.buttonCheckThread = checkPlayBTNThread(self)
             # self.buttonCheckThread.start()
-        else:
+        else: # pause
             self.FPlayBTN.setIcon(QIcon(FGetIcon('play')))
-            self.FLayout.addWidget(self.FPlayBTN, 2, 2)
+            #self.playThread.stop()
+            #self.autoPlayTimer.stop()
+            #self.FLayout.addWidget(self.FPlayBTN, 2, 2)
             # time.sleep(0.2)
             
         return

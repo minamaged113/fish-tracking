@@ -18,7 +18,7 @@ def run():
     app = QApplication(sys.argv)
     MainWindow = FMainContainer()
     app.exec_()
-    sys.exit()
+    #sys.exit()
     return
 
 run()

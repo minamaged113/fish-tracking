@@ -68,7 +68,7 @@ class FSONAR_File():
         Returns:
             [type] -- [description]
         """
-
+        ## TODO
         allAngles = beamLookUp.BeamLookUp(self.BEAM_COUNT, self.largeLens)
         
         # d0 = self.sampleStartDelay * 0.000001 * self.soundSpeed/2
@@ -76,6 +76,7 @@ class FSONAR_File():
         # dm = d0 + self.samplePeriod * self.samplesPerBeam * 0.000001 * self.soundSpeed/2
         dm = self.windowStart + self.windowLength
         # am = allAngles[-1]
+        # this will be set in each file read module
         am = self.firstBeamAngle
         K = self.samplesPerBeam
         N, M = self.DATA_SHAPE
