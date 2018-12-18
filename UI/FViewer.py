@@ -132,6 +132,8 @@ class FViewer(QDialog):
         self.F_BGS_Slider.valueChanged.connect(self.F_BGS_SliderValueChanged)
         self.F_BGS_Slider.setDisabled(True)
 
+        self.F_BGS_ValueLabel = QLabel()
+        
         #self.FFigure = QLabel("Frame Viewer", self)
         #self.FFigure.setUpdatesEnabled(True)
         
@@ -143,6 +145,7 @@ class FViewer(QDialog):
         self.FToolbar = QToolBar(self)
         self.FToolbar.addWidget(self.FAutoAnalizerBTN)
         self.FToolbar.addWidget(self.F_BGS_BTN)
+        self.FToolbar.addWidget(self.F_BGS_ValueLabel)
         # self.FToolbar.add
         self.FToolbar.addWidget(self.F_BGS_Slider)
         self.FToolbar.setOrientation(Qt.Vertical)
@@ -309,11 +312,14 @@ class FViewer(QDialog):
         if (self.F_BGS_BTN.isChecked()):
             self.subtractBackground = True
             self.F_BGS_Slider.setDisabled(False)
+            self.F_BGS_ValueLabel.setDisabled(False)
+            self.F_BGS_ValueLabel.setText(str(self.F_BGS_Slider.value))
             self.kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (10,2))
             #self.FDisplayImage()
         else:
             self.subtractBackground = False
             self.F_BGS_Slider.setDisabled(True)
+            self.F_BGS_ValueLabel.setDisabled(True)
             #self.FDisplayImage()
 
     def FSliderValueChanged(self, value):
@@ -336,6 +342,7 @@ class FViewer(QDialog):
 
     def F_BGS_SliderValueChanged(self):
         value = self.F_BGS_Slider.value()
+        self.F_BGS_ValueLabel.setText(str(value))
         self.fgbg.setVarThreshold(value)
 
     def FAutoAnalizer(self):
@@ -459,16 +466,16 @@ class FViewer(QDialog):
         print(searchRadius, type(searchRadius))
         print(imshow, type(imshow))
 
-        # self.FDetectedDict = project.FAnalyze(self, kernel = kernel, 
-        #                                     kernelDim = kernelDim,
-        #                                     startFrame = startFrame,
-        #                                     blurDim = blurDim,
-        #                                     bgTh= bgTh,
-        #                                     minApp= minApp, 
-        #                                     maxDis = maxDis,
-        #                                     searchRadius= searchRadius,
-        #                                     imshow = imshow)
-        # self.popup.close()
+        self.FDetectedDict = project.FAnalyze(self, kernel = kernel, 
+                                            kernelDim = kernelDim,
+                                            startFrame = startFrame,
+                                            blurDim = blurDim,
+                                            bgTh= bgTh,
+                                            minApp= minApp, 
+                                            maxDis = maxDis,
+                                            searchRadius= searchRadius,
+                                            imshow = imshow)
+        self.popup.close()
         if(len(self.FDetectedDict)):
             self.FResultsViewer = FViewer(self.FParent, resultsView= True, results=self.FDetectedDict)
             self.FParent.setCentralWidget(self.FResultsViewer)
