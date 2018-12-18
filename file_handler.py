@@ -51,7 +51,10 @@ class FSONAR_File():
         frameoffset = (self.FILE_HEADER_SIZE + self.FRAME_HEADER_SIZE +(FI*(self.FRAME_HEADER_SIZE+(frameSize))))
         self.FILE_HANDLE.seek(frameoffset, 0)
         strCat = frameSize*"B"
-        self.FRAMES = np.array(struct.unpack(strCat, self.FILE_HANDLE.read(frameSize)), dtype=np.uint8)
+        try:
+            self.FRAMES = np.array(struct.unpack(strCat, self.FILE_HANDLE.read(frameSize)), dtype=np.uint8)
+        except:
+            return None
         self.FRAMES = cv2.flip(self.FRAMES.reshape((self.DATA_SHAPE[0], self.DATA_SHAPE[1])), 0)
         self.FRAMES = self.constructImages()
         return self.FRAMES

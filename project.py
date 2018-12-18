@@ -33,6 +33,8 @@ def FAnalyze(cls, kernel = None , kernelDim = None,
 
     if startFrame is None:
         count = 1
+    else:
+        count = startFrame
 
     if blurDim is None:
         blurDim = (5,5)
@@ -138,7 +140,7 @@ def FAnalyze(cls, kernel = None , kernelDim = None,
                 center = (x,y)
                 cv2.circle(labeled_img, center, tracker.searchArea, (0,255,0), 1)
                 cv2.circle(colored_img, center, tracker.searchArea, (0,255,0), 1)
-                # cv2.putText()
+
         cv2.putText(labeled_img,"Objects: "+str(fishes["objects"].__len__()),(10,100), font, 1,(255,255,255),2,cv2.LINE_AA)
         cv2.putText(labeled_img,str(count),(10,50), font, 1,(255,255,255),2,cv2.LINE_AA)
         cv2.namedWindow("frames and BGS frames", cv2.WND_PROP_FULLSCREEN)

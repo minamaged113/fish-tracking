@@ -19,10 +19,13 @@ class FFishListItem():
         self.listItem = QListWidgetItem()
         self.FWdiget = QWidget()
         self.FWdigetText = QLabel("Fish #{}".format(self.fishNumber))
+        self.FIfFish = QCheckBox("is Fish")
+        self.FIfFish.setChecked(False)
         self.FWdigetBTN = QPushButton("Show")
         self.FWdigetBTN.clicked.connect(lambda: cls.showFish(self.fishNumber, self.inputDict))
         self.FWdigetLayout = QVBoxLayout()
         self.FWdigetLayout.addWidget(self.FWdigetText)
+        self.FWdigetLayout.addWidget(self.FIfFish)
         self.FWdigetLayout.addWidget(self.FWdigetBTN)
         self.FWdigetLayout.addStretch()
         # self.FWdigetLayout.setSizeConstraint(QLayout.SetFixedSize)
@@ -57,7 +60,9 @@ class MyFigure(QLabel):
                 xs = (event.x() - marginx) / self.pixmap().width()
                 ys = (event.y() - marginy) / self.pixmap().height()
                 output = fviewer.File.getBeamDistance(xs, ys)
-                fviewer.FParent.FStatusBarMousePos.setText("distance={}m\t,y={}deg\t".format(output[0], output[1]))
+                fviewer.FParent.FStatusBarMousePos.setText("distance={}m\t,angle={}deg\t".format(output[0], output[1]))
+                # self.mousePosDist = output[0]
+                # self.mousePosAng = output[1]
 
 
 class FViewer(QDialog):
@@ -74,6 +79,7 @@ class FViewer(QDialog):
     subtractBackground = False
     postAnalysisViewer = False
     play = False
+    marker = None
 
     def __init__(self, parent, resultsView = False, results=False):
         """Initializes the window and loads the first frame and
@@ -131,7 +137,7 @@ class FViewer(QDialog):
         
         self.MyFigureWidget = MyFigure(self)
         # self.MyFigureWidget.setUpdatesEnabled(True)
-        self.MyFigureWidget.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+        # self.MyFigureWidget.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
         self.MyFigureWidget.setMouseTracking(True)
 
         self.FToolbar = QToolBar(self)
@@ -171,9 +177,10 @@ class FViewer(QDialog):
             self.FListDetected()
 
        
-        #self.FDisplayImage()
+        
 
         self.setLayout(self.FLayout)
+        self.FDisplayImage()
 
     #def UpdateFrameSlider(self):
     #    self.FSlider.setValue(self.UI_FRAME_INDEX)
@@ -213,6 +220,7 @@ class FViewer(QDialog):
         #print('time to show frame = ', tick3-tick2)
 
     def FDisplayImage(self, ffigure = None):
+        font = cv2.FONT_HERSHEY_SIMPLEX
         if ffigure is None:
             ffigure = self.MyFigureWidget
 
@@ -235,10 +243,26 @@ class FViewer(QDialog):
             mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, self.kernel)
             mask = cv2.threshold(mask, 128, 255, cv2.THRESH_BINARY)[1]
         
+            if(self.marker):
+                cv2.circle(self.FFrames, literal_eval(self.marker), 30, (255,255,255), 1)
+                cv2.circle(mask, literal_eval(self.marker), 30, (255,255,255), 1)
+                
+                
             img = np.hstack((mask, self.FFrames))
             img = QImage(img, img.shape[1], img.shape[0], img.strides[0], qformat)
         
         else:    
+            # if(self.marker):
+            #     u = literal_eval(self.marker)[0]
+            #     v = literal_eval(self.marker)[1]
+            #     marginx = (self.width()- ffigure.width())/ 2
+            #     marginy = (self.height() - ffigure.height())/ 2
+            #     xs = (u - marginx) / ffigure.width()
+            #     ys = (v - marginy) / ffigure.height()
+            #     output = self.File.getBeamDistance(xs, ys)
+                
+                # cv2.putText(self.FFrames, "D={0:.2f}m".format(output[0]), (u,v),font,1, (255,255,255), 1, cv2.LINE_4)
+                # cv2.putText(self.FFrames, "A={0:.2f}deg".format(output[1]+self.File.firstBeamAngle), (u, v+50),font,1, (255,255,255), 1, cv2.LINE_4 )
             img = QImage(self.FFrames, self.FFrames.shape[1], self.FFrames.shape[0], self.FFrames.strides[0], qformat)
         
         img = img.rgbSwapped()
@@ -296,6 +320,11 @@ class FViewer(QDialog):
         self.UI_FRAME_INDEX = value - 1
         tick1 = time.time()
         self.FFrames = self.File.getFrame(self.UI_FRAME_INDEX)
+        if self.marker:
+            # print(self.marker)
+            cv2.circle(self.FFrames, literal_eval(self.marker), 30, (255,255,255), 1)
+            
+
         tick2 = time.time()
         self.FDisplayImage()
         tick3 = time.time()
@@ -430,15 +459,16 @@ class FViewer(QDialog):
         print(searchRadius, type(searchRadius))
         print(imshow, type(imshow))
 
-        self.FDetectedDict = project.FAnalyze(self, kernel = kernel, 
-                                            kernelDim = kernelDim,
-                                            startFrame = startFrame,
-                                            blurDim = blurDim,
-                                            bgTh= bgTh,
-                                            minApp= minApp, 
-                                            maxDis = maxDis,
-                                            searchRadius= searchRadius,
-                                            imshow = imshow)
+        # self.FDetectedDict = project.FAnalyze(self, kernel = kernel, 
+        #                                     kernelDim = kernelDim,
+        #                                     startFrame = startFrame,
+        #                                     blurDim = blurDim,
+        #                                     bgTh= bgTh,
+        #                                     minApp= minApp, 
+        #                                     maxDis = maxDis,
+        #                                     searchRadius= searchRadius,
+        #                                     imshow = imshow)
+        # self.popup.close()
         if(len(self.FDetectedDict)):
             self.FResultsViewer = FViewer(self.FParent, resultsView= True, results=self.FDetectedDict)
             self.FParent.setCentralWidget(self.FResultsViewer)
@@ -479,33 +509,118 @@ class FViewer(QDialog):
         index = 1
         listOfFish = list()
         self.FList = QListWidget()
+        # ## DEBUG: remove next line
+        # dump = open("/home/mghobria/Desktop/fish-tracking/data_all.json")
+        # dump = dump.read()
+        # dump = json.loads(dump)
+
+        # self.FDetectedDict = dump['data']
+
+
         for fish in self.FDetectedDict.keys():
             listItem = FFishListItem(self, self.FDetectedDict[fish], index)
+            self.FDetectedDict[fish]["index"] = listItem
             self.FList.addItem(listItem.listItem)
             self.FList.setItemWidget(listItem.listItem, listItem.FWdiget)
             listOfFish.append(listItem)
             index += 1
 
-        self.FShowSelectedBTN = QPushButton("Show Selected")
-        self.FShowSelectedBTN.clicked.connect(self.showSelectedFish)
+        # self.FShowSelectedBTN = QPushButton("Show Selected")
+        # self.FShowSelectedBTN.clicked.connect(self.showSelectedFish)
         
+        self.FApplyAllBTN = QPushButton("Apply All")
+        self.FApplyAllBTN.clicked.connect(self.FApplyAll)
+
         self.FApplyBTN = QPushButton("Apply")
         self.FApplyBTN.clicked.connect(self.FApply)
 
-        self.FLayout.addWidget(self.FShowSelectedBTN, 2, 4)
+        # self.FLayout.addWidget(self.FApplyAllBTN, 2, 4)
         self.FLayout.addWidget(self.FApplyBTN, 2, 5)
         self.FLayout.addWidget(self.FList, 0,4,2,2, Qt.AlignRight)
         return
 
-    def showFish(self, fishNumber, inputDict):
-        ## TODO
-        print("Fish = ", fishNumber)
-        return
-
-    def showSelectedFish(self):
+    def FApplyAll(self):
         ## TODO
         pass
+
+    def showFish(self, fishNumber, inputDict):
+        ## TODO
+        # ffigure = self.MyFigureWidget
+        # ffigure.clear()
+        # self.MyFigureWidget.clear()
+        counter = 0
+        print("Fish = ", fishNumber)
+        for i in inputDict["frames"]:
+            # ffigure.setUpdatesEnabled(False)
+            self.UI_FRAME_INDEX = i
+            x = int( inputDict["locations"][counter][0])
+            y = int( inputDict["locations"][counter][1])
+            
+            self.marker = str(x)+','+str(y)
+            self.FSlider.setValue(self.UI_FRAME_INDEX)
+            
+            self.marker = None
+            self.repaint()
+            counter +=1
+        self.marker = None
+        return
+
+    # def showSelectedFish(self, inputDict):
+    #     ## TODO
+    #     counter = 0
+    #     # print("Fish = ", fishNumber)
+    #     setOfFrames = set()
+    #     locationsOfFishEachFrame = dict()
+    #     self.UI_FRAME_INDEX = i
+    #     for i in inputDict.keys():
+    #         # ffigure.setUpdatesEnabled(False)
+    #         if inputDict[i]['index'].FIfFish.isChecked():
+    #             for item in inputDict[i]['frames']:
+    #                 setOfFrames.add(item)
+                    
+    #     for j in setOfFrames:
+    #         self.UI_FRAME_INDEX = j
+    #         for i in inputDict.keys():
+    #             if inputDict[i]['index'].FIfFish.isChecked():
+                    
+    #                 x = int( inputDict[i]["locations"][counter][0])
+    #                 y = int( inputDict[i]["locations"][counter][1])
+                
+    #             self.marker = str(x)+','+str(y)
+    #             self.FSlider.setValue(self.UI_FRAME_INDEX)
+                
+    #             self.marker = None
+    #             self.repaint()
+    #             counter +=1
+    #     self.marker = None
+    #     return
+    #     pass
 
     def FApply(self):
         ## TODO
-        pass
+        inputDict = self.FDetectedDict
+        dictToBeSaved = dict()
+        data = dict()
+        for i in inputDict.keys():
+            if inputDict[i]['index'].FIfFish.isChecked():
+                dictToBeSaved[i] = inputDict[i]
+
+        for n in dictToBeSaved.keys():
+            data[str(n)] = {
+                "ID" : dictToBeSaved[n]["ID"],
+                "locations" : tuple(map(tuple, dictToBeSaved[n]["locations"])),
+                "frames" : dictToBeSaved[n]["frames"],
+                "left": list(map(int, dictToBeSaved[n]["left"])),
+                "top": list(map(int, dictToBeSaved[n]["top"])),
+                "width": list(map(int, dictToBeSaved[n]["width"])),
+                "height" : list(map(int, dictToBeSaved[n]["height"])),
+                "area": list(map(int, dictToBeSaved[n]["area"]))
+
+            }
+        path = self.File.FILE_PATH.split('.')
+        path = path[0] + '.json'
+        # path = os.path.join(path, fileName)            
+        with open(path, 'w') as outFile:
+            json.dump(data, outFile)
+        
+        return

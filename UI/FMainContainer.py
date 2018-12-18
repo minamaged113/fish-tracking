@@ -189,10 +189,10 @@ class FMainContainer(QMainWindow):
         ## DEBUG : remove filePathTuple and uncomment filePathTuple
         home = str(Path.home())
         # filePathTuple = ('/home/mghobria/Documents/work/data/data.aris',) # laptop
-        filePathTuple = ('data.aris',) # Home PC & windows Laptop
+        # filePathTuple = ('data.aris',) # Home PC & windows Laptop
         # filePathTuple = ('/home/mghobria/Documents/work/data/data 1/data.aris',) # work PC
         # filePathTuple = ("C:\\Users\\mghobria\\Downloads\\data.aris",) # Home PC windows
-        # filePathTuple = QFileDialog.getOpenFileName(self, "Open File", home, "Sonar Files (*.aris *.ddf)")
+        filePathTuple = QFileDialog.getOpenFileName(self, "Open File", home, "Sonar Files (*.aris *.ddf)")
         if filePathTuple[0] != "" : 
             self.FFilePath = filePathTuple[0]
             self.FCentralScreen = FViewer(self)
