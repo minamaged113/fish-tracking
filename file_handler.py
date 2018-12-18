@@ -103,12 +103,39 @@ class FSONAR_File():
             d = N + Q - dp
             outp = np.array((a,d)).T
             return outp
-        
+
 
 
         out = warp( self.FRAMES, invmap, output_shape=(K, L))
         out = (out/np.amax(out)*255).astype(np.uint8)
         return out
+
+    def getBeamDistance(self, x, y):
+        K = self.samplesPerBeam
+        N, M = self.DATA_SHAPE
+        d0 = self.windowStart
+        # dm = d0 + self.samplePeriod * self.samplesPerBeam * 0.000001 * self.soundSpeed/2
+        dm = self.windowStart + self.windowLength
+        am = self.firstBeamAngle
+        xm = dm*np.tan(am/180*np.pi)
+
+        L = int(K/(dm-d0) * 2*xm)
+        sx = L/(2*xm)
+        sa = M/(2*am)
+        sd = N/(dm-d0)
+        O = sx*d0
+        Q = sd*d0
+
+        xi = (x*L)
+        yi = (y*K)
+
+        xc = (xi - L/2)
+        yc = (K + O - yi)
+        dc = np.sqrt(xc**2 + yc**2)
+        ac = np.arctan(xc / yc)/np.pi*180
+
+        return [dc/sd, ac]
+
 
 
 def FOpenSonarFile(filename):

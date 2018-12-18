@@ -10,59 +10,7 @@ import project
 import file_handler as SF
 import numpy as np
 import time
-
-class checkPlayBTNThread(QThread):
-    def __init__(self, cls):
-        QThread.__init__(self)
-        self.parent = cls
-
-    def __del__(self):
-        self.wait()
-
-    def run(self):
-        if (not self.parent.FPlayBTN.isChecked()):
-            self.parent.FPlayBTN.setIcon(QIcon(FGetIcon('play')))
-            self.parent.FLayout.addWidget(self.parent.FPlayBTN, 2, 2)
-            self.parent.FPlayThread.destruct()
-        
-class FPlayThread(QThread):
-    repaintSignal = pyqtSignal()
-    listOfAllThreads = list()
-    def __init__(self, cls):
-        QThread.__init__(self)
-        self.parent = cls
-
-    def __del__(self):
-        self.wait()
-
-    def run(self):
-        self.listOfAllThreads.append(self)
-        while(self.parent.UI_FRAME_INDEX<self.parent.File.frameCount):
-            self.parent.FShowNextImage()
-            # self.parent.FFigure.repaint()
-            # k = cv2.waitKey(20) & 0xff
-            # if k == 0x20 or not self.parent.FPlayBTN.isChecked():
-            #     break
-            self.repaintSignal.connect(self.FRepaint)
-            self.repaintSignal.emit()
-        # self.parent.FPlayBTN.setIcon(QIcon(FGetIcon('play')))
-        # self.parent.FLayout.addWidget(self.parent.FPlayBTN, 2, 2)
-        # self.destruct()
-        # self.terminate()
-                # break
-            
-        return
-
-    def FRepaint(self):
-        self.parent.FFigure.repaint()
-
-    def destruct(self):
-        for i in self.listOfAllThreads:
-            if(i.isRunning()):
-                continue
-            i.terminate()
-        return
-
+from ast import literal_eval
 
 class FFishListItem():
     def __init__(self, cls, inputDict, fishNumber):
@@ -84,25 +32,32 @@ class FFishListItem():
 
     
 class MyFigure(QLabel):
-    isPlaying = False
+    # isPlaying = False
     __parent = None
 
     def __init__(self, parent):
         self.__parent = parent
         QLabel.__init__(self, parent)
 
-    #def __del__(self):
-    #    self.wait()
-    
     def paintEvent(self, paintEvent):
         if isinstance(self.__parent, FViewer):
             fviewer = self.__parent
             if fviewer.play:
                 fviewer.FShowNextImage()
-            fviewer.FDisplayImage(self)
-
+            
         QLabel.paintEvent(self, paintEvent)
-
+    
+    def mouseMoveEvent(self, event):
+        if isinstance(self.__parent, FViewer):
+            fviewer = self.__parent
+            #print(self.pixmap().width(), self.pixmap().height())
+            if self.pixmap():
+                marginx = (self.width() - self.pixmap().width()) / 2
+                marginy = (self.height() - self.pixmap().height()) / 2
+                xs = (event.x() - marginx) / self.pixmap().width()
+                ys = (event.y() - marginy) / self.pixmap().height()
+                output = fviewer.File.getBeamDistance(xs, ys)
+                fviewer.FParent.FStatusBarMousePos.setText("distance={}m\t,y={}deg\t".format(output[0], output[1]))
 
 
 class FViewer(QDialog):
@@ -119,7 +74,6 @@ class FViewer(QDialog):
     subtractBackground = False
     postAnalysisViewer = False
     play = False
-    frameIndexChange = pyqtSignal()
 
     def __init__(self, parent, resultsView = False, results=False):
         """Initializes the window and loads the first frame and
@@ -175,9 +129,10 @@ class FViewer(QDialog):
         #self.FFigure = QLabel("Frame Viewer", self)
         #self.FFigure.setUpdatesEnabled(True)
         
-        self.MyFigureObject = MyFigure(self)
-        self.MyFigureObject.setUpdatesEnabled(True)
-        self.MyFigureObject.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+        self.MyFigureWidget = MyFigure(self)
+        # self.MyFigureWidget.setUpdatesEnabled(True)
+        self.MyFigureWidget.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+        self.MyFigureWidget.setMouseTracking(True)
 
         self.FToolbar = QToolBar(self)
         self.FToolbar.addWidget(self.FAutoAnalizerBTN)
@@ -193,18 +148,9 @@ class FViewer(QDialog):
         self.FSlider.setTickPosition(QSlider.TicksBelow)
         self.FSlider.setTickInterval(int(0.05*self.File.frameCount))
         self.FSlider.valueChanged.connect(self.FSliderValueChanged)
-        
-        #self.autoPlayTimer = QTimer(self)
-        #self.autoPlayTimer.timeout.connect(self.FShowNextImage)
-        
-        #self.LowerToolbar = QHBoxLayout(self)
-        #self.LowerToolbar.addWidget(FPreviousBTN)
-        #self.LowerToolbar.addWidget(self.FPlayBTN)
-        #self.LowerToolbar.addWidget(FNextBTN)
-        #self.LowerToolbar.setOrientation(Qt.Horizontal)
 
         self.FLayout.addWidget(self.FToolbar,0,0,3,1)
-        self.FLayout.addWidget(self.MyFigureObject,0,1,1,3)
+        self.FLayout.addWidget(self.MyFigureWidget,0,1,1,3)
         self.FLayout.addWidget(self.FSlider,1,1,1,3)
         #self.FLayout.addLayout(self.LowerToolbar, 2,1, Qt.AlignBottom)
         self.FLayout.addWidget(FPreviousBTN, 2,1)
@@ -219,13 +165,8 @@ class FViewer(QDialog):
         self.FLayout.setRowStretch(0,1)
         self.FLayout.setRowStretch(1,0)
         self.FLayout.setRowStretch(2,0)
-        #self.FLayout.setColumnMinimumWidth(1, 100)
-        #self.FLayout.setColumnMinimumWidth(2, 100)
-        #self.FLayout.setColumnMinimumWidth(3, 100)
-        #self.FLayout.addWidget(self.FFigure,0,1,1,3)
         self.FLayout.setSizeConstraint(QLayout.SetMinimumSize)
 
-        #self.frameIndexChange.connect(self.UpdateFrameSlider)        
         if self.postAnalysisViewer:
             self.FListDetected()
 
@@ -273,7 +214,8 @@ class FViewer(QDialog):
 
     def FDisplayImage(self, ffigure = None):
         if ffigure is None:
-            ffigure = self.FFigure
+            ffigure = self.MyFigureWidget
+
         ffigure.setUpdatesEnabled(False)
         ffigure.clear()
 
@@ -300,6 +242,7 @@ class FViewer(QDialog):
             img = QImage(self.FFrames, self.FFrames.shape[1], self.FFrames.shape[0], self.FFrames.strides[0], qformat)
         
         img = img.rgbSwapped()
+
         ffigure.setPixmap(QPixmap.fromImage(img).scaled(ffigure.width(), ffigure.height(), Qt.KeepAspectRatio))
         ffigure.setAlignment(Qt.AlignCenter)
         self.FParent.FStatusBarFrameNumber.setText("Frame : "+str(self.UI_FRAME_INDEX+1)+"/"+str(self.File.frameCount))
@@ -354,9 +297,10 @@ class FViewer(QDialog):
         tick1 = time.time()
         self.FFrames = self.File.getFrame(self.UI_FRAME_INDEX)
         tick2 = time.time()
-        #self.FDisplayImage()
-        #tick3 = time.time()
+        self.FDisplayImage()
+        tick3 = time.time()
         print('time to fetch frame = ', tick2-tick1)
+        print('time to display image = ', tick3-tick2)
         
         #self.FFrames = self.File.getFrame(self.UI_FRAME_INDEX)
         #self.FDisplayImage()
@@ -424,18 +368,88 @@ class FViewer(QDialog):
 
     def handleAnalyzerInput(self):
         ## TODO : function to take input from popup dialog box
-        self.FDetectedDict = project.FAnalyze(self)
+        
+        # handling kernel shape type from drop down menu 
+        kernel = self.morphStruct.currentText()
+        
+        # handling kernel dimensions
+        if self.morphStructDimInp.text() == "":
+            kernelDim = None
+        else:
+            kernelDim = literal_eval(self.morphStructDimInp.text())
+
+        # handling start frame index
+        if self.startFrameInp.text() == "":
+            startFrame = None
+        else:
+            startFrame = int(self.startFrameInp.text())
+
+        # handling blur dimensions
+        if self.blurValInp.text() == "":
+            blurDim = None
+        else:
+            blurDim = literal_eval(self.blurValInp.text())
+
+        # handling background threshold
+        if self.bgThInp.text() == "":
+            bgTh = None
+        else:
+            bgTh = int(self.bgThInp.text())
+
+        # handling minimum appearance
+        if self.maxAppInp.text() == "":
+            minApp = None
+        else:
+            minApp = int(self.maxAppInp.text())
+
+        # handling maximum disappearance
+        if self.maxDisInp.text() == "" :
+            maxDis = None
+        else:
+            maxDis = int(self.maxDisInp.text())
+
+        # handling radius input
+        if self.radiusInput.text() == "":
+            searchRadius = None
+        else:
+            searchRadius = int(self.radiusInput.text())
+
+        # handling show images checkbox
+        if self.showImages.isChecked():
+            imshow = True
+        else:
+            imshow = False
+
+        print(kernel, type(kernel))
+        print(kernelDim, type(kernelDim))
+        print(startFrame, type(startFrame))
+        print(blurDim, type(blurDim))
+        print(bgTh, type(bgTh))
+        print(minApp, type(minApp))
+        print(maxDis, type(maxDis))
+        print(searchRadius, type(searchRadius))
+        print(imshow, type(imshow))
+
+        self.FDetectedDict = project.FAnalyze(self, kernel = kernel, 
+                                            kernelDim = kernelDim,
+                                            startFrame = startFrame,
+                                            blurDim = blurDim,
+                                            bgTh= bgTh,
+                                            minApp= minApp, 
+                                            maxDis = maxDis,
+                                            searchRadius= searchRadius,
+                                            imshow = imshow)
         if(len(self.FDetectedDict)):
             self.FResultsViewer = FViewer(self.FParent, resultsView= True, results=self.FDetectedDict)
             self.FParent.setCentralWidget(self.FResultsViewer)
-        pass
+        return
 
     def FPlay(self):
         ## problem
         self.play = not self.play
         if self.play:
             self.FPlayBTN.setIcon(QIcon(FGetIcon('pause')))
-
+            self.FShowNextImage()
             #self.autoPlayTimer.start()
             
             #self.FLayout.addWidget(self.FPlayBTN, 2, 2)
