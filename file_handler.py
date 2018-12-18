@@ -72,11 +72,11 @@ class FSONAR_File():
         allAngles = beamLookUp.BeamLookUp(self.BEAM_COUNT, self.largeLens)
         
         # d0 = self.sampleStartDelay * 0.000001 * self.soundSpeed/2
-        d0 = self.windowStart
+        d0 = self.windowStart   # in meters
         # dm = d0 + self.samplePeriod * self.samplesPerBeam * 0.000001 * self.soundSpeed/2
-        dm = self.windowStart + self.windowLength
+        dm = self.windowStart + self.windowLength   # in meters
         # am = allAngles[-1]
-        am = self.firstBeamAngle
+        am = self.firstBeamAngle    # in degrees
         K = self.samplesPerBeam
         N, M = self.DATA_SHAPE
 
