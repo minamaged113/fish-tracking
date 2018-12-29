@@ -60,6 +60,8 @@ class FMainContainer(QMainWindow):
         self.FStatusBar = QStatusBar()
         self.FStatusBarFrameNumber = QLabel()
         self.FStatusBarFrameNumber.setText("No File Loaded")
+        self.FStatusBarMousePos = QLabel()
+        self.FStatusBar.addPermanentWidget(self.FStatusBarMousePos)
         self.FStatusBar.addPermanentWidget(self.FStatusBarFrameNumber)
         self.setStatusBar(self.FStatusBar)
         return
@@ -186,11 +188,11 @@ class FMainContainer(QMainWindow):
     def FOpenFile(self):
         ## DEBUG : remove filePathTuple and uncomment filePathTuple
         home = str(Path.home())
-        filePathTuple = ('/home/mghobria/Documents/work/data/data.aris',) # laptop
-        # filePathTuple = ('data.aris',) # Home PC
+        # filePathTuple = ('/home/mghobria/Documents/work/data/data.aris',) # laptop
+        # filePathTuple = ('data.aris',) # Home PC & windows Laptop
         # filePathTuple = ('/home/mghobria/Documents/work/data/data 1/data.aris',) # work PC
-        
-        # filePathTuple = QFileDialog.getOpenFileName(self, "Open File", home, "Sonar Files (*.aris *.ddf)")
+        # filePathTuple = ("C:\\Users\\mghobria\\Downloads\\data.aris",) # Home PC windows
+        filePathTuple = QFileDialog.getOpenFileName(self, "Open File", home, "Sonar Files (*.aris *.ddf)")
         if filePathTuple[0] != "" : 
             self.FFilePath = filePathTuple[0]
             self.FCentralScreen = FViewer(self)

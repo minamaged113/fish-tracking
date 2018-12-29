@@ -8,33 +8,72 @@ import file_handler as SF
 import numpy as np
 from time import sleep
 
-def FAnalyze(cls):
-    font = cv2.FONT_HERSHEY_SIMPLEX
-    threshold = 25
-    fgbg = cv2.createBackgroundSubtractorMOG2()
+def FAnalyze(cls, kernel = None , kernelDim = None,
+            startFrame = None, blurDim = None,
+            bgTh = None, minApp = None, maxDis = None,
+            searchRadius = None,
+            imshow = False):
+
     # kernel = np.ones((5,5),np.uint8)
     # kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (10,5))
-    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (10,2))
+    if kernelDim is not None:
+        kernelDim = kernelDim
+    else:
+        kernelDim = (10,2)
+
+    if (kernel == "Rectangle"):
+        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, kernelDim)
+    elif (kernel == "Ellipse") or (kernel is None):
+        kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, kernelDim)
+    elif (kernel == "Cross"):
+        kernel = cv2.getStructuringElement(cv2.MORPH_CROSS, kernelDim)
+    else:
+        raise ValueError("Unknown structuring element `{}`".format(kernel))
+        return False
+
+    if startFrame is None:
+        count = 1
+    else:
+        count = startFrame
+
+    if blurDim is None:
+        blurDim = (5,5)
+
+    if bgTh is None:
+        threshold = 25
+    else:
+        threshold = bgTh
+
+    if minApp is not None:
+        Fish.minAppear = minApp
+
+    if maxDis is not None:
+        Fish.maxDisappear = maxDis
+
+    if searchRadius is not None:
+        centroidTracker.searchArea = searchRadius
+
+
+    fgbg = cv2.createBackgroundSubtractorMOG2(varThreshold=threshold)
+    font = cv2.FONT_HERSHEY_SIMPLEX
 
     ## variables for displaying frames
+    
+    # for the key presses {
+    # dummy: for getting key hex values,
+    # k : for inputing key strokes}
     dummy = 0
     k = 30
-    play = False
+
+    # for the Play|Pause operations {
+    # play = False --> pause,
+    # play = True --> playing}
+    play = True
+
+    # playing in desc|asce orders {
+    # desc = False --> playing in ascending order,
+    # }
     desc = False
-    
-    count =1
-    padding = 30
-
-
-    ## variables for object detection
-    # objectDetected = False
-    debugMode = True
-    # trackingEnabled = False
-    # fr = list()
-    # differenceImage = None
-    # thresholdImage = None
-    # sensitivity = 80
-
 
     # variables for trakcers:
     tracker = centroidTracker()
@@ -42,7 +81,7 @@ def FAnalyze(cls):
     while (True):
     # while (count<100):
         # read the image from disk
-        readFromFile = False
+        readFromFile = cls.File
         img = fetchFrame(count, readFromFile= readFromFile)
         if(img is None):
             if readFromFile:
@@ -53,7 +92,7 @@ def FAnalyze(cls):
                 break
         
         # Blur the image to help in object detection
-        frameBlur = cv2.blur(img, (5,5))
+        frameBlur = cv2.blur(img, blurDim)
         
         # apply background subtraction to get moving objects
         # the image produced has the objects and shadows
@@ -101,6 +140,7 @@ def FAnalyze(cls):
                 center = (x,y)
                 cv2.circle(labeled_img, center, tracker.searchArea, (0,255,0), 1)
                 cv2.circle(colored_img, center, tracker.searchArea, (0,255,0), 1)
+
         cv2.putText(labeled_img,"Objects: "+str(fishes["objects"].__len__()),(10,100), font, 1,(255,255,255),2,cv2.LINE_AA)
         cv2.putText(labeled_img,str(count),(10,50), font, 1,(255,255,255),2,cv2.LINE_AA)
         cv2.namedWindow("frames and BGS frames", cv2.WND_PROP_FULLSCREEN)
@@ -289,9 +329,9 @@ class Fish():
     
 def fetchFrame(count, readFromFile=False, filePath = False):
     if not readFromFile:
-        filesPath = "/home/mghobria/Pictures/SONAR_Images" ## laptop
+        # filesPath = "/home/mghobria/Pictures/SONAR_Images" ## laptop
         # filesPath = "C:\\Users\\mghobria\\Downloads\\aris\\F" ## windows home PC
-        # filesPath = "C:\\Users\\Mina Ghobrial\\Downloads\\SONAR" ## windows Laptop PC
+        filesPath = "C:\\Users\\Mina Ghobrial\\Downloads\\SONAR" ## windows Laptop PC
 
         imagesList = os.listdir(filesPath)
         imagesList.sort()
@@ -310,8 +350,8 @@ def fetchFrame(count, readFromFile=False, filePath = False):
         
 
     else:
-        File = SF.FOpenSonarFile(filePath)
-        return
+        img = readFromFile.getFrame(count-1)
+
     return img
 
 def FSaveOutput(cls, path, fileName):

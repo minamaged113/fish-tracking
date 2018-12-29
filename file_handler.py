@@ -51,7 +51,10 @@ class FSONAR_File():
         frameoffset = (self.FILE_HEADER_SIZE + self.FRAME_HEADER_SIZE +(FI*(self.FRAME_HEADER_SIZE+(frameSize))))
         self.FILE_HANDLE.seek(frameoffset, 0)
         strCat = frameSize*"B"
-        self.FRAMES = np.array(struct.unpack(strCat, self.FILE_HANDLE.read(frameSize)), dtype=np.uint8)
+        try:
+            self.FRAMES = np.array(struct.unpack(strCat, self.FILE_HANDLE.read(frameSize)), dtype=np.uint8)
+        except:
+            return None
         self.FRAMES = cv2.flip(self.FRAMES.reshape((self.DATA_SHAPE[0], self.DATA_SHAPE[1])), 0)
         self.FRAMES = self.constructImages()
         return self.FRAMES
@@ -68,7 +71,7 @@ class FSONAR_File():
         Returns:
             [type] -- [description]
         """
-
+        ## TODO
         allAngles = beamLookUp.BeamLookUp(self.BEAM_COUNT, self.largeLens)
         
         # d0 = self.sampleStartDelay * 0.000001 * self.soundSpeed/2
@@ -102,12 +105,39 @@ class FSONAR_File():
             d = N + Q - dp
             outp = np.array((a,d)).T
             return outp
-        
+
 
 
         out = warp( self.FRAMES, invmap, output_shape=(K, L))
         out = (out/np.amax(out)*255).astype(np.uint8)
         return out
+
+    def getBeamDistance(self, x, y):
+        K = self.samplesPerBeam
+        N, M = self.DATA_SHAPE
+        d0 = self.windowStart
+        # dm = d0 + self.samplePeriod * self.samplesPerBeam * 0.000001 * self.soundSpeed/2
+        dm = self.windowStart + self.windowLength
+        am = self.firstBeamAngle
+        xm = dm*np.tan(am/180*np.pi)
+
+        L = int(K/(dm-d0) * 2*xm)
+        sx = L/(2*xm)
+        sa = M/(2*am)
+        sd = N/(dm-d0)
+        O = sx*d0
+        Q = sd*d0
+
+        xi = (x*L)
+        yi = (y*K)
+
+        xc = (xi - L/2)
+        yc = (K + O - yi)
+        dc = np.sqrt(xc**2 + yc**2)
+        ac = np.arctan(xc / yc)/np.pi*180
+
+        return [dc/sd, ac]
+
 
 
 def FOpenSonarFile(filename):

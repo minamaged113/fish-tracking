@@ -9,13 +9,8 @@ import project
 # SF: SONAR File
 import file_handler as SF
 import numpy as np
-
-## For showing images in matplotlib
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-from matplotlib.figure import Figure
-from matplotlib.pyplot import imshow
 import time
+from ast import literal_eval
 
 class FFishListItem():
     def __init__(self, cls, inputDict, fishNumber):
@@ -24,18 +19,50 @@ class FFishListItem():
         self.listItem = QListWidgetItem()
         self.FWdiget = QWidget()
         self.FWdigetText = QLabel("Fish #{}".format(self.fishNumber))
+        self.FIfFish = QCheckBox("is Fish")
+        self.FIfFish.setChecked(False)
         self.FWdigetBTN = QPushButton("Show")
         self.FWdigetBTN.clicked.connect(lambda: cls.showFish(self.fishNumber, self.inputDict))
         self.FWdigetLayout = QVBoxLayout()
         self.FWdigetLayout.addWidget(self.FWdigetText)
+        self.FWdigetLayout.addWidget(self.FIfFish)
         self.FWdigetLayout.addWidget(self.FWdigetBTN)
         self.FWdigetLayout.addStretch()
-        self.FWdigetLayout.setSizeConstraint(QLayout.SetFixedSize)
+        # self.FWdigetLayout.setSizeConstraint(QLayout.SetFixedSize)
         self.FWdiget.setLayout(self.FWdigetLayout)
         self.listItem.setSizeHint(self.FWdiget.sizeHint())
 
 
     
+class MyFigure(QLabel):
+    # isPlaying = False
+    __parent = None
+
+    def __init__(self, parent):
+        self.__parent = parent
+        QLabel.__init__(self, parent)
+
+    def paintEvent(self, paintEvent):
+        if isinstance(self.__parent, FViewer):
+            fviewer = self.__parent
+            if fviewer.play:
+                fviewer.FShowNextImage()
+            
+        QLabel.paintEvent(self, paintEvent)
+    
+    def mouseMoveEvent(self, event):
+        if isinstance(self.__parent, FViewer):
+            fviewer = self.__parent
+            #print(self.pixmap().width(), self.pixmap().height())
+            if self.pixmap():
+                marginx = (self.width() - self.pixmap().width()) / 2
+                marginy = (self.height() - self.pixmap().height()) / 2
+                xs = (event.x() - marginx) / self.pixmap().width()
+                ys = (event.y() - marginy) / self.pixmap().height()
+                output = fviewer.File.getBeamDistance(xs, ys)
+                fviewer.FParent.FStatusBarMousePos.setText("distance={}m\t,angle={}deg\t".format(output[0], output[1]))
+                # self.mousePosDist = output[0]
+                # self.mousePosAng = output[1]
 
 
 class FViewer(QDialog):
@@ -51,6 +78,8 @@ class FViewer(QDialog):
     FRAMES_LIST = list()
     subtractBackground = False
     postAnalysisViewer = False
+    play = False
+    marker = None
 
     def __init__(self, parent, resultsView = False, results=False):
         """Initializes the window and loads the first frame and
@@ -82,7 +111,10 @@ class FViewer(QDialog):
         self.FPlayBTN.setIcon(QIcon(FGetIcon('play')))
         self.FPlayBTN.setCheckable(True)
         
-        
+        self.FAutoAnalizerBTN = QPushButton(self)        
+        self.FAutoAnalizerBTN.setObjectName("Automatic Analyzer")
+        self.FAutoAnalizerBTN.setIcon(QIcon(FGetIcon('analyze')))
+        self.FAutoAnalizerBTN.clicked.connect(self.FAutoAnalizer)
 
         self.F_BGS_BTN = QPushButton(self)
         self.F_BGS_BTN.setObjectName("Subtract Background")
@@ -100,10 +132,20 @@ class FViewer(QDialog):
         self.F_BGS_Slider.valueChanged.connect(self.F_BGS_SliderValueChanged)
         self.F_BGS_Slider.setDisabled(True)
 
-        self.FFigure = Figure()
-        self.FCanvas = FigureCanvas(self.FFigure)
-        self.FToolbar = NavigationToolbar(self.FCanvas, self)
+        self.F_BGS_ValueLabel = QLabel()
+        
+        #self.FFigure = QLabel("Frame Viewer", self)
+        #self.FFigure.setUpdatesEnabled(True)
+        
+        self.MyFigureWidget = MyFigure(self)
+        # self.MyFigureWidget.setUpdatesEnabled(True)
+        # self.MyFigureWidget.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+        self.MyFigureWidget.setMouseTracking(True)
+
+        self.FToolbar = QToolBar(self)
+        self.FToolbar.addWidget(self.FAutoAnalizerBTN)
         self.FToolbar.addWidget(self.F_BGS_BTN)
+        self.FToolbar.addWidget(self.F_BGS_ValueLabel)
         # self.FToolbar.add
         self.FToolbar.addWidget(self.F_BGS_Slider)
         self.FToolbar.setOrientation(Qt.Vertical)
@@ -115,45 +157,53 @@ class FViewer(QDialog):
         self.FSlider.setTickPosition(QSlider.TicksBelow)
         self.FSlider.setTickInterval(int(0.05*self.File.frameCount))
         self.FSlider.valueChanged.connect(self.FSliderValueChanged)
-        
-        
+
+        self.FLayout.addWidget(self.FToolbar,0,0,3,1)
+        self.FLayout.addWidget(self.MyFigureWidget,0,1,1,3)
+        self.FLayout.addWidget(self.FSlider,1,1,1,3)
+        #self.FLayout.addLayout(self.LowerToolbar, 2,1, Qt.AlignBottom)
+        self.FLayout.addWidget(FPreviousBTN, 2,1)
+        self.FLayout.addWidget(self.FPlayBTN, 2,2)
+        self.FLayout.addWidget(FNextBTN, 2,3)
         
         self.FLayout.setContentsMargins(0,0,0,0)
-        self.FLayout.addWidget(self.FToolbar,0,0,3,1)
         self.FLayout.setColumnStretch(0,0)
-        # self.FLayout.setColumnMinimumWidth(0, 0)
-        self.FLayout.addWidget(self.FCanvas,0,1,1,3)
-        self.FLayout.addWidget(self.FSlider,1,1,1,3)
-        self.FLayout.addWidget(FPreviousBTN,2,1)
-        self.FLayout.addWidget(self.FPlayBTN, 2, 2)
-        self.FLayout.addWidget(FNextBTN,2,3)
+        self.FLayout.setColumnStretch(1,1)
+        self.FLayout.setColumnStretch(2,1)
+        self.FLayout.setColumnStretch(3,1)
+        self.FLayout.setRowStretch(0,1)
+        self.FLayout.setRowStretch(1,0)
+        self.FLayout.setRowStretch(2,0)
+        self.FLayout.setSizeConstraint(QLayout.SetMinimumSize)
+
         if self.postAnalysisViewer:
             self.FListDetected()
 
        
-        self.FDisplayImage()
+        
 
         self.setLayout(self.FLayout)
+        self.FDisplayImage()
 
-
-
+    #def UpdateFrameSlider(self):
+    #    self.FSlider.setValue(self.UI_FRAME_INDEX)
+        
     def FShowNextImage(self):
         """Show the next frame image.
         """
-        self.FFigure.clf()
         self.UI_FRAME_INDEX +=1
         if (self.UI_FRAME_INDEX > self.File.frameCount-1):
             self.UI_FRAME_INDEX = 0
         
-        self.FSlider.setValue(self.UI_FRAME_INDEX)
-        tick1 = time.time()
-        self.FFrames = self.File.getFrame(self.UI_FRAME_INDEX)
-        tick2 = time.time()
-        self.FDisplayImage()
-        tick3 = time.time()
-        print('time to fetch frame = ', tick2-tick1)
-        print('time to show frame = ', tick3-tick2)
-        return
+        self.FSlider.setValue(self.UI_FRAME_INDEX+1)
+        #tick1 = time.time()
+        #self.FFrames = self.File.getFrame(self.UI_FRAME_INDEX)
+        #tick2 = time.time()
+        #self.FDisplayImage()
+        #tick3 = time.time()
+        #print('time to fetch frame = ', tick2-tick1)
+        #print('time to show frame = ', tick3-tick2)
+        # return
 
     def FShowPreviousImage(self):
         """Show the previous frame image
@@ -163,42 +213,67 @@ class FViewer(QDialog):
         if (self.UI_FRAME_INDEX < 0 ):
             self.UI_FRAME_INDEX = self.File.frameCount-1
 
-        self.FSlider.setValue(self.UI_FRAME_INDEX)
-        tick1 = time.time()
-        self.FFrames = self.File.getFrame(self.UI_FRAME_INDEX)
-        tick2 = time.time()
-        self.FDisplayImage()
-        tick3 = time.time()
-        print('time to fetch frame = ', tick2-tick1)
-        print('time to show frame = ', tick3-tick2)
+        self.FSlider.setValue(self.UI_FRAME_INDEX+1)
+        #tick1 = time.time()
+        #self.FFrames = self.File.getFrame(self.UI_FRAME_INDEX)
+        #tick2 = time.time()
+        #self.FDisplayImage()
+        #tick3 = time.time()
+        #print('time to fetch frame = ', tick2-tick1)
+        #print('time to show frame = ', tick3-tick2)
 
-    def FDisplayImage(self):
+    def FDisplayImage(self, ffigure = None):
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        if ffigure is None:
+            ffigure = self.MyFigureWidget
+
+        ffigure.setUpdatesEnabled(False)
+        ffigure.clear()
+
+        qformat = QImage.Format_Indexed8
+
+        if len(self.FFrames.shape)==3:
+            if self.FFrames.shape[2]==4:
+                qformat = QImage.Format_RGBA8888
+            else:
+                qformat = QImage.Format_RGB888
+        
         if(self.subtractBackground):
-            self.FFigure.clf()
-            self.FFigure.clear()
-            ax = self.FFigure.add_subplot(122)
-            # ax.remove()
-            ax.clear()
-            ax.set_title("Original")
-            ax.imshow(self.FFrames, cmap = 'gray')
+            
             frameBlur = cv2.blur(self.FFrames, (5,5))
             mask = self.fgbg.apply(frameBlur)
             mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, self.kernel)
             mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, self.kernel)
             mask = cv2.threshold(mask, 128, 255, cv2.THRESH_BINARY)[1]
-            ax = self.FFigure.add_subplot(121)
-            ax.set_title("Background removed")
-            ax.imshow(mask, cmap = 'gray')
-        else:
-            self.FFigure.clf()
-            self.FFigure.clear()
-            ax = self.FFigure.add_subplot(111)
-            ax.clear()
-            ax.set_title("Original")
-            ax.imshow(self.FFrames, cmap = 'gray')
+        
+            if(self.marker):
+                cv2.circle(self.FFrames, literal_eval(self.marker), 30, (255,255,255), 1)
+                cv2.circle(mask, literal_eval(self.marker), 30, (255,255,255), 1)
+                
+                
+            img = np.hstack((mask, self.FFrames))
+            img = QImage(img, img.shape[1], img.shape[0], img.strides[0], qformat)
+        
+        else:    
+            # if(self.marker):
+            #     u = literal_eval(self.marker)[0]
+            #     v = literal_eval(self.marker)[1]
+            #     marginx = (self.width()- ffigure.width())/ 2
+            #     marginy = (self.height() - ffigure.height())/ 2
+            #     xs = (u - marginx) / ffigure.width()
+            #     ys = (v - marginy) / ffigure.height()
+            #     output = self.File.getBeamDistance(xs, ys)
+                
+                # cv2.putText(self.FFrames, "D={0:.2f}m".format(output[0]), (u,v),font,1, (255,255,255), 1, cv2.LINE_4)
+                # cv2.putText(self.FFrames, "A={0:.2f}deg".format(output[1]+self.File.firstBeamAngle), (u, v+50),font,1, (255,255,255), 1, cv2.LINE_4 )
+            img = QImage(self.FFrames, self.FFrames.shape[1], self.FFrames.shape[0], self.FFrames.strides[0], qformat)
+        
+        img = img.rgbSwapped()
 
-        self.FCanvas.draw()
+        ffigure.setPixmap(QPixmap.fromImage(img).scaled(ffigure.width(), ffigure.height(), Qt.KeepAspectRatio))
+        ffigure.setAlignment(Qt.AlignCenter)
         self.FParent.FStatusBarFrameNumber.setText("Frame : "+str(self.UI_FRAME_INDEX+1)+"/"+str(self.File.frameCount))
+        ffigure.setUpdatesEnabled(True)
 
 
     def FLoadSONARFile(self, filePath):
@@ -237,54 +312,322 @@ class FViewer(QDialog):
         if (self.F_BGS_BTN.isChecked()):
             self.subtractBackground = True
             self.F_BGS_Slider.setDisabled(False)
+            self.F_BGS_ValueLabel.setDisabled(False)
+            self.F_BGS_ValueLabel.setText(str(self.F_BGS_Slider.value))
             self.kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (10,2))
-            self.FDisplayImage()
+            #self.FDisplayImage()
         else:
             self.subtractBackground = False
             self.F_BGS_Slider.setDisabled(True)
-            self.FDisplayImage()
+            self.F_BGS_ValueLabel.setDisabled(True)
+            #self.FDisplayImage()
 
-    def FSliderValueChanged(self):
-        self.UI_FRAME_INDEX = self.FSlider.value()
+    def FSliderValueChanged(self, value):
+        self.UI_FRAME_INDEX = value - 1
+        tick1 = time.time()
         self.FFrames = self.File.getFrame(self.UI_FRAME_INDEX)
+        if self.marker:
+            # print(self.marker)
+            cv2.circle(self.FFrames, literal_eval(self.marker), 30, (255,255,255), 1)
+            
+
+        tick2 = time.time()
         self.FDisplayImage()
+        tick3 = time.time()
+        print('time to fetch frame = ', tick2-tick1)
+        print('time to display image = ', tick3-tick2)
+        
+        #self.FFrames = self.File.getFrame(self.UI_FRAME_INDEX)
+        #self.FDisplayImage()
 
     def F_BGS_SliderValueChanged(self):
         value = self.F_BGS_Slider.value()
+        self.F_BGS_ValueLabel.setText(str(value))
         self.fgbg.setVarThreshold(value)
 
-    def FPlay(self):
-        ## problem
-        # self.FPlayBTN.setIcon(QIcon(FGetIcon('pause')))
-        # self.FLayout.addWidget(self.FPlayBTN, 2, 2)
-        # while(self.UI_FRAME_INDEX<self.File.frameCount):
-        #     self.FShowNextImage()
-        #     if (not self.FPlayBTN.is):
-        #         print("1")
-        #     else:
-        #         print("0")
+    def FAutoAnalizer(self):
+        ## TODO : Documentation
+        self.popup = QDialog(self)
+        self.popupLayout = QFormLayout()
+        # kernel size and shape {default: ellipse, (10,2)}
+        self.morphStructLabel = QLabel("Morphological Structuring Element")
+        self.morphStruct = QComboBox(self)
+        self.morphStruct.addItem("Rectangle")
+        self.morphStruct.addItem("Ellipse")
+        self.morphStruct.addItem("Cross")
+        self.morphStructDim = QLabel("Structuring Element Dimension")
+        self.morphStructDimInp = QLineEdit()
+        self.morphStructDimInp.setPlaceholderText("(10,2)")
+        self.popupLayout.addRow(self.morphStructLabel, self.morphStruct)
+        self.popupLayout.addRow(self.morphStructDim, self.morphStructDimInp)
+        # start frame {default: 1}
+        self.startFrame = QLabel("Start Frame")
+        self.startFrameInp = QLineEdit()
+        self.startFrameInp.setPlaceholderText("1")
+        self.popupLayout.addRow(self.startFrame, self.startFrameInp)
+        # blur value {default: (5,5)}
+        self.blurVal = QLabel("Blur Value")
+        self.blurValInp = QLineEdit()
+        self.blurValInp.setPlaceholderText("(5,5)")
+        self.popupLayout.addRow(self.blurVal, self.blurValInp)
+        # background threshold Value {default: 25}
+        self.bgTh = QLabel("Background Threshold")
+        self.bgThInp = QLineEdit()
+        self.bgThInp.setPlaceholderText("25")
+        self.popupLayout.addRow(self.bgTh, self.bgThInp)
+        # minimum appearance {default: 30}
+        self.maxApp = QLabel("Maximum Appearance")
+        self.maxAppInp = QLineEdit()
+        self.maxAppInp.setPlaceholderText("30 frames")
+        self.popupLayout.addRow(self.maxApp, self.maxAppInp)
+        # maximum disappearance {default: 5}
+        self.maxDis = QLabel("Maximum Disappearance")
+        self.maxDisInp = QLineEdit()
+        self.maxDisInp.setPlaceholderText("5 frames")
+        self.popupLayout.addRow(self.maxDis, self.maxDisInp)
+        # tracker search area {default: 30px}
+        self.radiusInput = QLineEdit()
+        self.radiusLabel = QLabel("search radius")
+        self.radiusInput.setPlaceholderText("default is 30 px")
+        self.popupLayout.addRow(self.radiusLabel, self.radiusInput)
+        # show images while processing? takes longer time
+        self.showImages = QCheckBox("Show images while processing. (takes longer time)")
+        self.showImages.setChecked(True)
+        self.popupLayout.addRow(self.showImages)
+        # accept or use defaults
+        self.apply = QPushButton("Apply")
+        self.apply.clicked.connect(self.handleAnalyzerInput)
+        self.popupLayout.addRow(QLabel(), self.apply)
+        self.popup.setLayout(self.popupLayout)
+        self.popup.show()
+        return
+
+    def handleAnalyzerInput(self):
+        ## TODO : function to take input from popup dialog box
         
-        self.FDetectedDict = project.FAnalyze(self)
+        # handling kernel shape type from drop down menu 
+        kernel = self.morphStruct.currentText()
+        
+        # handling kernel dimensions
+        if self.morphStructDimInp.text() == "":
+            kernelDim = None
+        else:
+            kernelDim = literal_eval(self.morphStructDimInp.text())
+
+        # handling start frame index
+        if self.startFrameInp.text() == "":
+            startFrame = None
+        else:
+            startFrame = int(self.startFrameInp.text())
+
+        # handling blur dimensions
+        if self.blurValInp.text() == "":
+            blurDim = None
+        else:
+            blurDim = literal_eval(self.blurValInp.text())
+
+        # handling background threshold
+        if self.bgThInp.text() == "":
+            bgTh = None
+        else:
+            bgTh = int(self.bgThInp.text())
+
+        # handling minimum appearance
+        if self.maxAppInp.text() == "":
+            minApp = None
+        else:
+            minApp = int(self.maxAppInp.text())
+
+        # handling maximum disappearance
+        if self.maxDisInp.text() == "" :
+            maxDis = None
+        else:
+            maxDis = int(self.maxDisInp.text())
+
+        # handling radius input
+        if self.radiusInput.text() == "":
+            searchRadius = None
+        else:
+            searchRadius = int(self.radiusInput.text())
+
+        # handling show images checkbox
+        if self.showImages.isChecked():
+            imshow = True
+        else:
+            imshow = False
+
+        print(kernel, type(kernel))
+        print(kernelDim, type(kernelDim))
+        print(startFrame, type(startFrame))
+        print(blurDim, type(blurDim))
+        print(bgTh, type(bgTh))
+        print(minApp, type(minApp))
+        print(maxDis, type(maxDis))
+        print(searchRadius, type(searchRadius))
+        print(imshow, type(imshow))
+
+        self.FDetectedDict = project.FAnalyze(self, kernel = kernel, 
+                                            kernelDim = kernelDim,
+                                            startFrame = startFrame,
+                                            blurDim = blurDim,
+                                            bgTh= bgTh,
+                                            minApp= minApp, 
+                                            maxDis = maxDis,
+                                            searchRadius= searchRadius,
+                                            imshow = imshow)
+        self.popup.close()
         if(len(self.FDetectedDict)):
             self.FResultsViewer = FViewer(self.FParent, resultsView= True, results=self.FDetectedDict)
             self.FParent.setCentralWidget(self.FResultsViewer)
+        return
 
+    def FPlay(self):
+        ## problem
+        self.play = not self.play
+        if self.play:
+            self.FPlayBTN.setIcon(QIcon(FGetIcon('pause')))
+            self.FShowNextImage()
+            #self.autoPlayTimer.start()
+            
+            #self.FLayout.addWidget(self.FPlayBTN, 2, 2)
+            # while(self.UI_FRAME_INDEX<self.File.frameCount):
+            #     self.FShowNextImage()
+            #     self.FFigure.repaint()
+                
+            
+            #self.playThread = FPlayThread(self)
+            #self.playThread.start()
+            #while(checkPlayBTNThread(self).start()):
+            #    continue
+            #return
+
+            # self.buttonCheckThread = checkPlayBTNThread(self)
+            # self.buttonCheckThread.start()
+        else: # pause
+            self.FPlayBTN.setIcon(QIcon(FGetIcon('play')))
+            #self.playThread.stop()
+            #self.autoPlayTimer.stop()
+            #self.FLayout.addWidget(self.FPlayBTN, 2, 2)
+            # time.sleep(0.2)
+            
         return
 
     def FListDetected(self):
-        count = 1
+        index = 1
         listOfFish = list()
         self.FList = QListWidget()
+        # ## DEBUG: remove next line
+        # dump = open("/home/mghobria/Desktop/fish-tracking/data_all.json")
+        # dump = dump.read()
+        # dump = json.loads(dump)
+
+        # self.FDetectedDict = dump['data']
+
+
         for fish in self.FDetectedDict.keys():
-            listItem = FFishListItem(self, self.FDetectedDict[fish], count)
+            listItem = FFishListItem(self, self.FDetectedDict[fish], index)
+            self.FDetectedDict[fish]["index"] = listItem
             self.FList.addItem(listItem.listItem)
             self.FList.setItemWidget(listItem.listItem, listItem.FWdiget)
             listOfFish.append(listItem)
-            count += 1
+            index += 1
 
-        self.FLayout.addWidget(self.FList, 0,4,5,1)
+        # self.FShowSelectedBTN = QPushButton("Show Selected")
+        # self.FShowSelectedBTN.clicked.connect(self.showSelectedFish)
+        
+        self.FApplyAllBTN = QPushButton("Apply All")
+        self.FApplyAllBTN.clicked.connect(self.FApplyAll)
+
+        self.FApplyBTN = QPushButton("Apply")
+        self.FApplyBTN.clicked.connect(self.FApply)
+
+        # self.FLayout.addWidget(self.FApplyAllBTN, 2, 4)
+        self.FLayout.addWidget(self.FApplyBTN, 2, 5)
+        self.FLayout.addWidget(self.FList, 0,4,2,2, Qt.AlignRight)
         return
 
+    def FApplyAll(self):
+        ## TODO
+        pass
+
     def showFish(self, fishNumber, inputDict):
+        ## TODO
+        # ffigure = self.MyFigureWidget
+        # ffigure.clear()
+        # self.MyFigureWidget.clear()
+        counter = 0
         print("Fish = ", fishNumber)
+        for i in inputDict["frames"]:
+            # ffigure.setUpdatesEnabled(False)
+            self.UI_FRAME_INDEX = i
+            x = int( inputDict["locations"][counter][0])
+            y = int( inputDict["locations"][counter][1])
+            
+            self.marker = str(x)+','+str(y)
+            self.FSlider.setValue(self.UI_FRAME_INDEX)
+            
+            self.marker = None
+            self.repaint()
+            counter +=1
+        self.marker = None
+        return
+
+    # def showSelectedFish(self, inputDict):
+    #     ## TODO
+    #     counter = 0
+    #     # print("Fish = ", fishNumber)
+    #     setOfFrames = set()
+    #     locationsOfFishEachFrame = dict()
+    #     self.UI_FRAME_INDEX = i
+    #     for i in inputDict.keys():
+    #         # ffigure.setUpdatesEnabled(False)
+    #         if inputDict[i]['index'].FIfFish.isChecked():
+    #             for item in inputDict[i]['frames']:
+    #                 setOfFrames.add(item)
+                    
+    #     for j in setOfFrames:
+    #         self.UI_FRAME_INDEX = j
+    #         for i in inputDict.keys():
+    #             if inputDict[i]['index'].FIfFish.isChecked():
+                    
+    #                 x = int( inputDict[i]["locations"][counter][0])
+    #                 y = int( inputDict[i]["locations"][counter][1])
+                
+    #             self.marker = str(x)+','+str(y)
+    #             self.FSlider.setValue(self.UI_FRAME_INDEX)
+                
+    #             self.marker = None
+    #             self.repaint()
+    #             counter +=1
+    #     self.marker = None
+    #     return
+    #     pass
+
+    def FApply(self):
+        ## TODO
+        inputDict = self.FDetectedDict
+        dictToBeSaved = dict()
+        data = dict()
+        for i in inputDict.keys():
+            if inputDict[i]['index'].FIfFish.isChecked():
+                dictToBeSaved[i] = inputDict[i]
+
+        for n in dictToBeSaved.keys():
+            data[str(n)] = {
+                "ID" : dictToBeSaved[n]["ID"],
+                "locations" : tuple(map(tuple, dictToBeSaved[n]["locations"])),
+                "frames" : dictToBeSaved[n]["frames"],
+                "left": list(map(int, dictToBeSaved[n]["left"])),
+                "top": list(map(int, dictToBeSaved[n]["top"])),
+                "width": list(map(int, dictToBeSaved[n]["width"])),
+                "height" : list(map(int, dictToBeSaved[n]["height"])),
+                "area": list(map(int, dictToBeSaved[n]["area"]))
+
+            }
+        path = self.File.FILE_PATH.split('.')
+        path = path[0] + '.json'
+        # path = os.path.join(path, fileName)            
+        with open(path, 'w') as outFile:
+            json.dump(data, outFile)
+        
         return
