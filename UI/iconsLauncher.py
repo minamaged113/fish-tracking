@@ -17,6 +17,7 @@ def FGetIcon(name,iconsDir = iconsDir, theme = "black", resolution = 256, OS='li
                         `flip_vertically`,
                         `frame_header`,
                         `info`,
+                        `link`,
                         `next`,
                         `play`,
                         `salmon`,

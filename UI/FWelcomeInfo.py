@@ -1,6 +1,10 @@
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
+from UI.iconsLauncher import * 
+import os
+from UI.iconsLauncher import iconsDir
+from UI.UI_utils import *
 
 class FWelcomeInfo(QDialog):
     """This class will hold information screen about the software
@@ -16,7 +20,7 @@ class FWelcomeInfo(QDialog):
         self.FLayout = QGridLayout()
 
         FOpenFileBTN = QPushButton("OPEN FILE", self)
-        FOpenFileBTN.clicked.connect(self.FParent.FOpenFile)
+        FOpenFileBTN.clicked.connect(lambda : FOpenFile(self.FParent))
 
         FShowStatsBTN = QPushButton("STATISTICS", self)
         FShowStatsBTN.clicked.connect(self.FShowStats)
@@ -28,10 +32,27 @@ class FWelcomeInfo(QDialog):
         FInfo.setText("Fisher is an open-source software developed by the University of Oulu, Finland in collaboration with the Natural Resources Institute in Finland.")
         FInfo.setWordWrap(True)
 
-        self.FLayout.addWidget(FOpenFileBTN, 0, 0)
-        self.FLayout.addWidget(FShowStatsBTN, 1, 0)
-        self.FLayout.addWidget(FAboutBTN, 2,0)
-        self.FLayout.addWidget(FInfo, 0,1, 3,1)
+        UniOuluImage = QLabel()
+        UniOuluImagePath = os.path.join(iconsDir, "welcome_logos", "uni_oulu_580.png")
+        UniOuluImage.setPixmap(QPixmap(UniOuluImagePath))
+
+        LukeImage = QLabel()
+        LukeImagePath = os.path.join(iconsDir, "welcome_logos", "luke_580.png")
+        LukeImage.setPixmap(QPixmap(LukeImagePath))
+
+        logosLayout = QHBoxLayout()
+        logosLayout.addWidget(UniOuluImage)
+        logosLayout.addWidget(LukeImage)
+        
+        buttonsLayout = QVBoxLayout()
+        buttonsLayout.addWidget(FOpenFileBTN)
+        buttonsLayout.addWidget(FShowStatsBTN)
+        buttonsLayout.addWidget(FAboutBTN)
+        
+        self.FLayout.addLayout(logosLayout, 0,1, Qt.AlignCenter)
+        self.FLayout.addWidget(FInfo, 1,1)
+
+        self.FLayout.addLayout(buttonsLayout, 0,0)
 
         self.FLayout.setColumnStretch(0, 1)
         self.FLayout.setColumnStretch(1, 4)
