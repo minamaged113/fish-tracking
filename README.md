@@ -49,3 +49,26 @@ mghobria@cse-cn0001.oulu.fi
 /research/imag/development/
 
 adm@ee.oulu.fi
+
+## Style Guide
+- [Indentation](https://www.python.org/dev/peps/pep-0008/#indentation): 4 spaces per indentation level
+- [Continuation lines](https://www.python.org/dev/peps/pep-0008/#indentation): aligned with opening delimiter
+- [if-Conditions](https://www.python.org/dev/peps/pep-0008/#indentation): Putting comment directly after
+- [Line length](https://www.python.org/dev/peps/pep-0008/#id19): Code: 79 Characters, Blocks: 72 Characters
+- [Line Break for Binary Operators](https://www.python.org/dev/peps/pep-0008/#id20): Before
+- 2 blank lines surrounding top-level function and class definitions.
+- Method definitions inside a class are surrounded by a single blank line.
+- [Importing Order](https://www.python.org/dev/peps/pep-0008/#id23): Standard library - Third party - Local application/library specific
+- Avoid "from <module> import *"
+- [Whitespaces](https://www.python.org/dev/peps/pep-0008/#id26)
+- All variables are camelCase*****.
+- Global variables are 
+
+
+## State
+- README [in Progress]
+- Code comments [in Progress]
+- Installation instructions [in Progress]
+- Documentation [in Progress]
+- User Manual [in Progress]
+- MVC Architecture [in Progress]
