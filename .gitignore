@@ -16,3 +16,4 @@ file_handlers/v5/__pycache__
 *.aris
 */__pycache__/*
 .\\.vscode\\*
+data.json

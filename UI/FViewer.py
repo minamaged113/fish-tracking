@@ -1,6 +1,12 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+"""This module is used to display captured SONAR data from DIDOSN or ARIS
+files, and also used to show results of the analysis, and details about
+the detected fishes.
+"""
+# importing PyQt needed modules
+import PyQt5.QtCore as pyqtCore
+import PyQt5.QtGui as pyqtGUI
+import PyQt5.QtWidgets as pyqtWidget
+
 import cv2
 from UI.iconsLauncher import *
 import project
@@ -28,19 +34,19 @@ class FFishListItem():
         self.FWdigetLayout.addWidget(self.FIfFish)
         self.FWdigetLayout.addWidget(self.FWdigetBTN)
         self.FWdigetLayout.addStretch()
-        # self.FWdigetLayout.setSizeConstraint(QLayout.SetFixedSize)
+        # self.FWdigetLayout.setSizeConstraint(pyqtWidget.QLayout.SetFixedSize)
         self.FWdiget.setLayout(self.FWdigetLayout)
         self.listItem.setSizeHint(self.FWdiget.sizeHint())
 
 
     
-class MyFigure(QLabel):
+class MyFigure(pyqtWidget.QLabel):
     # isPlaying = False
     __parent = None
 
     def __init__(self, parent):
         self.__parent = parent
-        QLabel.__init__(self, parent)
+        pyqtWidget.QLabel.__init__(self, parent)
 
     def paintEvent(self, paintEvent):
         if isinstance(self.__parent, FViewer):
@@ -48,7 +54,7 @@ class MyFigure(QLabel):
             if fviewer.play:
                 fviewer.FShowNextImage()
             
-        QLabel.paintEvent(self, paintEvent)
+        pyqtWidget.QLabel.paintEvent(self, paintEvent)
     
     def mouseMoveEvent(self, event):
         if isinstance(self.__parent, FViewer):
@@ -65,12 +71,12 @@ class MyFigure(QLabel):
                 # self.mousePosAng = output[1]
 
 
-class FViewer(QDialog):
+class FViewer(pyqtWidget.QDialog):
     """This class holds the main window which will be used to 
     show the SONAR images, analyze them and edit images.
     
     Arguments:
-        QDialog {Class} -- inheriting from QDialog class.
+        pyqtWidget.QDialog {Class} -- inheriting from pyqtWidget.QDialog class.
     """
     BGS_Threshold = 25
     fgbg = cv2.createBackgroundSubtractorMOG2(varThreshold = BGS_Threshold)
@@ -91,50 +97,50 @@ class FViewer(QDialog):
         ##  Reading the file
         self.FLoadSONARFile(self.FParent.FFilePath)
         self.FParent.FStatusBarFrameNumber.setText("Frame : "+str(self.UI_FRAME_INDEX+1)+"/"+str(self.File.frameCount))
-        QDialog.__init__(self)
+        pyqtWidget.QDialog.__init__(self)
         self.setWindowTitle("Fisher - " + self.FFilePath)
-        self.FLayout = QGridLayout()
+        self.FLayout = pyqtWidget.QGridLayout()
 
-        FNextBTN = QPushButton(self)
+        FNextBTN = pyqtWidget.QPushButton(self)
         FNextBTN.clicked.connect(self.FShowNextImage)
-        FNextBTN.setShortcut(Qt.Key_Right)
-        FNextBTN.setIcon(QIcon(FGetIcon('next')))
+        FNextBTN.setShortcut(pyqtCore.Qt.Key_Right)
+        FNextBTN.setIcon(pyqtGUI.QIcon(FGetIcon('next')))
         
-        FPreviousBTN = QPushButton(self)
+        FPreviousBTN = pyqtWidget.QPushButton(self)
         FPreviousBTN.clicked.connect(self.FShowPreviousImage)
-        FPreviousBTN.setShortcut(Qt.Key_Left)
-        FPreviousBTN.setIcon(QIcon(FGetIcon('previous')))
+        FPreviousBTN.setShortcut(pyqtCore.Qt.Key_Left)
+        FPreviousBTN.setIcon(pyqtGUI.QIcon(FGetIcon('previous')))
         
-        self.FPlayBTN = QPushButton(self)
+        self.FPlayBTN = pyqtWidget.QPushButton(self)
         self.FPlayBTN.clicked.connect(self.FPlay)
-        self.FPlayBTN.setShortcut(Qt.Key_Space)
-        self.FPlayBTN.setIcon(QIcon(FGetIcon('play')))
+        self.FPlayBTN.setShortcut(pyqtCore.Qt.Key_Space)
+        self.FPlayBTN.setIcon(pyqtGUI.QIcon(FGetIcon('play')))
         self.FPlayBTN.setCheckable(True)
         
-        self.FAutoAnalizerBTN = QPushButton(self)        
+        self.FAutoAnalizerBTN = pyqtWidget.QPushButton(self)        
         self.FAutoAnalizerBTN.setObjectName("Automatic Analyzer")
-        self.FAutoAnalizerBTN.setIcon(QIcon(FGetIcon('analyze')))
+        self.FAutoAnalizerBTN.setIcon(pyqtGUI.QIcon(FGetIcon('analyze')))
         self.FAutoAnalizerBTN.clicked.connect(self.FAutoAnalizer)
 
-        self.F_BGS_BTN = QPushButton(self)
+        self.F_BGS_BTN = pyqtWidget.QPushButton(self)
         self.F_BGS_BTN.setObjectName("Subtract Background")
         self.F_BGS_BTN.setFlat(True)
         self.F_BGS_BTN.setCheckable(True)
-        self.F_BGS_BTN.setIcon(QIcon(FGetIcon("background_subtraction")))
+        self.F_BGS_BTN.setIcon(pyqtGUI.QIcon(FGetIcon("background_subtraction")))
         self.F_BGS_BTN.clicked.connect(self.FBackgroundSubtract)
 
-        self.F_BGS_Slider = QSlider(Qt.Vertical)
+        self.F_BGS_Slider = pyqtWidget.QSlider(pyqtCore.Qt.Vertical)
         self.F_BGS_Slider.setMinimum(0)
         self.F_BGS_Slider.setMaximum(100)
-        self.F_BGS_Slider.setTickPosition(QSlider.TicksRight)
+        self.F_BGS_Slider.setTickPosition(pyqtWidget.QSlider.TicksRight)
         self.F_BGS_Slider.setTickInterval(10)
         self.F_BGS_Slider.setValue(self.BGS_Threshold)
         self.F_BGS_Slider.valueChanged.connect(self.F_BGS_SliderValueChanged)
         self.F_BGS_Slider.setDisabled(True)
 
-        self.F_BGS_ValueLabel = QLabel()
+        self.F_BGS_ValueLabel = pyqtWidget.QLabel()
         
-        #self.FFigure = QLabel("Frame Viewer", self)
+        #self.FFigure = pyqtWidget.QLabel("Frame Viewer", self)
         #self.FFigure.setUpdatesEnabled(True)
         
         self.MyFigureWidget = MyFigure(self)
@@ -142,19 +148,19 @@ class FViewer(QDialog):
         # self.MyFigureWidget.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
         self.MyFigureWidget.setMouseTracking(True)
 
-        self.FToolbar = QToolBar(self)
+        self.FToolbar = pyqtWidget.QToolBar(self)
         self.FToolbar.addWidget(self.FAutoAnalizerBTN)
         self.FToolbar.addWidget(self.F_BGS_BTN)
         self.FToolbar.addWidget(self.F_BGS_ValueLabel)
         # self.FToolbar.add
         self.FToolbar.addWidget(self.F_BGS_Slider)
-        self.FToolbar.setOrientation(Qt.Vertical)
+        self.FToolbar.setOrientation(pyqtCore.Qt.Vertical)
         self.FToolbar.setFixedWidth(self.FToolbar.minimumSizeHint().width())
         
-        self.FSlider = QSlider(Qt.Horizontal)
+        self.FSlider = pyqtWidget.QSlider(pyqtCore.Qt.Horizontal)
         self.FSlider.setMinimum(1)
         self.FSlider.setMaximum(self.File.frameCount)
-        self.FSlider.setTickPosition(QSlider.TicksBelow)
+        self.FSlider.setTickPosition(pyqtWidget.QSlider.TicksBelow)
         self.FSlider.setTickInterval(int(0.05*self.File.frameCount))
         self.FSlider.valueChanged.connect(self.FSliderValueChanged)
 
@@ -174,13 +180,10 @@ class FViewer(QDialog):
         self.FLayout.setRowStretch(0,1)
         self.FLayout.setRowStretch(1,0)
         self.FLayout.setRowStretch(2,0)
-        self.FLayout.setSizeConstraint(QLayout.SetMinimumSize)
+        self.FLayout.setSizeConstraint(pyqtWidget.QLayout.SetMinimumSize)
 
         if self.postAnalysisViewer:
             self.FListDetected()
-
-       
-        
 
         self.setLayout(self.FLayout)
         self.FDisplayImage()
@@ -214,13 +217,6 @@ class FViewer(QDialog):
             self.UI_FRAME_INDEX = self.File.frameCount-1
 
         self.FSlider.setValue(self.UI_FRAME_INDEX+1)
-        #tick1 = time.time()
-        #self.FFrames = self.File.getFrame(self.UI_FRAME_INDEX)
-        #tick2 = time.time()
-        #self.FDisplayImage()
-        #tick3 = time.time()
-        #print('time to fetch frame = ', tick2-tick1)
-        #print('time to show frame = ', tick3-tick2)
 
     def FDisplayImage(self, ffigure = None):
         font = cv2.FONT_HERSHEY_SIMPLEX
@@ -230,16 +226,15 @@ class FViewer(QDialog):
         ffigure.setUpdatesEnabled(False)
         ffigure.clear()
 
-        qformat = QImage.Format_Indexed8
+        qformat = pyqtGUI.QImage.Format_Indexed8
 
         if len(self.FFrames.shape)==3:
             if self.FFrames.shape[2]==4:
-                qformat = QImage.Format_RGBA8888
+                qformat = pyqtGUI.QImage.Format_RGBA8888
             else:
-                qformat = QImage.Format_RGB888
+                qformat = pyqtGUI.QImage.Format_RGB888
         
         if(self.subtractBackground):
-            
             frameBlur = cv2.blur(self.FFrames, (5,5))
             mask = self.fgbg.apply(frameBlur)
             mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, self.kernel)
@@ -250,28 +245,16 @@ class FViewer(QDialog):
                 cv2.circle(self.FFrames, literal_eval(self.marker), 30, (255,255,255), 1)
                 cv2.circle(mask, literal_eval(self.marker), 30, (255,255,255), 1)
                 
-                
             img = np.hstack((mask, self.FFrames))
-            img = QImage(img, img.shape[1], img.shape[0], img.strides[0], qformat)
+            img = pyqtGUI.QImage(img, img.shape[1], img.shape[0], img.strides[0], qformat)
         
-        else:    
-            # if(self.marker):
-            #     u = literal_eval(self.marker)[0]
-            #     v = literal_eval(self.marker)[1]
-            #     marginx = (self.width()- ffigure.width())/ 2
-            #     marginy = (self.height() - ffigure.height())/ 2
-            #     xs = (u - marginx) / ffigure.width()
-            #     ys = (v - marginy) / ffigure.height()
-            #     output = self.File.getBeamDistance(xs, ys)
-                
-                # cv2.putText(self.FFrames, "D={0:.2f}m".format(output[0]), (u,v),font,1, (255,255,255), 1, cv2.LINE_4)
-                # cv2.putText(self.FFrames, "A={0:.2f}deg".format(output[1]+self.File.firstBeamAngle), (u, v+50),font,1, (255,255,255), 1, cv2.LINE_4 )
-            img = QImage(self.FFrames, self.FFrames.shape[1], self.FFrames.shape[0], self.FFrames.strides[0], qformat)
+        else:
+            img = pyqtGUI.QImage(self.FFrames, self.FFrames.shape[1], self.FFrames.shape[0], self.FFrames.strides[0], qformat)
         
         img = img.rgbSwapped()
 
-        ffigure.setPixmap(QPixmap.fromImage(img).scaled(ffigure.width(), ffigure.height(), Qt.KeepAspectRatio))
-        ffigure.setAlignment(Qt.AlignCenter)
+        ffigure.setPixmap(pyqtGUI.QPixmap.fromImage(img).scaled(ffigure.width(), ffigure.height(), pyqtCore.Qt.KeepAspectRatio))
+        ffigure.setAlignment(pyqtCore.Qt.AlignCenter)
         self.FParent.FStatusBarFrameNumber.setText("Frame : "+str(self.UI_FRAME_INDEX+1)+"/"+str(self.File.frameCount))
         ffigure.setUpdatesEnabled(True)
 
@@ -307,7 +290,7 @@ class FViewer(QDialog):
         """
         This function enables and disables background
         subtraction in the UI.
-        it is called from F_BGS_BTN QPushButton.
+        it is called from F_BGS_BTN pyqtWidget.QPushButton.
         """
         if (self.F_BGS_BTN.isChecked()):
             self.subtractBackground = True
@@ -347,47 +330,47 @@ class FViewer(QDialog):
 
     def FAutoAnalizer(self):
         ## TODO : Documentation
-        self.popup = QDialog(self)
+        self.popup = pyqtWidget.QDialog(self)
         self.popupLayout = QFormLayout()
         # kernel size and shape {default: ellipse, (10,2)}
-        self.morphStructLabel = QLabel("Morphological Structuring Element")
+        self.morphStructLabel = pyqtWidget.QLabel("Morphological Structuring Element")
         self.morphStruct = QComboBox(self)
         self.morphStruct.addItem("Rectangle")
         self.morphStruct.addItem("Ellipse")
         self.morphStruct.addItem("Cross")
-        self.morphStructDim = QLabel("Structuring Element Dimension")
+        self.morphStructDim = pyqtWidget.QLabel("Structuring Element Dimension")
         self.morphStructDimInp = QLineEdit()
         self.morphStructDimInp.setPlaceholderText("(10,2)")
         self.popupLayout.addRow(self.morphStructLabel, self.morphStruct)
         self.popupLayout.addRow(self.morphStructDim, self.morphStructDimInp)
         # start frame {default: 1}
-        self.startFrame = QLabel("Start Frame")
+        self.startFrame = pyqtWidget.QLabel("Start Frame")
         self.startFrameInp = QLineEdit()
         self.startFrameInp.setPlaceholderText("1")
         self.popupLayout.addRow(self.startFrame, self.startFrameInp)
         # blur value {default: (5,5)}
-        self.blurVal = QLabel("Blur Value")
+        self.blurVal = pyqtWidget.QLabel("Blur Value")
         self.blurValInp = QLineEdit()
         self.blurValInp.setPlaceholderText("(5,5)")
         self.popupLayout.addRow(self.blurVal, self.blurValInp)
         # background threshold Value {default: 25}
-        self.bgTh = QLabel("Background Threshold")
+        self.bgTh = pyqtWidget.QLabel("Background Threshold")
         self.bgThInp = QLineEdit()
         self.bgThInp.setPlaceholderText("25")
         self.popupLayout.addRow(self.bgTh, self.bgThInp)
         # minimum appearance {default: 30}
-        self.maxApp = QLabel("Maximum Appearance")
+        self.maxApp = pyqtWidget.QLabel("Maximum Appearance")
         self.maxAppInp = QLineEdit()
         self.maxAppInp.setPlaceholderText("30 frames")
         self.popupLayout.addRow(self.maxApp, self.maxAppInp)
         # maximum disappearance {default: 5}
-        self.maxDis = QLabel("Maximum Disappearance")
+        self.maxDis = pyqtWidget.QLabel("Maximum Disappearance")
         self.maxDisInp = QLineEdit()
         self.maxDisInp.setPlaceholderText("5 frames")
         self.popupLayout.addRow(self.maxDis, self.maxDisInp)
         # tracker search area {default: 30px}
         self.radiusInput = QLineEdit()
-        self.radiusLabel = QLabel("search radius")
+        self.radiusLabel = pyqtWidget.QLabel("search radius")
         self.radiusInput.setPlaceholderText("default is 30 px")
         self.popupLayout.addRow(self.radiusLabel, self.radiusInput)
         # show images while processing? takes longer time
@@ -395,9 +378,9 @@ class FViewer(QDialog):
         self.showImages.setChecked(True)
         self.popupLayout.addRow(self.showImages)
         # accept or use defaults
-        self.apply = QPushButton("Apply")
+        self.apply = pyqtWidget.QPushButton("Apply")
         self.apply.clicked.connect(self.handleAnalyzerInput)
-        self.popupLayout.addRow(QLabel(), self.apply)
+        self.popupLayout.addRow(pyqtWidget.QLabel(), self.apply)
         self.popup.setLayout(self.popupLayout)
         self.popup.show()
         return
@@ -485,7 +468,7 @@ class FViewer(QDialog):
         ## problem
         self.play = not self.play
         if self.play:
-            self.FPlayBTN.setIcon(QIcon(FGetIcon('pause')))
+            self.FPlayBTN.setIcon(pyqtGUI.QIcon(FGetIcon('pause')))
             self.FShowNextImage()
             #self.autoPlayTimer.start()
             
@@ -504,7 +487,7 @@ class FViewer(QDialog):
             # self.buttonCheckThread = checkPlayBTNThread(self)
             # self.buttonCheckThread.start()
         else: # pause
-            self.FPlayBTN.setIcon(QIcon(FGetIcon('play')))
+            self.FPlayBTN.setIcon(pyqtGUI.QIcon(FGetIcon('play')))
             #self.playThread.stop()
             #self.autoPlayTimer.stop()
             #self.FLayout.addWidget(self.FPlayBTN, 2, 2)
@@ -532,18 +515,18 @@ class FViewer(QDialog):
             listOfFish.append(listItem)
             index += 1
 
-        # self.FShowSelectedBTN = QPushButton("Show Selected")
+        # self.FShowSelectedBTN = pyqtWidget.QPushButton("Show Selected")
         # self.FShowSelectedBTN.clicked.connect(self.showSelectedFish)
         
-        self.FApplyAllBTN = QPushButton("Apply All")
+        self.FApplyAllBTN = pyqtWidget.QPushButton("Apply All")
         self.FApplyAllBTN.clicked.connect(self.FApplyAll)
 
-        self.FApplyBTN = QPushButton("Apply")
+        self.FApplyBTN = pyqtWidget.QPushButton("Apply")
         self.FApplyBTN.clicked.connect(self.FApply)
 
         # self.FLayout.addWidget(self.FApplyAllBTN, 2, 4)
         self.FLayout.addWidget(self.FApplyBTN, 2, 5)
-        self.FLayout.addWidget(self.FList, 0,4,2,2, Qt.AlignRight)
+        self.FLayout.addWidget(self.FList, 0,4,2,2, pyqtCore.Qt.AlignRight)
         return
 
     def FApplyAll(self):

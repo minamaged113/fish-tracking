@@ -6,19 +6,16 @@ from PyQt5.QtWidgets import *
 from UI.FWelcomeInfo import *
 from UI.FViewer import *
 from UI.iconsLauncher import *
-from UI.fileMainMenu import *
-from UI.editMainMenu import *
-from UI.helpMainMenu import *
+import UI.fileMainMenu
+import UI.editMainMenu
+import UI.helpMainMenu
 
 
 ## Other entities dealing with the UI
-#   - File handler for opening SONAR Files
-from file_handler import *
-from pathlib import Path
-
 import os
 import sys
 import cv2
+
 
 class FMainContainer(QMainWindow):
     """This class holds the welcome window which will be used to 
@@ -61,9 +58,9 @@ class FMainContainer(QMainWindow):
         """initializes the main menu for the application.
         """
         self.mainMenu = self.menuBar()
-        FFileMenu_init(self)
-        FEditMenu_init(self)
-        FHelpMenu_init(self)
+        UI.fileMainMenu.FFileMenu_init(self)
+        UI.editMainMenu.FEditMenu_init(self)
+        UI.helpMainMenu.FHelpMenu_init(self)
         self.FStatusBar = QStatusBar()
         self.FStatusBarFrameNumber = QLabel()
         self.FStatusBarFrameNumber.setText("No File Loaded")
