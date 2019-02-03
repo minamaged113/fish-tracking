@@ -214,21 +214,7 @@ def DIDSON_v3(fhand, version, cls):
 
 def DIDSON_v4(fhand, version, cls):
     """
-    This function will handle version 5 DIDSON Files
-    version 5 of DIDSON format is also known as ARIS
-        dataAndParams = {
-            "data": allFrames,
-            "parameters":{
-                "frameCount": frameCount,
-                "numRawBeams" : numRawBeams,
-                "samplesPerChannel" : samplesPerChannel,
-                "samplePeriod" : samplePeriod,
-                "soundSpeed" : soundSpeed,
-                "sampleStartDelay" : sampleStartDelay,
-                "largeLens" : largeLens,
-                "DATA_SHAPE" : data.shape
-            }
-        }
+    This function will handle version 4 DIDSON Files
     """
     print("inside DIDSON v4")
     cls.FRAME_HEADER_SIZE = getFrameHeaderSize(version)

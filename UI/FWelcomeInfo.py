@@ -1,55 +1,56 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
-from UI.iconsLauncher import * 
+import PyQt5.QtCore as pyqtCore
+import PyQt5.QtGui as pyqtGUI
+import PyQt5.QtWidgets as pyqtWidgets
+import UI.iconsLauncher as uiIcons
 import os
-from UI.iconsLauncher import iconsDir
-from UI.UI_utils import *
 
-class FWelcomeInfo(QDialog):
+import UI.UI_utils as uif
+
+
+class FWelcomeInfo(pyqtWidgets.QDialog):
     """This class will hold information screen about the software
     and its owners and developers.
     
     Arguments:
-        QDialog {[Class]} -- PyQt parent class
+        pyqtWidgets.QDialog {[Class]} -- PyQt parent class
     """
     
     def __init__(self, parent):
-        QDialog.__init__(self)
+        pyqtWidgets.QDialog.__init__(self)
         self.FParent = parent
-        self.FLayout = QGridLayout()
+        self.FLayout = pyqtWidgets.QGridLayout()
 
-        FOpenFileBTN = QPushButton("OPEN FILE", self)
-        FOpenFileBTN.clicked.connect(lambda : FOpenFile(self.FParent))
+        FOpenFileBTN = pyqtWidgets.QPushButton("OPEN FILE", self)
+        FOpenFileBTN.clicked.connect(lambda : uif.FOpenFile(self.FParent))
 
-        FShowStatsBTN = QPushButton("STATISTICS", self)
+        FShowStatsBTN = pyqtWidgets.QPushButton("STATISTICS", self)
         FShowStatsBTN.clicked.connect(self.FShowStats)
 
-        FAboutBTN = QPushButton("ABOUT", self)
+        FAboutBTN = pyqtWidgets.QPushButton("ABOUT", self)
         FAboutBTN.clicked.connect(self.FAbout)
 
-        FInfo = QLabel()
+        FInfo = pyqtWidgets.QLabel()
         FInfo.setText("Fisher is an open-source software developed by the University of Oulu, Finland in collaboration with the Natural Resources Institute in Finland.")
         FInfo.setWordWrap(True)
 
-        UniOuluImage = QLabel()
-        UniOuluImagePath = os.path.join(iconsDir, "welcome_logos", "uni_oulu_580.png")
-        UniOuluImage.setPixmap(QPixmap(UniOuluImagePath))
+        UniOuluImage = pyqtWidgets.QLabel()
+        UniOuluImagePath = os.path.join(uiIcons.iconsDir, "welcome_logos", "uni_oulu_580.png")
+        UniOuluImage.setPixmap(pyqtGUI.QPixmap(UniOuluImagePath))
 
-        LukeImage = QLabel()
-        LukeImagePath = os.path.join(iconsDir, "welcome_logos", "luke_580.png")
-        LukeImage.setPixmap(QPixmap(LukeImagePath))
+        LukeImage = pyqtWidgets.QLabel()
+        LukeImagePath = os.path.join(uiIcons.iconsDir, "welcome_logos", "luke_580.png")
+        LukeImage.setPixmap(pyqtGUI.QPixmap(LukeImagePath))
 
-        logosLayout = QHBoxLayout()
+        logosLayout = pyqtWidgets.QHBoxLayout()
         logosLayout.addWidget(UniOuluImage)
         logosLayout.addWidget(LukeImage)
         
-        buttonsLayout = QVBoxLayout()
+        buttonsLayout = pyqtWidgets.QVBoxLayout()
         buttonsLayout.addWidget(FOpenFileBTN)
         buttonsLayout.addWidget(FShowStatsBTN)
         buttonsLayout.addWidget(FAboutBTN)
         
-        self.FLayout.addLayout(logosLayout, 0,1, Qt.AlignCenter)
+        self.FLayout.addLayout(logosLayout, 0,1, pyqtCore.Qt.AlignCenter)
         self.FLayout.addWidget(FInfo, 1,1)
 
         self.FLayout.addLayout(buttonsLayout, 0,0)

@@ -3,22 +3,19 @@
 ##########################################################
 
 import sys
+import PyQt5.QtWidgets as pyqtWidgets
 ## Functionality Libraries
 import os
-import cv2
-import json
-import numpy as np
-from UI_handler import *
-from file_handler import *
+import UI_handler as ui
+import file_handler as fh
 
 
 
 def run():
     cwd = os.getcwd()
-    app = QApplication(sys.argv)
-    MainWindow = FMainContainer()
+    app = pyqtWidgets.QApplication(sys.argv)
+    MainWindow = ui.FMainContainer()
     app.exec_()
-    #sys.exit()
     return
 
 run()
