@@ -6,13 +6,14 @@ import sys
 import PyQt5.QtWidgets as pyqtWidgets
 ## Functionality Libraries
 import os
+_MAIN_DIRECTORY = os.getcwd()
+sys.path.append(os.path.join(_MAIN_DIRECTORY, "UI"))
 import UI_handler as ui
 import file_handler as fh
 
 
 
 def run():
-    cwd = os.getcwd()
     app = pyqtWidgets.QApplication(sys.argv)
     MainWindow = ui.FMainContainer()
     app.exec_()

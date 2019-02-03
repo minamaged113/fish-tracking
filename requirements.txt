@@ -5,6 +5,7 @@ Babel==2.6.0
 certifi==2018.11.29
 chardet==3.0.4
 cloudpickle==0.5.3
+colorama==0.4.1
 cx-Freeze==5.1.1
 cycler==0.10.0
 dask==0.18.2
@@ -31,6 +32,8 @@ pycodestyle==2.5.0
 Pygments==2.3.1
 pylint==2.1.1
 pyparsing==2.2.0
+PyQt5==5.11.3
+PyQt5-sip==4.19.13
 python-dateutil==2.7.3
 pytz==2018.5
 PyWavelets==0.5.2

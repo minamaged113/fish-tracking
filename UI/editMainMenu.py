@@ -11,7 +11,7 @@ is called `FMainContainer`
 import PyQt5.QtWidgets as pyqtWidget
 
 # uif : (u)ser (i)nterface (f)unction
-import UI.UI_utils as uif
+import UI_utils as uif      # UI/UI_utils
 
 def FEditMenu_init(FMainContainer):
     ## TODO : implement undo function

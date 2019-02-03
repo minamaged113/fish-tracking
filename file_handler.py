@@ -10,6 +10,9 @@ References:
 #   https://github.com/SoundMetrics
 #   https://github.com/EminentCodfish/pyARIS
 """
+import sys
+import os
+
 
 import struct
 from file_handlers.utils import *

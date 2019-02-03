@@ -10,7 +10,7 @@ Welcome to Fisher's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-.. automodule:: UI.UI_utils
+.. automodule:: UI_utils
 
 Indices and tables
 ==================

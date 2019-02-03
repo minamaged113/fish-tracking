@@ -3,12 +3,13 @@ import PyQt5.QtGui as pyqtGUI
 import PyQt5.QtWidgets as pyqtWidgets
 
 ## Other windows connected to this one
-from UI.FWelcomeInfo import *
-from UI.FViewer import *
-from UI.iconsLauncher import *
-import UI.fileMainMenu
-import UI.editMainMenu
-import UI.helpMainMenu
+# All the following modules are inside directory: UI/
+from FWelcomeInfo import *      # UI/FWelcomeInfo
+from FViewer import *           # UI/FViewer
+from iconsLauncher import *     # UI/iconsLauncher
+import fileMainMenu             # UI/fileMainMenu
+import editMainMenu             # UI/editMainMenu
+import helpMainMenu             # UI/helpMainMenu
 
 
 ## Other entities dealing with the UI
@@ -59,9 +60,9 @@ class FMainContainer(pyqtWidgets.QMainWindow):
         """initializes the main menu for the application.
         """
         self.mainMenu = self.menuBar()
-        UI.fileMainMenu.FFileMenu_init(self)
-        UI.editMainMenu.FEditMenu_init(self)
-        UI.helpMainMenu.FHelpMenu_init(self)
+        fileMainMenu.FFileMenu_init(self)
+        editMainMenu.FEditMenu_init(self)
+        helpMainMenu.FHelpMenu_init(self)
         self.FStatusBar = pyqtWidgets.QStatusBar()
         self.FStatusBarFrameNumber = pyqtWidgets.QLabel()
         self.FStatusBarFrameNumber.setText("No File Loaded")

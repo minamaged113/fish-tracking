@@ -8,7 +8,7 @@ import PyQt5.QtGui as pyqtGUI
 import PyQt5.QtWidgets as pyqtWidget
 
 import cv2
-import UI.iconsLauncher as uiIcons
+import iconsLauncher as uiIcons      # UI/iconsLauncher
 import project
 
 ## library for reading SONAR files

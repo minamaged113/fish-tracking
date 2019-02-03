@@ -5,7 +5,9 @@ venv
 skimage_warp.py 
 *.cpython-35.pyc
 *.aris
-*/__pycache__/*
 data.json
 dist
 build
+__pycache__/*
+*/__pycache__/*
+file_handlers/*/__pycache__/*

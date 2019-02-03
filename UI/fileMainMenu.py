@@ -13,7 +13,7 @@ import PyQt5.QtGui as pyqtGUI
 import PyQt5.QtWidgets as pyqtWidget
 
 # uif : (u)ser (i)nterface (f)unction
-import UI.UI_utils as uif
+import UI_utils as uif      # UI/UI_utils
 
 
 def FFileMenu_init(FMainContainer):

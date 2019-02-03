@@ -5,7 +5,7 @@ that is available in all windows
 """
 import os
 from PyQt5.QtWidgets import QFileDialog
-from UI.FViewer import FViewer
+from FViewer import FViewer                                      # UI/FViewer
 # for the about section in the help menu
 import webbrowser
 #for exporting results
