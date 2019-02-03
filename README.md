@@ -53,7 +53,8 @@ adm@ee.oulu.fi
 ## [Style Guide](https://www.python.org/dev/peps/pep-0008/)
 The style guide is mainly following PEP-8 unless stated otherwise.
 - [Indentation](https://www.python.org/dev/peps/pep-0008/#indentation): 4 spaces per indentation level
-- [Continuation lines](https://www.python.org/dev/peps/pep-0008/#indentation): aligned with opening delimiter
+- [Continuation code lines](https://www.python.org/dev/peps/pep-0008/#indentation): aligned with opening delimiter
+- Continuation of Docstrings' line: Indented twice.
 - [if-Conditions](https://www.python.org/dev/peps/pep-0008/#indentation): Putting comment directly after
 - [Line length](https://www.python.org/dev/peps/pep-0008/#id19): Code: 79 Characters, Blocks: 72 Characters
 - [Line Break for Binary Operators](https://www.python.org/dev/peps/pep-0008/#id20): Before

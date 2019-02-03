@@ -8,7 +8,7 @@ import PyQt5.QtGui as pyqtGUI
 import PyQt5.QtWidgets as pyqtWidget
 
 import cv2
-from UI.iconsLauncher import *
+import UI.iconsLauncher as uiIcons
 import project
 
 ## library for reading SONAR files
@@ -41,7 +41,6 @@ class FFishListItem():
 
     
 class MyFigure(pyqtWidget.QLabel):
-    # isPlaying = False
     __parent = None
 
     def __init__(self, parent):
@@ -76,14 +75,14 @@ class FViewer(pyqtWidget.QDialog):
     show the SONAR images, analyze them and edit images.
     
     Arguments:
-        pyqtWidget.QDialog {Class} -- inheriting from pyqtWidget.QDialog class.
+        pyqtWidget.QDialog {Class} -- inheriting from 
+                                      PyQt5.QtWidgets.QDialog class.
     """
-    BGS_Threshold = 25
-    fgbg = cv2.createBackgroundSubtractorMOG2(varThreshold = BGS_Threshold)
+    _BGS_Threshold = 25
+    _fgbg = cv2.createBackgroundSubtractorMOG2(varThreshold = _BGS_Threshold)
     UI_FRAME_INDEX = 0
-    FRAMES_LIST = list()
     subtractBackground = False
-    postAnalysisViewer = False
+    _postAnalysisViewer = False
     play = False
     marker = None
 
@@ -91,7 +90,7 @@ class FViewer(pyqtWidget.QDialog):
         """Initializes the window and loads the first frame and
         places the UI elements, each in its own place.
         """
-        self.postAnalysisViewer = resultsView
+        self._postAnalysisViewer = resultsView
         self.FDetectedDict = results
         self.FParent = parent
         ##  Reading the file
@@ -104,29 +103,29 @@ class FViewer(pyqtWidget.QDialog):
         FNextBTN = pyqtWidget.QPushButton(self)
         FNextBTN.clicked.connect(self.FShowNextImage)
         FNextBTN.setShortcut(pyqtCore.Qt.Key_Right)
-        FNextBTN.setIcon(pyqtGUI.QIcon(FGetIcon('next')))
+        FNextBTN.setIcon(pyqtGUI.QIcon(uiIcons.FGetIcon('next')))
         
         FPreviousBTN = pyqtWidget.QPushButton(self)
         FPreviousBTN.clicked.connect(self.FShowPreviousImage)
         FPreviousBTN.setShortcut(pyqtCore.Qt.Key_Left)
-        FPreviousBTN.setIcon(pyqtGUI.QIcon(FGetIcon('previous')))
+        FPreviousBTN.setIcon(pyqtGUI.QIcon(uiIcons.FGetIcon('previous')))
         
         self.FPlayBTN = pyqtWidget.QPushButton(self)
         self.FPlayBTN.clicked.connect(self.FPlay)
         self.FPlayBTN.setShortcut(pyqtCore.Qt.Key_Space)
-        self.FPlayBTN.setIcon(pyqtGUI.QIcon(FGetIcon('play')))
+        self.FPlayBTN.setIcon(pyqtGUI.QIcon(uiIcons.FGetIcon('play')))
         self.FPlayBTN.setCheckable(True)
         
         self.FAutoAnalizerBTN = pyqtWidget.QPushButton(self)        
         self.FAutoAnalizerBTN.setObjectName("Automatic Analyzer")
-        self.FAutoAnalizerBTN.setIcon(pyqtGUI.QIcon(FGetIcon('analyze')))
+        self.FAutoAnalizerBTN.setIcon(pyqtGUI.QIcon(uiIcons.FGetIcon('analyze')))
         self.FAutoAnalizerBTN.clicked.connect(self.FAutoAnalizer)
 
         self.F_BGS_BTN = pyqtWidget.QPushButton(self)
         self.F_BGS_BTN.setObjectName("Subtract Background")
         self.F_BGS_BTN.setFlat(True)
         self.F_BGS_BTN.setCheckable(True)
-        self.F_BGS_BTN.setIcon(pyqtGUI.QIcon(FGetIcon("background_subtraction")))
+        self.F_BGS_BTN.setIcon(pyqtGUI.QIcon(uiIcons.FGetIcon("background_subtraction")))
         self.F_BGS_BTN.clicked.connect(self.FBackgroundSubtract)
 
         self.F_BGS_Slider = pyqtWidget.QSlider(pyqtCore.Qt.Vertical)
@@ -134,7 +133,7 @@ class FViewer(pyqtWidget.QDialog):
         self.F_BGS_Slider.setMaximum(100)
         self.F_BGS_Slider.setTickPosition(pyqtWidget.QSlider.TicksRight)
         self.F_BGS_Slider.setTickInterval(10)
-        self.F_BGS_Slider.setValue(self.BGS_Threshold)
+        self.F_BGS_Slider.setValue(self._BGS_Threshold)
         self.F_BGS_Slider.valueChanged.connect(self.F_BGS_SliderValueChanged)
         self.F_BGS_Slider.setDisabled(True)
 
@@ -182,7 +181,7 @@ class FViewer(pyqtWidget.QDialog):
         self.FLayout.setRowStretch(2,0)
         self.FLayout.setSizeConstraint(pyqtWidget.QLayout.SetMinimumSize)
 
-        if self.postAnalysisViewer:
+        if self._postAnalysisViewer:
             self.FListDetected()
 
         self.setLayout(self.FLayout)
@@ -236,7 +235,7 @@ class FViewer(pyqtWidget.QDialog):
         
         if(self.subtractBackground):
             frameBlur = cv2.blur(self.FFrames, (5,5))
-            mask = self.fgbg.apply(frameBlur)
+            mask = self._fgbg.apply(frameBlur)
             mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, self.kernel)
             mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, self.kernel)
             mask = cv2.threshold(mask, 128, 255, cv2.THRESH_BINARY)[1]
@@ -326,7 +325,7 @@ class FViewer(pyqtWidget.QDialog):
     def F_BGS_SliderValueChanged(self):
         value = self.F_BGS_Slider.value()
         self.F_BGS_ValueLabel.setText(str(value))
-        self.fgbg.setVarThreshold(value)
+        self._fgbg.setVarThreshold(value)
 
     def FAutoAnalizer(self):
         ## TODO : Documentation
@@ -468,7 +467,7 @@ class FViewer(pyqtWidget.QDialog):
         ## problem
         self.play = not self.play
         if self.play:
-            self.FPlayBTN.setIcon(pyqtGUI.QIcon(FGetIcon('pause')))
+            self.FPlayBTN.setIcon(pyqtGUI.QIcon(uiIcons.FGetIcon('pause')))
             self.FShowNextImage()
             #self.autoPlayTimer.start()
             
@@ -487,7 +486,7 @@ class FViewer(pyqtWidget.QDialog):
             # self.buttonCheckThread = checkPlayBTNThread(self)
             # self.buttonCheckThread.start()
         else: # pause
-            self.FPlayBTN.setIcon(pyqtGUI.QIcon(FGetIcon('play')))
+            self.FPlayBTN.setIcon(pyqtGUI.QIcon(uiIcons.FGetIcon('play')))
             #self.playThread.stop()
             #self.autoPlayTimer.stop()
             #self.FLayout.addWidget(self.FPlayBTN, 2, 2)

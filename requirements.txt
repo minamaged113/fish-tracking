@@ -1,9 +1,11 @@
 alabaster==0.7.12
 astroid==2.0.4
+autopep8==1.4.3
 Babel==2.6.0
 certifi==2018.11.29
 chardet==3.0.4
 cloudpickle==0.5.3
+cx-Freeze==5.1.1
 cycler==0.10.0
 dask==0.18.2
 DateTime==4.2
@@ -22,8 +24,10 @@ networkx==2.1
 numpy==1.14.5
 opencv-python==3.4.1.15
 packaging==19.0
+pep8==1.7.1
 Pillow==5.2.0
 progressbar==2.5
+pycodestyle==2.5.0
 Pygments==2.3.1
 pylint==2.1.1
 pyparsing==2.2.0
