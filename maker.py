@@ -2,6 +2,11 @@ import cx_Freeze as cf
 import sys
 import os
 
+import distutils
+import opcode
+
+
+distutils_path = os.path.join(os.path.dirname(opcode.__file__), 'distutils')
 
 
 sys.path.append(os.path.join(os.getcwd(), "UI"))
@@ -20,27 +25,32 @@ if sys.platform == 'win32':
 # The following packages has to be included, as follows:
 #   ` "packages": ["numpy"] `
 
-cf.setup(
-    name = "Fisher",
-    version = "0.1",
-    description = "",
-    options = {
-        "build_exe" : {
-            "packages": [
-                "numpy",
-                "os",
-                "scipy",
-                "skimage"
-                ],
-            "includes": [
-                "atexit"
-                ]
-        }
-
-    },
-    executables = [
-        cf.Executable("main.py",
-                      base=base,
-                      targetName=targetName)
-    ]
-)
+cf.setup(name="Fisher",
+         version="0.1",
+         description="",
+         options={
+             "build_exe": {
+                 "packages": [
+                     "numpy",
+                     "os",
+                     "scipy",
+                     "skimage"
+                 ],
+                 "includes": [
+                     "atexit"
+                 ],
+                 "include_files": [
+                     (distutils_path, 'lib/distutils')
+                 ],
+                 "excludes": [
+                     'distutils'
+                 ]
+             }
+         },
+         executables=[
+             cf.Executable("main.py",
+                           base=base,
+                           targetName=targetName
+                           )
+         ]
+         )
