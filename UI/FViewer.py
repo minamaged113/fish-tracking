@@ -61,13 +61,28 @@ class MyFigure(pyqtWidget.QLabel):
             #print(self.pixmap().width(), self.pixmap().height())
             if self.pixmap():
                 marginx = (self.width() - self.pixmap().width()) / 2
+
+                if not fviewer.subtractBackground:
+                    xs = (event.x() - marginx) / self.pixmap().width()
+                else:
+                    xs = event.x() - marginx
+
+                    real_width = self.pixmap().width() / 2
+                    if xs > real_width:
+                        xs = (xs - real_width) / real_width
+                    else:
+                        xs = xs / real_width
+
                 marginy = (self.height() - self.pixmap().height()) / 2
-                xs = (event.x() - marginx) / self.pixmap().width()
                 ys = (event.y() - marginy) / self.pixmap().height()
                 output = fviewer.File.getBeamDistance(xs, ys)
                 fviewer.FParent.FStatusBarMousePos.setText("distance={}m\t,angle={}deg\t".format(output[0], output[1]))
                 # self.mousePosDist = output[0]
                 # self.mousePosAng = output[1]
+    
+    def resizeEvent(self, event):
+        if isinstance(self.figurePixmap, pyqtGUI.QPixmap):
+            self.setPixmap(self.figurePixmap.scaled(self.size(), pyqtCore.Qt.KeepAspectRatio))
 
 
 class FViewer(pyqtWidget.QDialog):
@@ -114,7 +129,7 @@ class FViewer(pyqtWidget.QDialog):
         self.FPlayBTN.clicked.connect(self.FPlay)
         self.FPlayBTN.setShortcut(pyqtCore.Qt.Key_Space)
         self.FPlayBTN.setIcon(pyqtGUI.QIcon(uiIcons.FGetIcon('play')))
-        self.FPlayBTN.setCheckable(True)
+        #self.FPlayBTN.setCheckable(True)
         
         self.FAutoAnalizerBTN = pyqtWidget.QPushButton(self)        
         self.FAutoAnalizerBTN.setObjectName("Automatic Analyzer")
@@ -144,7 +159,7 @@ class FViewer(pyqtWidget.QDialog):
         
         self.MyFigureWidget = MyFigure(self)
         # self.MyFigureWidget.setUpdatesEnabled(True)
-        # self.MyFigureWidget.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+        self.MyFigureWidget.setSizePolicy(pyqtWidget.QSizePolicy.Ignored, pyqtWidget.QSizePolicy.Ignored)
         self.MyFigureWidget.setMouseTracking(True)
 
         self.FToolbar = pyqtWidget.QToolBar(self)
@@ -251,8 +266,8 @@ class FViewer(pyqtWidget.QDialog):
             img = pyqtGUI.QImage(self.FFrames, self.FFrames.shape[1], self.FFrames.shape[0], self.FFrames.strides[0], qformat)
         
         img = img.rgbSwapped()
-
-        ffigure.setPixmap(pyqtGUI.QPixmap.fromImage(img).scaled(ffigure.width(), ffigure.height(), pyqtCore.Qt.KeepAspectRatio))
+        ffigure.figurePixmap = pyqtGUI.QPixmap.fromImage(img)
+        ffigure.setPixmap(ffigure.figurePixmap.scaled(ffigure.size(), pyqtCore.Qt.KeepAspectRatio))
         ffigure.setAlignment(pyqtCore.Qt.AlignCenter)
         self.FParent.FStatusBarFrameNumber.setText("Frame : "+str(self.UI_FRAME_INDEX+1)+"/"+str(self.File.frameCount))
         ffigure.setUpdatesEnabled(True)
@@ -463,7 +478,7 @@ class FViewer(pyqtWidget.QDialog):
             self.FParent.setCentralWidget(self.FResultsViewer)
         return
 
-    def FPlay(self):
+    def FPlay(self, eventQt):
         ## problem
         self.play = not self.play
         if self.play:

@@ -15,11 +15,11 @@ def FOpenFile(QT_Dialog):
         ## DEBUG : remove filePathTuple and uncomment filePathTuple
         # home = str(Path.home())
         home = str(os.path.expanduser("~"))
-        # filePathTuple = ('/home/mghobria/Documents/work/data/data.aris',) # laptop
+        filePathTuple = ('/home/mghobria/Documents/work/data/data.aris',) # laptop
         # filePathTuple = ('data.aris',) # Home PC & windows Laptop
         # filePathTuple = ('/home/mghobria/Documents/work/data/data 1/data.aris',) # work PC
         # filePathTuple = ("C:\\Users\\mghobria\\Downloads\\data.aris",) # Home PC windows
-        filePathTuple = QFileDialog.getOpenFileName(QT_Dialog, "Open File", home, "Sonar Files (*.aris *.ddf)")
+        #filePathTuple = QFileDialog.getOpenFileName(QT_Dialog, "Open File", home, "Sonar Files (*.aris *.ddf)")
         if filePathTuple[0] != "" : 
             QT_Dialog.FFilePath = filePathTuple[0]
             QT_Dialog.FCentralScreen = FViewer(QT_Dialog)
