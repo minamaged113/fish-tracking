@@ -42,7 +42,7 @@ def FGetIcon(name,iconsDir = iconsDir, theme = "black", resolution = 256, OS='li
         [type] -- [description]
     """
 
-    if(OS == 'linux'):
+    if(OS == 'linux' or OS == 'darwin'):
         iconName = str(theme) + "_" + str(resolution) + ".png"
         iconPath = os.path.join(iconsDir, name, iconName )
     elif(OS == 'win32'):
