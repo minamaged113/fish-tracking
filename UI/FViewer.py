@@ -302,9 +302,8 @@ class FViewer(pyqtWidget.QDialog):
     
     def FBackgroundSubtract(self):
         """
-        This function enables and disables background
-        subtraction in the UI.
-        it is called from F_BGS_BTN pyqtWidget.QPushButton.
+        This function enables and disables background subtraction in the
+        UI. It is called from F_BGS_BTN pyqtWidget.QPushButton.
         """
         if (self.F_BGS_BTN.isChecked()):
             self.subtractBackground = True
@@ -312,12 +311,10 @@ class FViewer(pyqtWidget.QDialog):
             self.F_BGS_ValueLabel.setDisabled(False)
             self.F_BGS_ValueLabel.setText(str(self.F_BGS_Slider.value))
             self.kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (10,2))
-            #self.FDisplayImage()
         else:
             self.subtractBackground = False
             self.F_BGS_Slider.setDisabled(True)
             self.F_BGS_ValueLabel.setDisabled(True)
-            #self.FDisplayImage()
 
     def FSliderValueChanged(self, value):
         self.UI_FRAME_INDEX = value - 1
@@ -345,50 +342,50 @@ class FViewer(pyqtWidget.QDialog):
     def FAutoAnalizer(self):
         ## TODO : Documentation
         self.popup = pyqtWidget.QDialog(self)
-        self.popupLayout = QFormLayout()
+        self.popupLayout = pyqtWidget.QFormLayout()
         # kernel size and shape {default: ellipse, (10,2)}
         self.morphStructLabel = pyqtWidget.QLabel("Morphological Structuring Element")
-        self.morphStruct = QComboBox(self)
+        self.morphStruct = pyqtWidget.QComboBox(self)
         self.morphStruct.addItem("Rectangle")
         self.morphStruct.addItem("Ellipse")
         self.morphStruct.addItem("Cross")
         self.morphStructDim = pyqtWidget.QLabel("Structuring Element Dimension")
-        self.morphStructDimInp = QLineEdit()
+        self.morphStructDimInp = pyqtWidget.QLineEdit()
         self.morphStructDimInp.setPlaceholderText("(10,2)")
         self.popupLayout.addRow(self.morphStructLabel, self.morphStruct)
         self.popupLayout.addRow(self.morphStructDim, self.morphStructDimInp)
         # start frame {default: 1}
         self.startFrame = pyqtWidget.QLabel("Start Frame")
-        self.startFrameInp = QLineEdit()
+        self.startFrameInp = pyqtWidget.QLineEdit()
         self.startFrameInp.setPlaceholderText("1")
         self.popupLayout.addRow(self.startFrame, self.startFrameInp)
         # blur value {default: (5,5)}
         self.blurVal = pyqtWidget.QLabel("Blur Value")
-        self.blurValInp = QLineEdit()
+        self.blurValInp = pyqtWidget.QLineEdit()
         self.blurValInp.setPlaceholderText("(5,5)")
         self.popupLayout.addRow(self.blurVal, self.blurValInp)
         # background threshold Value {default: 25}
         self.bgTh = pyqtWidget.QLabel("Background Threshold")
-        self.bgThInp = QLineEdit()
+        self.bgThInp = pyqtWidget.QLineEdit()
         self.bgThInp.setPlaceholderText("25")
         self.popupLayout.addRow(self.bgTh, self.bgThInp)
         # minimum appearance {default: 30}
         self.maxApp = pyqtWidget.QLabel("Maximum Appearance")
-        self.maxAppInp = QLineEdit()
+        self.maxAppInp = pyqtWidget.QLineEdit()
         self.maxAppInp.setPlaceholderText("30 frames")
         self.popupLayout.addRow(self.maxApp, self.maxAppInp)
         # maximum disappearance {default: 5}
         self.maxDis = pyqtWidget.QLabel("Maximum Disappearance")
-        self.maxDisInp = QLineEdit()
+        self.maxDisInp = pyqtWidget.QLineEdit()
         self.maxDisInp.setPlaceholderText("5 frames")
         self.popupLayout.addRow(self.maxDis, self.maxDisInp)
         # tracker search area {default: 30px}
-        self.radiusInput = QLineEdit()
+        self.radiusInput = pyqtWidget.QLineEdit()
         self.radiusLabel = pyqtWidget.QLabel("search radius")
         self.radiusInput.setPlaceholderText("default is 30 px")
         self.popupLayout.addRow(self.radiusLabel, self.radiusInput)
         # show images while processing? takes longer time
-        self.showImages = QCheckBox("Show images while processing. (takes longer time)")
+        self.showImages = pyqtWidget.QCheckBox("Show images while processing. (takes longer time)")
         self.showImages.setChecked(True)
         self.popupLayout.addRow(self.showImages)
         # accept or use defaults
