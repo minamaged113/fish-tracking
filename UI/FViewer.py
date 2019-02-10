@@ -302,9 +302,8 @@ class FViewer(pyqtWidget.QDialog):
     
     def FBackgroundSubtract(self):
         """
-        This function enables and disables background
-        subtraction in the UI.
-        it is called from F_BGS_BTN pyqtWidget.QPushButton.
+        This function enables and disables background subtraction in the
+        UI. It is called from F_BGS_BTN pyqtWidget.QPushButton.
         """
         if (self.F_BGS_BTN.isChecked()):
             self.subtractBackground = True
@@ -312,12 +311,10 @@ class FViewer(pyqtWidget.QDialog):
             self.F_BGS_ValueLabel.setDisabled(False)
             self.F_BGS_ValueLabel.setText(str(self.F_BGS_Slider.value))
             self.kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (10,2))
-            #self.FDisplayImage()
         else:
             self.subtractBackground = False
             self.F_BGS_Slider.setDisabled(True)
             self.F_BGS_ValueLabel.setDisabled(True)
-            #self.FDisplayImage()
 
     def FSliderValueChanged(self, value):
         self.UI_FRAME_INDEX = value - 1
@@ -345,7 +342,10 @@ class FViewer(pyqtWidget.QDialog):
         ## TODO : Documentation
         self.popup = pyqtWidget.QDialog(self)
         self.popupLayout = pyqtWidget.QFormLayout()
+<<<<<<< HEAD
         
+=======
+>>>>>>> 3ca9dc1e8861353786b47bb3a8c03d2e4854ff0f
         # kernel size and shape {default: ellipse, (10,2)}
         self.morphStructLabel = pyqtWidget.QLabel("Morphological Structuring Element")
         self.morphStruct = pyqtWidget.QComboBox(self)
@@ -390,8 +390,13 @@ class FViewer(pyqtWidget.QDialog):
         
         # tracker search area {default: 30px}
         self.radiusInput = pyqtWidget.QLineEdit()
+<<<<<<< HEAD
         self.radiusLabel = pyqtWidget.QLabel("Search radius (px)")
         self.radiusInput.setPlaceholderText("30 px")
+=======
+        self.radiusLabel = pyqtWidget.QLabel("search radius")
+        self.radiusInput.setPlaceholderText("default is 30 px")
+>>>>>>> 3ca9dc1e8861353786b47bb3a8c03d2e4854ff0f
         self.popupLayout.addRow(self.radiusLabel, self.radiusInput)
         
         # show images while processing? takes longer time
