@@ -12,6 +12,7 @@ References:
 """
 import sys
 import os
+import json
 
 
 import struct
@@ -255,3 +256,27 @@ def DIDSON_v5(fhand, version, cls):
     cls.FILE_HANDLE = fhand
     return
 
+def loadAnalysisPreset(presetName=None):
+    """This function will be used when the user clicks on the 
+    auto-analyzer button. When the pop-up message pops up asking for
+    analyzer parameters, this function will be invoked when the user
+    clicks on either the ´Load Preset´ button or ´Defaults´ button.
+    
+    Arguments:
+        presetName {[type]} -- [description]
+    """
+    if presetName:
+        CWD = os.getcwd()
+        defaultPresetPath = os.path.join(CWD, "file_handlers", "analysis_presets", "default.json")
+        with open(defaultPresetPath, "r") as template:
+            config = json.load(template)
+            return config
+
+    else:
+        return
+    ## TODO : Finish this function, and the documentation is not yet finished for this.
+    pass
+
+def saveAnalysisPreset(presetName):
+    ## TODO : Finish this function
+    pass

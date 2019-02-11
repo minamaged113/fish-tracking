@@ -10,23 +10,37 @@ from FViewer import FViewer                                      # UI/FViewer
 import webbrowser
 #for exporting results
 from jinja2 import Environment, FileSystemLoader
+import file_handler as FH
 
 def FOpenFile(QT_Dialog):
         ## DEBUG : remove filePathTuple and uncomment filePathTuple
-        # home = str(Path.home())
-        home = str(os.path.expanduser("~"))
+        # homeDirectory = str(Path.home())
+        homeDirectory = str(os.path.expanduser("~"))
         # filePathTuple = ('/home/mghobria/Documents/work/data/data.aris',) # laptop
         # filePathTuple = ('data.aris',) # Home PC & windows Laptop
         # filePathTuple = ('/home/mghobria/Documents/work/data/data 1/data.aris',) # work PC
         # filePathTuple = ("C:\\Users\\mghobria\\Downloads\\data.aris",) # Home PC windows
-        filePathTuple = QFileDialog.getOpenFileName(QT_Dialog, "Open File", home, "Sonar Files (*.aris *.ddf)")
+        filePathTuple = QFileDialog.getOpenFileName(QT_Dialog,
+                                                    "Open File",
+                                                    homeDirectory,
+                                                    "Sonar Files (*.aris *.ddf)")
         if filePathTuple[0] != "" : 
+            # if the user has actually chosen a specific file.
             QT_Dialog.FFilePath = filePathTuple[0]
             QT_Dialog.FCentralScreen = FViewer(QT_Dialog)
             QT_Dialog.setCentralWidget(QT_Dialog.FCentralScreen)
             QT_Dialog.setWindowTitle("Fisher - " + QT_Dialog.FFilePath)
 
-
+def loadTemplate(QT_PopUp):
+    homeDirectory = str(os.path.expanduser("~"))
+    filePathTuple = QFileDialog.getOpenFileName(QT_PopUp,
+                                                "Load Template",
+                                                homeDirectory,
+                                                "JSON (*.json)")
+    if filePathTuple[0] != "" :
+        # if the user has actually chosen a specific file.
+        FH.loadAnalysisPreset
+    pass
 
 def exportAsJPGActionFunction(self):
     name = QFileDialog.getSaveFileName(self, 'Save all frames')[0]
@@ -106,6 +120,26 @@ def exportResult(type, detectedFish):
     output = textTemp.render(fishes=items)
     
     return
+
+def loadFrameList():
+    """Function that loads frames before and after the current
+    Frame into the memory for faster processing.
+    Every time the user presses `Next` or `Previous` it modifies
+    the list to maintain the number of loaded frames.
+
+        range: {integer} -- defines number of frames loaded into
+                the memory.
+
+    """
+    ## TODO
+    framesIndices = list()
+    range = 10
+    if range > (self.File.FRAME_COUNT+1):
+        range = self.File.FRAME_COUNT
+    for i in range(range):
+        framesIndices.append()
+        
+    pass
 
 
 def print_stat_msg(text):

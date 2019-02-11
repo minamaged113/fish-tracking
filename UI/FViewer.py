@@ -9,14 +9,17 @@ import PyQt5.QtWidgets as pyqtWidget
 
 import cv2
 import iconsLauncher as uiIcons      # UI/iconsLauncher
+# uif : (u)ser (i)nterface (f)unction
+import UI_utils as uif              # UI/UI_utils
 import project
 
 ## library for reading SONAR files
-# SF: SONAR File
-import file_handler as SF
+# FH: File Handler
+import file_handler as FH
 import numpy as np
 import time
 from ast import literal_eval
+
 
 class FFishListItem():
     def __init__(self, cls, inputDict, fishNumber):
@@ -202,8 +205,6 @@ class FViewer(pyqtWidget.QDialog):
         self.setLayout(self.FLayout)
         self.FDisplayImage()
 
-    #def UpdateFrameSlider(self):
-    #    self.FSlider.setValue(self.UI_FRAME_INDEX)
         
     def FShowNextImage(self):
         """Show the next frame image.
@@ -213,14 +214,6 @@ class FViewer(pyqtWidget.QDialog):
             self.UI_FRAME_INDEX = 0
         
         self.FSlider.setValue(self.UI_FRAME_INDEX+1)
-        #tick1 = time.time()
-        #self.FFrames = self.File.getFrame(self.UI_FRAME_INDEX)
-        #tick2 = time.time()
-        #self.FDisplayImage()
-        #tick3 = time.time()
-        #print('time to fetch frame = ', tick2-tick1)
-        #print('time to show frame = ', tick3-tick2)
-        # return
 
     def FShowPreviousImage(self):
         """Show the previous frame image
@@ -275,30 +268,9 @@ class FViewer(pyqtWidget.QDialog):
 
     def FLoadSONARFile(self, filePath):
         self.FFilePath = filePath
-        # SF: Sonar File Library
-        self.File = SF.FOpenSonarFile(filePath)
+        # FH: Sonar File Library
+        self.File = FH.FOpenSonarFile(filePath)
         self.FFrames = self.File.FRAMES
-        
-
-    def loadFrameList(self):
-        """Function that loads frames before and after the current
-        Frame into the memory for faster processing.
-        Every time the user presses `Next` or `Previous` it modifies
-        the list to maintain the number of loaded frames.
-
-            range: {integer} -- defines number of frames loaded into
-                    the memory.
-
-        """
-        ## TODO
-        framesIndices = list()
-        range = 10
-        if range > (self.File.FRAME_COUNT+1):
-            range = self.File.FRAME_COUNT
-        for i in range(range):
-            framesIndices.append()
-            
-        pass
     
     def FBackgroundSubtract(self):
         """
@@ -318,20 +290,12 @@ class FViewer(pyqtWidget.QDialog):
 
     def FSliderValueChanged(self, value):
         self.UI_FRAME_INDEX = value - 1
-        tick1 = time.time()
         self.FFrames = self.File.getFrame(self.UI_FRAME_INDEX)
         if self.marker:
             # print(self.marker)
             cv2.circle(self.FFrames, literal_eval(self.marker), 30, (255,255,255), 1)
             
-        # tick2 = time.time()
         self.FDisplayImage()
-        # tick3 = time.time()
-        # print('time to fetch frame = ', tick2-tick1)
-        # print('time to display image = ', tick3-tick2)
-        
-        #self.FFrames = self.File.getFrame(self.UI_FRAME_INDEX)
-        #self.FDisplayImage()
 
     def F_BGS_SliderValueChanged(self):
         value = self.F_BGS_Slider.value()
@@ -345,8 +309,8 @@ class FViewer(pyqtWidget.QDialog):
         # kernel size and shape {default: ellipse, (10,2)}
         self.morphStructLabel = pyqtWidget.QLabel("Morphological Structuring Element")
         self.morphStruct = pyqtWidget.QComboBox(self)
-        self.morphStruct.addItem("Rectangle")
         self.morphStruct.addItem("Ellipse")
+        self.morphStruct.addItem("Rectangle")
         self.morphStruct.addItem("Cross")
         self.morphStructDim = pyqtWidget.QLabel("Structuring Element Dimension")
         self.morphStructDimInp = pyqtWidget.QLineEdit()
@@ -360,46 +324,63 @@ class FViewer(pyqtWidget.QDialog):
         self.startFrameInp.setPlaceholderText("1")
         self.popupLayout.addRow(self.startFrame, self.startFrameInp)
         
-        # blur value {default: (5,5)}
         self.blurVal = pyqtWidget.QLabel("Blur Value")
         self.blurValInp = pyqtWidget.QLineEdit()
         self.blurValInp.setPlaceholderText("(5,5)")
         self.popupLayout.addRow(self.blurVal, self.blurValInp)
         
-        # background threshold Value {default: 25}
         self.bgTh = pyqtWidget.QLabel("Background Threshold")
         self.bgThInp = pyqtWidget.QLineEdit()
         self.bgThInp.setPlaceholderText("25")
         self.popupLayout.addRow(self.bgTh, self.bgThInp)
         
-        # minimum appearance {default: 30}
         self.maxApp = pyqtWidget.QLabel("Maximum Appearance")
         self.maxAppInp = pyqtWidget.QLineEdit()
         self.maxAppInp.setPlaceholderText("30 frames")
         self.popupLayout.addRow(self.maxApp, self.maxAppInp)
         
-        # maximum disappearance {default: 5}
         self.maxDis = pyqtWidget.QLabel("Maximum Disappearance")
         self.maxDisInp = pyqtWidget.QLineEdit()
         self.maxDisInp.setPlaceholderText("5 frames")
         self.popupLayout.addRow(self.maxDis, self.maxDisInp)
         
-        # tracker search area {default: 30px}
         self.radiusInput = pyqtWidget.QLineEdit()
         self.radiusLabel = pyqtWidget.QLabel("Search radius (px)")
         self.radiusInput.setPlaceholderText("30 px")
         self.popupLayout.addRow(self.radiusLabel, self.radiusInput)
         
-        # show images while processing? takes longer time
         self.showImages = pyqtWidget.QCheckBox("Show images while processing. (takes longer time)")
         self.showImages.setChecked(True)
         self.popupLayout.addRow(self.showImages)
         
-        # accept or use defaults
-        self.apply = pyqtWidget.QPushButton("Apply")
-        self.apply.clicked.connect(self.handleAnalyzerInput)
-        self.popupLayout.addRow(pyqtWidget.QLabel(), self.apply)
+        self.loadPresetBTN = pyqtWidget.QPushButton("Load Preset")
+        self.loadPresetBTN.clicked.connect(FH.loadAnalysisPreset)
         
+        self.savePresetBTN = pyqtWidget.QPushButton("Save Preset")
+        self.savePresetBTN.clicked.connect(FH.saveAnalysisPreset)
+
+        self.defaultPresetBTN = pyqtWidget.QPushButton("Defaults")
+        self.defaultPresetBTN.clicked.connect(lambda: FH.loadAnalysisPreset("default.json"))
+        
+        self.setAsDefaultBTN = pyqtWidget.QPushButton("Set As Defaults")
+        self.setAsDefaultBTN.clicked.connect(FH.saveAnalysisPreset)
+
+        self.startAnalysis = pyqtWidget.QPushButton("Start")
+        self.startAnalysis.clicked.connect(self.handleAnalyzerInput)
+        
+        rowButtonsLayout1 = pyqtWidget.QHBoxLayout()
+        rowButtonsLayout2 = pyqtWidget.QHBoxLayout()
+        
+        rowButtonsLayout1.addWidget(self.loadPresetBTN)
+        rowButtonsLayout1.addWidget(self.savePresetBTN)
+        rowButtonsLayout1.addWidget(self.setAsDefaultBTN)
+        
+        rowButtonsLayout2.addWidget(self.defaultPresetBTN)
+        rowButtonsLayout2.addWidget(self.startAnalysis)
+        
+        self.popupLayout.addRow(rowButtonsLayout1)
+        self.popupLayout.addRow(rowButtonsLayout2)
+
         self.popup.setLayout(self.popupLayout)
         self.popup.show()
         return
