@@ -354,7 +354,7 @@ class FViewer(pyqtWidget.QDialog):
         self.popupLayout.addRow(self.showImages)
         
         self.loadPresetBTN = pyqtWidget.QPushButton("Load Preset")
-        self.loadPresetBTN.clicked.connect(FH.loadAnalysisPreset)
+        self.loadPresetBTN.clicked.connect(lambda : uif.loadTemplate(self))
         
         self.savePresetBTN = pyqtWidget.QPushButton("Save Preset")
         self.savePresetBTN.clicked.connect(FH.saveAnalysisPreset)

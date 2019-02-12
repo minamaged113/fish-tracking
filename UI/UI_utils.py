@@ -31,15 +31,15 @@ def FOpenFile(QT_Dialog):
             QT_Dialog.setCentralWidget(QT_Dialog.FCentralScreen)
             QT_Dialog.setWindowTitle("Fisher - " + QT_Dialog.FFilePath)
 
-def loadTemplate(QT_PopUp):
+def loadTemplate(QT_Dialog):
     homeDirectory = str(os.path.expanduser("~"))
-    filePathTuple = QFileDialog.getOpenFileName(QT_PopUp,
+    filePathTuple = QFileDialog.getOpenFileName(QT_Dialog,
                                                 "Load Template",
                                                 homeDirectory,
                                                 "JSON (*.json)")
     if filePathTuple[0] != "" :
         # if the user has actually chosen a specific file.
-        FH.loadAnalysisPreset
+        FH.loadAnalysisPreset()
     pass
 
 def exportAsJPGActionFunction(self):
