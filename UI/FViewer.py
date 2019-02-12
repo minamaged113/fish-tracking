@@ -360,7 +360,7 @@ class FViewer(pyqtWidget.QDialog):
         self.savePresetBTN.clicked.connect(FH.saveAnalysisPreset)
 
         self.defaultPresetBTN = pyqtWidget.QPushButton("Defaults")
-        self.defaultPresetBTN.clicked.connect(lambda: FH.loadAnalysisPreset("default.json"))
+        self.defaultPresetBTN.clicked.connect(lambda: FH.loadJSON("default.json"))
         
         self.setAsDefaultBTN = pyqtWidget.QPushButton("Set As Defaults")
         self.setAsDefaultBTN.clicked.connect(FH.saveAnalysisPreset)

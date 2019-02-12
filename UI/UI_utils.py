@@ -31,16 +31,56 @@ def FOpenFile(QT_Dialog):
             QT_Dialog.setCentralWidget(QT_Dialog.FCentralScreen)
             QT_Dialog.setWindowTitle("Fisher - " + QT_Dialog.FFilePath)
 
-def loadTemplate(QT_Dialog):
-    homeDirectory = str(os.path.expanduser("~"))
-    filePathTuple = QFileDialog.getOpenFileName(QT_Dialog,
-                                                "Load Template",
-                                                homeDirectory,
-                                                "JSON (*.json)")
-    if filePathTuple[0] != "" :
-        # if the user has actually chosen a specific file.
-        FH.loadAnalysisPreset()
-    pass
+def loadTemplate(QT_Dialog, default=False):
+    """Loads an analysis template from disk from the following path 
+    "/fish-tracking/file_handlers/analysis_presets".
+    It calls 'loadJSON()' function from 'file_handler'
+    module, which returns a dictionary that has the following keys:
+    {
+        "morphStruct": {string} -- indicates type of kernel,
+        "morphStructDim": {list} -- [{int} -- width, {int} -- height],
+        "startFrame": {int} -- frame to start analysis from,
+        "blurVal": {list} -- [{int} -- width, {int} -- height],
+        "bgTh": {int} -- background threshold,
+        "maxApp": {int} -- appearance frames,
+        "maxDis": {int} -- disappearance frames,
+        "radius": {int} -- search radius,
+        "showImages" : {bool} -- whether to show process or not
+    }
+    
+    Arguments:
+        QT_Dialog {PyQt5.Widget.QDialog()} -- Pop-up QtDialog to start
+                        the analysis.
+    
+    Keyword Arguments:
+        default {bool} -- determines whether to load the default template
+                or another predefined template. (default: {False})
+    """             
+
+    if default:
+        # load the default template
+
+    else:
+        # load a preset from disk
+        homeDirectory = str(os.path.expanduser("~"))
+        filePathTuple = QFileDialog.getOpenFileName(QT_Dialog,
+                                                    "Load Template",
+                                                    homeDirectory,
+                                                    "JSON (*.json)")
+        if filePathTuple[0] != "" :
+            # if the user has actually chosen a specific file.
+            config = FH.loadJSON(filePathTuple[0])
+            if config:
+                # if the file was read successfully
+                QT_Dialog.morphStruct.setCurrentText(config['morphStruct'])
+                QT_Dialog.morphStructDimInp.setText(
+                    "({w},{h})".format(
+                        w=config['morphStructDim'][0],
+                        h=config['morphStructDim'][1])
+                )
+                QT_Dialog.startFrameInp.setText(config)
+                
+    return
 
 def exportAsJPGActionFunction(self):
     name = QFileDialog.getSaveFileName(self, 'Save all frames')[0]

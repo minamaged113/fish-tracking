@@ -42,15 +42,16 @@ class FMainContainer(pyqtWidgets.QMainWindow):
         
 
     def initUI(self):
-        self.setWindowIcon(pyqtGUI.QIcon(FGetIcon("salmon", OS = sys.platform)))
-        self.setWindowTitle("Fisher - Welcome Screen")
+        self._CONFIG = FH.loadJSON("config.json")
+        self.setWindowIcon(pyqtGUI.QIcon(FGetIcon(self._CONFIG["icon"], OS = sys.platform)))
+        self.setWindowTitle(self._CONFIG["windowTitle"])
 
         self.FMainMenu_init()
         self.showNormal()
-        self.width = 640
-        self.height = 600
-        self.left = 100
-        self.top = 100
+        self.width = self._CONFIG["initWidth"]
+        self.height = self._CONFIG["initHeight"]
+        self.left = self._CONFIG["initLeft"]
+        self.top = self._CONFIG["initTop"]
         self.setGeometry(self.left, self.top, self.width, self.height)
         self.FWelcomeInfo = FWelcomeInfo(self)
         self.setCentralWidget(self.FWelcomeInfo)

@@ -12,11 +12,13 @@ class FWelcomeInfo(pyqtWidgets.QDialog):
     and its owners and developers.
     
     Arguments:
-        pyqtWidgets.QDialog {[Class]} -- PyQt parent class
+        pyqtWidgets.QDialog {Class} -- superclass which this is class is
+                                    subclassed from.
     """
     
     def __init__(self, parent):
         pyqtWidgets.QDialog.__init__(self)
+        self._MAIN_CONTAINER = parent
         self.FParent = parent
         self.FLayout = pyqtWidgets.QGridLayout()
 

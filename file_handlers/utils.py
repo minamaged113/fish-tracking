@@ -164,13 +164,13 @@ def c(inpStr):
     the number of bytes which that exact variable occupies.
     
     Arguments:
-        inpStr {string} -- [string that indicates the type of
+        inpStr {string} -- string that indicates the type of
                             variable that we need to calculate
-                            the size of]
+                            the size of
     
     Returns:
-        [integer] -- [indicates the number of bytes that this
-                        variable occupies]
+        integer -- indicates the number of bytes that this
+                        variable occupies
 
     Reference: https://docs.python.org/3/library/struct.html
     """

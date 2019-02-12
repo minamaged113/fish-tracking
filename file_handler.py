@@ -256,26 +256,48 @@ def DIDSON_v5(fhand, version, cls):
     cls.FILE_HANDLE = fhand
     return
 
-def loadAnalysisPreset(presetName=None):
-    """This function will be used when the user clicks on the 
-    auto-analyzer button. When the pop-up message pops up asking for
-    analyzer parameters, this function will be invoked when the user
-    clicks on either the ´Load Preset´ button or ´Defaults´ button.
+def loadJSON(jsonFilePath):
+    """This function will be used to load JSON files.
     
     Arguments:
-        presetName {[type]} -- [description]
+        jsonFilePath {string} -- path to the JSON file to load
+
+    Returns:
+        dict -- containing the data from JSON file.
     """
-    if presetName:
-        CWD = os.getcwd()
-        defaultPresetPath = os.path.join(CWD, "file_handlers", "analysis_presets", "default.json")
-        with open(defaultPresetPath, "r") as template:
+    try:
+        with open(jsonFilePath, "r") as template:
             config = json.load(template)
             return config
+    except:
+        return False
 
-    else:
-        return
-    ## TODO : Finish this function, and the documentation is not yet finished for this.
-    pass
+def pathFromList(listOfDirectories):
+    """This function generates a sting path suitable for the used OS.
+    Example:
+    To get the path of file2.txt from a directory tree that looks like the
+    following:
+    {CWD}
+    ├── dir1
+    │   └── dirA
+    │       └── file1.txt
+    └── dir2
+        └── dirB
+            ├── file2.txt
+            └── file3.txt
+    the input list should be in the following form
+    ["dir1", "dirB", "file2.txt"]
+    and it returns a string holding the full path to that file.
+    
+    Arguments:
+        listOfDirectories {list} -- list of strings, each of which is a
+                                    part of the relative path to the 
+                                    specified file.
+    
+    Returns:
+        string -- full path to the specified file
+    """
+    return os.path.join(os.getcwd(), *listOfDirectories)
 
 def saveAnalysisPreset(presetName):
     ## TODO : Finish this function
