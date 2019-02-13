@@ -42,6 +42,7 @@ class FMainContainer(pyqtWidgets.QMainWindow):
         
 
     def initUI(self):
+        self._MAIN_CONTAINER = self
         self._CONFIG = FH.loadJSON("config.json")
         self.setWindowIcon(pyqtGUI.QIcon(FGetIcon(self._CONFIG["icon"], OS = sys.platform)))
         self.setWindowTitle(self._CONFIG["windowTitle"])
@@ -73,3 +74,4 @@ class FMainContainer(pyqtWidgets.QMainWindow):
         self.setStatusBar(self.FStatusBar)
         return
 
+    

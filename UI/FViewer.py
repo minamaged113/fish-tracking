@@ -111,6 +111,7 @@ class FViewer(pyqtWidget.QDialog):
         self._postAnalysisViewer = resultsView
         self.FDetectedDict = results
         self.FParent = parent
+        self._MAIN_CONTAINER = parent._MAIN_CONTAINER
         ##  Reading the file
         self.FLoadSONARFile(self.FParent.FFilePath)
         self.FParent.FStatusBarFrameNumber.setText("Frame : "+str(self.UI_FRAME_INDEX+1)+"/"+str(self.File.frameCount))
@@ -360,7 +361,7 @@ class FViewer(pyqtWidget.QDialog):
         self.savePresetBTN.clicked.connect(FH.saveAnalysisPreset)
 
         self.defaultPresetBTN = pyqtWidget.QPushButton("Defaults")
-        self.defaultPresetBTN.clicked.connect(lambda: FH.loadJSON("default.json"))
+        self.defaultPresetBTN.clicked.connect(lambda: uif.loadTemplate(self, default=True))
         
         self.setAsDefaultBTN = pyqtWidget.QPushButton("Set As Defaults")
         self.setAsDefaultBTN.clicked.connect(FH.saveAnalysisPreset)

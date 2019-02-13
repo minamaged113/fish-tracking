@@ -4,6 +4,10 @@
         "analysis_presets",
         "default.json"
     ],
+    "templatesFolder": [
+        "file_handlers",
+        "analysis_presets"
+    ],
     "icon": "salmon",
     "initWidth": 640,
     "initHeight": 600,

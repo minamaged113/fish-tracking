@@ -39,13 +39,14 @@ class FWelcomeInfo(pyqtWidgets.QDialog):
         UniOuluImagePath = os.path.join(uiIcons.iconsDir, "welcome_logos", "uni_oulu_580.png")
         UniOuluImage.setPixmap(pyqtGUI.QPixmap(UniOuluImagePath))
 
-        LukeImage = pyqtWidgets.QLabel()
+        self.LukeImage = pyqtWidgets.QLabel()
         LukeImagePath = os.path.join(uiIcons.iconsDir, "welcome_logos", "luke_580.png")
-        LukeImage.setPixmap(pyqtGUI.QPixmap(LukeImagePath))
+        self.lukePixmap = pyqtGUI.QPixmap(LukeImagePath)
+        self.LukeImage.setPixmap(self.lukePixmap)
 
         logosLayout = pyqtWidgets.QHBoxLayout()
         logosLayout.addWidget(UniOuluImage)
-        logosLayout.addWidget(LukeImage)
+        logosLayout.addWidget(self.LukeImage)
         
         buttonsLayout = pyqtWidgets.QVBoxLayout()
         buttonsLayout.addWidget(FOpenFileBTN)
@@ -53,12 +54,12 @@ class FWelcomeInfo(pyqtWidgets.QDialog):
         buttonsLayout.addWidget(FAboutBTN)
         
         self.FLayout.addLayout(logosLayout, 0,1, pyqtCore.Qt.AlignCenter)
-        self.FLayout.addWidget(FInfo, 1,1)
+        self.FLayout.addWidget(FInfo, 1,1, pyqtCore.Qt.AlignVCenter)
 
         self.FLayout.addLayout(buttonsLayout, 0,0)
 
-        self.FLayout.setColumnStretch(0, 1)
-        self.FLayout.setColumnStretch(1, 4)
+        # self.FLayout.setColumnStretch(0, 1)
+        # self.FLayout.setColumnStretch(1, 4)
         self.setLayout(self.FLayout)
 
     def FShowStats(self):
@@ -81,4 +82,8 @@ class FWelcomeInfo(pyqtWidgets.QDialog):
         all the information.
         """
         pass
+
+    def resizeEvent(self, event):
+        if isinstance(self, pyqtWidgets.QDialog):
+            self.LukeImage.setPixmap(self.lukePixmap.scaled(self.size(), pyqtCore.Qt.KeepAspectRatio))
 

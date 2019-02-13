@@ -27,19 +27,19 @@ def FGetIcon(name,iconsDir = iconsDir, theme = "black", resolution = 256, OS='li
                         `welcome_logos`]
     
     Keyword Arguments:
-        iconsDir {string} -- [directory containing the icons] (default: {iconsDir})
-        icons {dict} -- [dictionary of all icons directories] (default: {icons})
-        theme {str} -- [string that holds the theme of the program, it
+        iconsDir {string} -- directory containing the icons (default: {iconsDir})
+        icons {dict} -- dictionary of all icons directories (default: {icons})
+        theme {str} -- string that holds the theme of the program, it
                         can take the values:
                         `black`,
-                        `white`] (default: {"black"})
+                        `white` (default: {"black"})
         resolution {int} -- [resolution of the icons, it has values:
                         `256`,
                         `128`] (default: {32})
         os {string} -- [type of OS to load specific icons fromat] (default: {linux})
     
     Returns:
-        [type] -- [description]
+        string -- containing absolute path to the icon requested
     """
 
     if(OS == 'linux' or OS == 'darwin'):

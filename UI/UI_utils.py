@@ -56,13 +56,22 @@ def loadTemplate(QT_Dialog, default=False):
         default {bool} -- determines whether to load the default template
                 or another predefined template. (default: {False})
     """             
+    config = None
 
     if default:
         # load the default template
+        defaultTemplatePath = FH.pathFromList(QT_Dialog._MAIN_CONTAINER._CONFIG["analyzerTemplate"])
+        config = FH.loadJSON(defaultTemplatePath)
 
     else:
         # load a preset from disk
-        homeDirectory = str(os.path.expanduser("~"))
+        homeDirectory = str(
+            os.path.expanduser(
+                FH.pathFromList(
+                    QT_Dialog._MAIN_CONTAINER._CONFIG["templatesFolder"]
+                )
+            )
+        )
         filePathTuple = QFileDialog.getOpenFileName(QT_Dialog,
                                                     "Load Template",
                                                     homeDirectory,
@@ -70,16 +79,29 @@ def loadTemplate(QT_Dialog, default=False):
         if filePathTuple[0] != "" :
             # if the user has actually chosen a specific file.
             config = FH.loadJSON(filePathTuple[0])
-            if config:
-                # if the file was read successfully
-                QT_Dialog.morphStruct.setCurrentText(config['morphStruct'])
-                QT_Dialog.morphStructDimInp.setText(
-                    "({w},{h})".format(
-                        w=config['morphStructDim'][0],
-                        h=config['morphStructDim'][1])
-                )
-                QT_Dialog.startFrameInp.setText(config)
-                
+    
+    if config:
+        # if the file was read successfully
+        QT_Dialog.morphStruct.setCurrentText(config['morphStruct'])
+        QT_Dialog.morphStructDimInp.setText(
+            "({w},{h})".format(
+                w=config['morphStructDim'][0],
+                h=config['morphStructDim'][1]
+            )
+        )
+        QT_Dialog.startFrameInp.setText(config['startFrame'])
+        QT_Dialog.blurValInp.setText(
+            "({w},{h})".format(
+                w=config['blurVal'][0],
+                h=config['blurVal'][1]
+            )
+        )
+        QT_Dialog.bgThInp.setText(config['bgTh'])
+        QT_Dialog.maxAppInp.setText(config['maxApp'])
+        QT_Dialog.maxDisInp.setText(config['maxDis'])
+        QT_Dialog.radiusInput.setText(config['radius'])
+        QT_Dialog.showImages.setChecked(config['showImages'])
+        QT_Dialog.update()
     return
 
 def exportAsJPGActionFunction(self):
