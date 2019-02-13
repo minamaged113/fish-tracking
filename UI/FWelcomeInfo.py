@@ -35,17 +35,28 @@ class FWelcomeInfo(pyqtWidgets.QDialog):
         FInfo.setText("Fisher is an open-source software developed by the University of Oulu, Finland in collaboration with the Natural Resources Institute in Finland.")
         FInfo.setWordWrap(True)
 
-        UniOuluImage = pyqtWidgets.QLabel()
+        self.UniOuluImage = pyqtWidgets.QLabel()
         UniOuluImagePath = os.path.join(uiIcons.iconsDir, "welcome_logos", "uni_oulu_580.png")
-        UniOuluImage.setPixmap(pyqtGUI.QPixmap(UniOuluImagePath))
+        self.uniOuluPixmap = pyqtGUI.QPixmap(UniOuluImagePath)
+        self.UniOuluImage.setPixmap(self.uniOuluPixmap)
+        self.UniOuluImage.setScaledContents(True)
+        # self.UniOuluImage.setSizePolicy(
+        #     pyqtWidgets.QSizePolicy.Ignored,
+        #     pyqtWidgets.QSizePolicy.Ignored
+        # )
 
         self.LukeImage = pyqtWidgets.QLabel()
         LukeImagePath = os.path.join(uiIcons.iconsDir, "welcome_logos", "luke_580.png")
         self.lukePixmap = pyqtGUI.QPixmap(LukeImagePath)
         self.LukeImage.setPixmap(self.lukePixmap)
+        self.LukeImage.setScaledContents(True)
+        # self.LukeImage.setSizePolicy(
+        #     pyqtWidgets.QSizePolicy.Ignored,
+        #     pyqtWidgets.QSizePolicy.Ignored
+        # )
 
         logosLayout = pyqtWidgets.QHBoxLayout()
-        logosLayout.addWidget(UniOuluImage)
+        logosLayout.addWidget(self.UniOuluImage)
         logosLayout.addWidget(self.LukeImage)
         
         buttonsLayout = pyqtWidgets.QVBoxLayout()
@@ -84,6 +95,7 @@ class FWelcomeInfo(pyqtWidgets.QDialog):
         pass
 
     def resizeEvent(self, event):
-        if isinstance(self, pyqtWidgets.QDialog):
-            self.LukeImage.setPixmap(self.lukePixmap.scaled(self.size(), pyqtCore.Qt.KeepAspectRatio))
+        if isinstance(self.lukePixmap, pyqtGUI.QPixmap):
+            self.LukeImage.setPixmap(self.lukePixmap.scaled(self.LukeImage.size(), pyqtCore.Qt.KeepAspectRatio))
+            self.UniOuluImage.setPixmap(self.uniOuluPixmap.scaled(self.UniOuluImage.size(), pyqtCore.Qt.KeepAspectRatio))
 

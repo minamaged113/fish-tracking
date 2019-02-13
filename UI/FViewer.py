@@ -25,14 +25,16 @@ class FFishListItem():
     def __init__(self, cls, inputDict, fishNumber):
         self.fishNumber = fishNumber
         self.inputDict = inputDict
-        self.listItem = QListWidgetItem()
-        self.FWdiget = QWidget()
-        self.FWdigetText = QLabel("Fish #{}".format(self.fishNumber))
-        self.FIfFish = QCheckBox("is Fish")
+        self.listItem = pyqtWidget.QListWidgetItem()
+        self.FWdiget = pyqtWidget.QWidget()
+        self.FWdigetText = pyqtWidget.QLabel("Fish #{}".format(self.fishNumber))
+        self.FIfFish = pyqtWidget.QCheckBox("is Fish")
         self.FIfFish.setChecked(False)
-        self.FWdigetBTN = QPushButton("Show")
-        self.FWdigetBTN.clicked.connect(lambda: cls.showFish(self.fishNumber, self.inputDict))
-        self.FWdigetLayout = QVBoxLayout()
+        self.FWdigetBTN = pyqtWidget.QPushButton("Show")
+        self.FWdigetBTN.clicked.connect(
+            lambda: cls.showFish(self.fishNumber, self.inputDict)
+        )
+        self.FWdigetLayout = pyqtWidget.QVBoxLayout()
         self.FWdigetLayout.addWidget(self.FWdigetText)
         self.FWdigetLayout.addWidget(self.FIfFish)
         self.FWdigetLayout.addWidget(self.FWdigetBTN)
@@ -499,7 +501,7 @@ class FViewer(pyqtWidget.QDialog):
     def FListDetected(self):
         index = 1
         listOfFish = list()
-        self.FList = QListWidget()
+        self.FList = pyqtWidget.QListWidget()
         # ## DEBUG: remove next line
         # dump = open("/home/mghobria/Desktop/fish-tracking/data_all.json")
         # dump = dump.read()
