@@ -558,36 +558,6 @@ class FViewer(pyqtWidget.QDialog):
         self.marker = None
         return
 
-    # def showSelectedFish(self, inputDict):
-    #     ## TODO
-    #     counter = 0
-    #     # print("Fish = ", fishNumber)
-    #     setOfFrames = set()
-    #     locationsOfFishEachFrame = dict()
-    #     self.UI_FRAME_INDEX = i
-    #     for i in inputDict.keys():
-    #         # ffigure.setUpdatesEnabled(False)
-    #         if inputDict[i]['index'].FIfFish.isChecked():
-    #             for item in inputDict[i]['frames']:
-    #                 setOfFrames.add(item)
-                    
-    #     for j in setOfFrames:
-    #         self.UI_FRAME_INDEX = j
-    #         for i in inputDict.keys():
-    #             if inputDict[i]['index'].FIfFish.isChecked():
-                    
-    #                 x = int( inputDict[i]["locations"][counter][0])
-    #                 y = int( inputDict[i]["locations"][counter][1])
-                
-    #             self.marker = str(x)+','+str(y)
-    #             self.FSlider.setValue(self.UI_FRAME_INDEX)
-                
-    #             self.marker = None
-    #             self.repaint()
-    #             counter +=1
-    #     self.marker = None
-    #     return
-    #     pass
 
     def FApply(self):
         ## TODO
