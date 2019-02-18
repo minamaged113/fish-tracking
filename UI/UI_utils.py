@@ -203,6 +203,8 @@ def loadFrameList():
         
     pass
 
+def getAvgLength():
+    return "N/A"
 
 def print_stat_msg(text):
     ## TODO : delete this function

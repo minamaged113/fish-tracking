@@ -7,6 +7,11 @@ import PyQt5.QtCore as pyqtCore
 import PyQt5.QtGui as pyqtGUI
 import PyQt5.QtWidgets as pyqtWidget
 
+## DEBUG :{ following block of libraries for debug only
+import os
+import json
+## }
+
 import cv2
 import iconsLauncher as uiIcons      # UI/iconsLauncher
 # uif : (u)ser (i)nterface (f)unction
@@ -27,16 +32,34 @@ class FFishListItem():
         self.inputDict = inputDict
         self.listItem = pyqtWidget.QListWidgetItem()
         self.FWdiget = pyqtWidget.QWidget()
+
         self.FWdigetText = pyqtWidget.QLabel("Fish #{}".format(self.fishNumber))
+
+        self.avgFishLength = pyqtWidget.QLabel()
+        self.avgFishLength.setText("Length: {}".format(uif.getAvgLength()))
+        
         self.FIfFish = pyqtWidget.QCheckBox("is Fish")
         self.FIfFish.setChecked(False)
+        
         self.FWdigetBTN = pyqtWidget.QPushButton("Show")
+
+        self.linkFish = pyqtWidget.QPushButton()
+        self.linkFish.setIcon(pyqtGUI.QIcon(uiIcons.FGetIcon("link")))
+
+        self.nameLengthLayout = pyqtWidget.QHBoxLayout()
+        self.nameLengthLayout.addWidget(self.FWdigetText)
+        self.nameLengthLayout.addWidget(self.avgFishLength)
+
+        self.infoLayout = pyqtWidget.QHBoxLayout()
+        self.infoLayout.addWidget(self.FIfFish)
+        self.infoLayout.addWidget(self.linkFish)
+
         self.FWdigetBTN.clicked.connect(
             lambda: cls.showFish(self.fishNumber, self.inputDict)
         )
         self.FWdigetLayout = pyqtWidget.QVBoxLayout()
-        self.FWdigetLayout.addWidget(self.FWdigetText)
-        self.FWdigetLayout.addWidget(self.FIfFish)
+        self.FWdigetLayout.addLayout(self.nameLengthLayout)
+        self.FWdigetLayout.addLayout(self.infoLayout)
         self.FWdigetLayout.addWidget(self.FWdigetBTN)
         self.FWdigetLayout.addStretch()
         # self.FWdigetLayout.setSizeConstraint(pyqtWidget.QLayout.SetFixedSize)
@@ -452,15 +475,24 @@ class FViewer(pyqtWidget.QDialog):
         print(searchRadius, type(searchRadius))
         print(imshow, type(imshow))
 
-        self.FDetectedDict = project.FAnalyze(self, kernel = kernel, 
-                                            kernelDim = kernelDim,
-                                            startFrame = startFrame,
-                                            blurDim = blurDim,
-                                            bgTh= bgTh,
-                                            minApp= minApp, 
-                                            maxDis = maxDis,
-                                            searchRadius= searchRadius,
-                                            imshow = imshow)
+        ## DEBUG: { toggle next blocks
+        # block 1
+        dump = open(os.path.join(os.getcwd(), "data_all.json"))
+        dump = dump.read()
+        dump = json.loads(dump)
+        self.FDetectedDict = dump['data']
+
+        # block 2
+        # self.FDetectedDict = project.FAnalyze(self, kernel = kernel, 
+        #                                     kernelDim = kernelDim,
+        #                                     startFrame = startFrame,
+        #                                     blurDim = blurDim,
+        #                                     bgTh= bgTh,
+        #                                     minApp= minApp, 
+        #                                     maxDis = maxDis,
+        #                                     searchRadius= searchRadius,
+        #                                     imshow = imshow)
+        # }
         self.popup.close()
         if(len(self.FDetectedDict)):
             self.FResultsViewer = FViewer(self.FParent, resultsView= True, results=self.FDetectedDict)
@@ -473,28 +505,8 @@ class FViewer(pyqtWidget.QDialog):
         if self.play:
             self.FPlayBTN.setIcon(pyqtGUI.QIcon(uiIcons.FGetIcon('pause')))
             self.FShowNextImage()
-            #self.autoPlayTimer.start()
-            
-            #self.FLayout.addWidget(self.FPlayBTN, 2, 2)
-            # while(self.UI_FRAME_INDEX<self.File.frameCount):
-            #     self.FShowNextImage()
-            #     self.FFigure.repaint()
-                
-            
-            #self.playThread = FPlayThread(self)
-            #self.playThread.start()
-            #while(checkPlayBTNThread(self).start()):
-            #    continue
-            #return
-
-            # self.buttonCheckThread = checkPlayBTNThread(self)
-            # self.buttonCheckThread.start()
         else: # pause
             self.FPlayBTN.setIcon(pyqtGUI.QIcon(uiIcons.FGetIcon('play')))
-            #self.playThread.stop()
-            #self.autoPlayTimer.stop()
-            #self.FLayout.addWidget(self.FPlayBTN, 2, 2)
-            # time.sleep(0.2)
             
         return
 
@@ -502,13 +514,6 @@ class FViewer(pyqtWidget.QDialog):
         index = 1
         listOfFish = list()
         self.FList = pyqtWidget.QListWidget()
-        # ## DEBUG: remove next line
-        # dump = open("/home/mghobria/Desktop/fish-tracking/data_all.json")
-        # dump = dump.read()
-        # dump = json.loads(dump)
-
-        # self.FDetectedDict = dump['data']
-
 
         for fish in self.FDetectedDict.keys():
             listItem = FFishListItem(self, self.FDetectedDict[fish], index)

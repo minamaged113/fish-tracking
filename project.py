@@ -126,57 +126,58 @@ def FAnalyze(cls, kernel = None , kernelDim = None,
 
         fishes = tracker.update(stats, centroids, count)
 
-        label_hue = np.uint8(179*labels/np.max(labels))
-        blank_ch = 255*np.ones_like(label_hue)
-        labeled_img = cv2.merge([label_hue, blank_ch, blank_ch])
-        labeled_img = cv2.cvtColor(labeled_img, cv2.COLOR_HSV2BGR)
-        labeled_img[label_hue==0] = 0
-
-        colored_img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR )
-        if (bool(fishes['objects'])):
-            for fish in fishes['objects'].keys():
-                x = int(fishes['objects'][fish].locations[-1][0])
-                y = int(fishes['objects'][fish].locations[-1][1])
-                center = (x,y)
-                cv2.circle(labeled_img, center, tracker.searchArea, (0,255,0), 1)
-                cv2.circle(colored_img, center, tracker.searchArea, (0,255,0), 1)
-
-        cv2.putText(labeled_img,"Objects: "+str(fishes["objects"].__len__()),(10,100), font, 1,(255,255,255),2,cv2.LINE_AA)
-        cv2.putText(labeled_img,str(count),(10,50), font, 1,(255,255,255),2,cv2.LINE_AA)
-        cv2.namedWindow("frames and BGS frames", cv2.WND_PROP_FULLSCREEN)
-        # cv2.setWindowProperty("frames and BGS frames", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-        # cv2.imshow("frames and BGS frames",np.hstack((mask, img)))
-        cv2.imshow("frames and BGS frames",np.hstack((labeled_img, colored_img)))
-
-        
-        k = cv2.waitKey(1 * play) & 0xff
-
-        if k == 27:
-            break
-        elif k == 0x6e:
-            print("right")
-            desc = False
+        if(imshow):
+            label_hue = np.uint8(179*labels/np.max(labels))
+            blank_ch = 255*np.ones_like(label_hue)
+            labeled_img = cv2.merge([label_hue, blank_ch, blank_ch])
+            labeled_img = cv2.cvtColor(labeled_img, cv2.COLOR_HSV2BGR)
+            labeled_img[label_hue==0] = 0
+    
+            colored_img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR )
+            if (bool(fishes['objects'])):
+                for fish in fishes['objects'].keys():
+                    x = int(fishes['objects'][fish].locations[-1][0])
+                    y = int(fishes['objects'][fish].locations[-1][1])
+                    center = (x,y)
+                    cv2.circle(labeled_img, center, tracker.searchArea, (0,255,0), 1)
+                    cv2.circle(colored_img, center, tracker.searchArea, (0,255,0), 1)
+    
+            cv2.putText(labeled_img,"Objects: "+str(fishes["objects"].__len__()),(10,100), font, 1,(255,255,255),2,cv2.LINE_AA)
+            cv2.putText(labeled_img,str(count),(10,50), font, 1,(255,255,255),2,cv2.LINE_AA)
+            cv2.namedWindow("frames and BGS frames", cv2.WND_PROP_FULLSCREEN)
+            # cv2.setWindowProperty("frames and BGS frames", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+            # cv2.imshow("frames and BGS frames",np.hstack((mask, img)))
+            cv2.imshow("frames and BGS frames",np.hstack((labeled_img, colored_img)))
+    
+            
+            k = cv2.waitKey(1 * play) & 0xff
+    
+            if k == 27:
+                break
+            elif k == 0x6e:
+                print("right")
+                desc = False
+                count = count + 1
+                continue
+            elif k == 0x62:
+                print("left")
+                desc = True
+                count = count - 1
+                continue
+            # elif k == 0x52:
+            #     print("up")
+            # elif k == 0x54:
+            #     print("down")
+            elif k == 0x20:
+                print("Pause/Play")
+                play = not play
+            elif k!= dummy:
+                dummy = k
+                print(hex(k))
+    
             count = count + 1
-            continue
-        elif k == 0x62:
-            print("left")
-            desc = True
-            count = count - 1
-            continue
-        # elif k == 0x52:
-        #     print("up")
-        # elif k == 0x54:
-        #     print("down")
-        elif k == 0x20:
-            print("Pause/Play")
-            play = not play
-        elif k!= dummy:
-            dummy = k
-            print(hex(k))
-
-        count = count + 1
-        # if count > number-1:
-        #     count = 
+            # if count > number-1:
+            #     count = 
     if readFromFile:
         detectedFish = FSaveOutput(tracker, "./", os.path.basename(cls.FFilePath).split(".")[0] + ".json")
     else:

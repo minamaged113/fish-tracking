@@ -5,7 +5,7 @@ venv
 skimage_warp.py 
 *.cpython-35.pyc
 *.aris
-data.json
+data
 dist
 build
 __pycache__/*
