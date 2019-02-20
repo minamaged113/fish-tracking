@@ -16,7 +16,7 @@ import cv2
 import iconsLauncher as uiIcons      # UI/iconsLauncher
 # uif : (u)ser (i)nterface (f)unction
 import UI_utils as uif              # UI/UI_utils
-import project
+import AutoAnalyzer
 
 ## library for reading SONAR files
 # FH: File Handler
@@ -483,7 +483,7 @@ class FViewer(pyqtWidget.QDialog):
         self.FDetectedDict = dump['data']
 
         # block 2
-        # self.FDetectedDict = project.FAnalyze(self, kernel = kernel, 
+        # self.FDetectedDict = AutoAnalyzer.FAnalyze(self, kernel = kernel, 
         #                                     kernelDim = kernelDim,
         #                                     startFrame = startFrame,
         #                                     blurDim = blurDim,

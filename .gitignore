@@ -11,3 +11,4 @@ build
 __pycache__/*
 */__pycache__/*
 file_handlers/*/__pycache__/*
+.vscode/settings.json
