@@ -36,7 +36,7 @@ class FWelcomeInfo(pyqtWidgets.QDialog):
         FInfo.setWordWrap(True)
 
         self.UniOuluImage = pyqtWidgets.QLabel()
-        UniOuluImagePath = os.path.join(uiIcons.iconsDir, "welcome_logos", "uni_oulu_580.png")
+        UniOuluImagePath = os.path.join(uiIcons.iconsDir, "welcome_logos", "uni_oulu_300.png")
         self.uniOuluPixmap = pyqtGUI.QPixmap(UniOuluImagePath)
         self.UniOuluImage.setPixmap(self.uniOuluPixmap)
         self.UniOuluImage.setScaledContents(True)
@@ -46,7 +46,7 @@ class FWelcomeInfo(pyqtWidgets.QDialog):
         # )
 
         self.LukeImage = pyqtWidgets.QLabel()
-        LukeImagePath = os.path.join(uiIcons.iconsDir, "welcome_logos", "luke_580.png")
+        LukeImagePath = os.path.join(uiIcons.iconsDir, "welcome_logos", "luke_300.png")
         self.lukePixmap = pyqtGUI.QPixmap(LukeImagePath)
         self.LukeImage.setPixmap(self.lukePixmap)
         self.LukeImage.setScaledContents(True)
@@ -74,7 +74,7 @@ class FWelcomeInfo(pyqtWidgets.QDialog):
         self.setLayout(self.FLayout)
 
     def FShowStats(self):
-        ## TODO : Implement function to show statistics.
+        ## TODO _ : Implement function to show statistics.
         """Intended statistics include, but not limited to,
             + number of files opened (.ddf, .aris)
             + number of fish captured
@@ -86,7 +86,7 @@ class FWelcomeInfo(pyqtWidgets.QDialog):
         pass
 
     def FAbout(self):
-        ## TODO : Implement a function to show About information.
+        ## TODO _ : Implement a function to show About information.
         """
         Should either be opening a new window to show information
         about the software and its owners or show a webpage with

@@ -29,25 +29,25 @@ def FHelpMenu_init(FMainContainer):
     FMainContainer.aboutFisherAction.setStatusTip("Opens a webpage contains all info about the project.")
     FMainContainer.aboutFisherAction.triggered.connect(uif.fisherInfo)
 
-    ## TODO : add signal handler to check for updates
+    ## TODO _ : add signal handler to check for updates
     FMainContainer.checkForUpdatesAction = pyqtWidget.QAction("Check for updates", FMainContainer)
     FMainContainer.checkForUpdatesAction.setStatusTip("Check for updates online")
     FMainContainer.checkForUpdatesAction.triggered.connect(lambda: FMainContainer.print_stat_msg("Check for updates pressed."))
     FMainContainer.checkForUpdatesAction.setEnabled(False)
 
-    ## TODO : add signal handler to show license file.
+    ## TODO _ : add signal handler to show license file.
     FMainContainer.viewLicenseAction = pyqtWidget.QAction("View License", FMainContainer)
     FMainContainer.viewLicenseAction.setStatusTip("Shows the licenses for the whole software.")
     FMainContainer.viewLicenseAction.triggered.connect(lambda: FMainContainer.print_stat_msg("view license pressed."))
     FMainContainer.viewLicenseAction.setEnabled(False)
 
-    ## TODO : add signal handler to report an issue with the software
+    ## TODO _ : add signal handler to report an issue with the software
     FMainContainer.reportAction = pyqtWidget.QAction("Report Issue", FMainContainer)
     FMainContainer.reportAction.setStatusTip("Report an issue to the developers.")
     FMainContainer.reportAction.triggered.connect(lambda : FMainContainer.print_stat_msg("reprot issure pressed."))
     FMainContainer.reportAction.setEnabled(False)
     
-    ## TODO : add signal handler to show statistics
+    ## TODO _ : add signal handler to show statistics
     FMainContainer.showStatisticsAction = pyqtWidget.QAction("Statistics", FMainContainer)
     FMainContainer.showStatisticsAction.setStatusTip("Shows statistics about old processed files.")
     FMainContainer.showStatisticsAction.triggered.connect(lambda : FMainContainer.print_stat_msg("Statistics pressed."))

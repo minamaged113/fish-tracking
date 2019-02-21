@@ -14,14 +14,14 @@ import PyQt5.QtWidgets as pyqtWidget
 import UI_utils as uif      # UI/UI_utils
 
 def FEditMenu_init(FMainContainer):
-    ## TODO : implement undo function
+    ## TODO _ : implement undo function
     FMainContainer.undoAction = pyqtWidget.QAction("Undo", FMainContainer)
     FMainContainer.undoAction.setShortcut("Ctrl+Z")
     FMainContainer.undoAction.setEnabled(False)
     FMainContainer.undoAction.setStatusTip("Undoes the last action.")
     FMainContainer.undoAction.triggered.connect(lambda: uif.print_stat_msg("Undo pressed."))
 
-    ## TODO : implement redo function
+    ## TODO _ : implement redo function
     FMainContainer.redoAction = pyqtWidget.QAction("Redo", FMainContainer)
     FMainContainer.redoAction.setShortcut("Ctrl+Y")
     FMainContainer.redoAction.setEnabled(False)

@@ -123,7 +123,7 @@ def exportAsJPGActionFunction(self):
     return
 
 def export_BGS_AsJPGActionFunction(self):
-    ## TODO : change the non-generic export path
+    ## TODO _ : change the non-generic export path
     ## allow the user to enter their specific paths.
     file = FOpenSonarFile(self.FFilePath)
     numberOfImagesToSave = file.frameCount
@@ -193,7 +193,7 @@ def loadFrameList():
                 the memory.
 
     """
-    ## TODO
+    ## TODO _
     framesIndices = list()
     range = 10
     if range > (self.File.FRAME_COUNT+1):
@@ -207,5 +207,5 @@ def getAvgLength():
     return "N/A"
 
 def print_stat_msg(text):
-    ## TODO : delete this function
+    ## TODO _ : delete this function
     print(text)

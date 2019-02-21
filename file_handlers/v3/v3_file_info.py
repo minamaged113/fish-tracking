@@ -364,7 +364,7 @@ def v3_getAllFramesData(fhand, version, cls):
 
     """
     
-    ## TODO
+    ## TODO _
     
     cls.version = "DDF_03"
     fileAttributesList = ["numRawBeams", "samplesPerChannel", "frameCount", "highResolution", "serialNumber"]
@@ -438,7 +438,7 @@ def v3_getAllFramesData(fhand, version, cls):
         ## bit0: 1=classic, 0=extended windows; bit1: 0=Standard, 1=LR
         configFlagsStr = bin(configFlags)
         configFlags = 2 * int(configFlagsStr[-2]) + int(configFlagsStr[-1])
-        ## TODO : this needs to be completed
+        ## TODO _ : this needs to be completed
 
     
     

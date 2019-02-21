@@ -325,10 +325,6 @@ class v5_File:
             return True
         return False
 
-
-    def play(self):
-        ## TODO
-        pass
     
 
 def v5_getAllFramesData(fhand, version, cls):
@@ -346,7 +342,7 @@ def v5_getAllFramesData(fhand, version, cls):
 
     """
     
-    ## TODO
+    ## TODO _
     
     cls.version = "ARIS"
     fileAttributesList = ["numRawBeams", "samplesPerChannel", "frameCount"]

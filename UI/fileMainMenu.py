@@ -18,7 +18,7 @@ import UI_utils as uif      # UI/UI_utils
 
 def FFileMenu_init(FMainContainer):
     """Function called at the launch of the program
-    ## TODO : Documentation
+    ## TODO _ : Documentation
     Arguments:
         FMainContainer {[type]} -- [description]
     """
@@ -31,7 +31,7 @@ def FFileMenu_init(FMainContainer):
     FMainContainer.openFileAction.triggered.connect(
         lambda: FOpenFile(FMainContainer.centralWidget()))
 
-    # TODO : load a folder for a day processing
+    # TODO _ : load a folder for a day processing
     FMainContainer.openFolderAction = pyqtWidget.QAction(FMainContainer.tr("Open Folder"),
                                                          FMainContainer)
     FMainContainer.openFolderAction.setShortcut("Ctrl+Shift+O")
@@ -41,7 +41,7 @@ def FFileMenu_init(FMainContainer):
         lambda: print_stat_msg("Open Folder pressed."))
     FMainContainer.openFolderAction.setEnabled(False)
 
-    # TODO : add signal handler to save file after editing.
+    # TODO _ : add signal handler to save file after editing.
     FMainContainer.saveFileAction = pyqtWidget.QAction(FMainContainer.tr(
                                                        "&Save"),
                                                        FMainContainer)
@@ -51,7 +51,7 @@ def FFileMenu_init(FMainContainer):
                                                     "save file pressed."))
     FMainContainer.saveFileAction.setEnabled(False)
 
-    # TODO : add signal handler to save file as new file
+    # TODO _ : add signal handler to save file as new file
     FMainContainer.saveFileAsAction = pyqtWidget.QAction(
         FMainContainer.tr("Save as ..."),
         FMainContainer
@@ -64,7 +64,7 @@ def FFileMenu_init(FMainContainer):
     )
     FMainContainer.saveFileAsAction.setEnabled(False)
 
-    # TODO : setEnabled(True) only when the user opens a new file.
+    # TODO _ : setEnabled(True) only when the user opens a new file.
     FMainContainer.exportAsJPGAction = pyqtWidget.QAction(
         "Export as JPG", FMainContainer)
     FMainContainer.exportAsJPGAction.setStatusTip(
@@ -73,7 +73,7 @@ def FFileMenu_init(FMainContainer):
         uif.exportAsJPGActionFunction)
     FMainContainer.exportAsJPGAction.setEnabled(False)
 
-    # TODO : setEnabled(True) only when the user opens a new file.
+    # TODO _ : setEnabled(True) only when the user opens a new file.
     FMainContainer.export_BGS_AsJPGAction = pyqtWidget.QAction(
         FMainContainer.tr("Export BGS as JPG"),
         FMainContainer
@@ -99,7 +99,7 @@ def FFileMenu_init(FMainContainer):
     FMainContainer.fileMenu.addAction(FMainContainer.saveFileAction)
     FMainContainer.fileMenu.addAction(FMainContainer.saveFileAsAction)
     # Adding openRecent drop-down menu inside file menu.
-    ## TODO : store recent files and be able to read them
+    ## TODO _ : store recent files and be able to read them
     ## add them later to the list of open recent.
     openRecentMenu = FMainContainer.fileMenu.addMenu(
         FMainContainer.tr("Open Recent"))

@@ -329,7 +329,7 @@ class FViewer(pyqtWidget.QDialog):
         self._fgbg.setVarThreshold(value)
 
     def FAutoAnalizer(self):
-        ## TODO : Documentation
+        ## TODO _ : Documentation
         self.popup = pyqtWidget.QDialog(self)
         self.popupLayout = pyqtWidget.QFormLayout()
         # kernel size and shape {default: ellipse, (10,2)}
@@ -412,7 +412,7 @@ class FViewer(pyqtWidget.QDialog):
         return
 
     def handleAnalyzerInput(self):
-        ## TODO : function to take input from popup dialog box
+        ## TODO _ : function to take input from popup dialog box
         
         # handling kernel shape type from drop down menu 
         kernel = self.morphStruct.currentText()
@@ -537,12 +537,9 @@ class FViewer(pyqtWidget.QDialog):
         self.FLayout.addWidget(self.FList, 0,4,2,2, pyqtCore.Qt.AlignRight)
         return
 
-    def FApplyAll(self):
-        ## TODO
-        pass
 
     def showFish(self, fishNumber, inputDict):
-        ## TODO
+        ## TODO _
         # ffigure = self.MyFigureWidget
         # ffigure.clear()
         # self.MyFigureWidget.clear()
@@ -565,7 +562,7 @@ class FViewer(pyqtWidget.QDialog):
 
 
     def FApply(self):
-        ## TODO
+        ## TODO _
         inputDict = self.FDetectedDict
         dictToBeSaved = dict()
         data = dict()
