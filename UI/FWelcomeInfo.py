@@ -3,6 +3,7 @@ import PyQt5.QtGui as pyqtGUI
 import PyQt5.QtWidgets as pyqtWidgets
 import iconsLauncher as uiIcons         # UI/iconsLauncher
 import os
+import webbrowser
 
 import UI_utils as uif                  # UI/UI_utils
 
@@ -25,8 +26,8 @@ class FWelcomeInfo(pyqtWidgets.QDialog):
         FOpenFileBTN = pyqtWidgets.QPushButton("OPEN FILE", self)
         FOpenFileBTN.clicked.connect(lambda : uif.FOpenFile(self.FParent))
 
-        FShowStatsBTN = pyqtWidgets.QPushButton("STATISTICS", self)
-        FShowStatsBTN.clicked.connect(self.FShowStats)
+        # FShowStatsBTN = pyqtWidgets.QPushButton("STATISTICS", self)
+        # FShowStatsBTN.clicked.connect(self.FShowStats)
 
         FAboutBTN = pyqtWidgets.QPushButton("ABOUT", self)
         FAboutBTN.clicked.connect(self.FAbout)
@@ -40,28 +41,20 @@ class FWelcomeInfo(pyqtWidgets.QDialog):
         self.uniOuluPixmap = pyqtGUI.QPixmap(UniOuluImagePath)
         self.UniOuluImage.setPixmap(self.uniOuluPixmap)
         self.UniOuluImage.setScaledContents(True)
-        # self.UniOuluImage.setSizePolicy(
-        #     pyqtWidgets.QSizePolicy.Ignored,
-        #     pyqtWidgets.QSizePolicy.Ignored
-        # )
-
+        
         self.LukeImage = pyqtWidgets.QLabel()
         LukeImagePath = os.path.join(uiIcons.iconsDir, "welcome_logos", "luke_300.png")
         self.lukePixmap = pyqtGUI.QPixmap(LukeImagePath)
         self.LukeImage.setPixmap(self.lukePixmap)
         self.LukeImage.setScaledContents(True)
-        # self.LukeImage.setSizePolicy(
-        #     pyqtWidgets.QSizePolicy.Ignored,
-        #     pyqtWidgets.QSizePolicy.Ignored
-        # )
-
+        
         logosLayout = pyqtWidgets.QHBoxLayout()
         logosLayout.addWidget(self.UniOuluImage)
         logosLayout.addWidget(self.LukeImage)
         
         buttonsLayout = pyqtWidgets.QVBoxLayout()
         buttonsLayout.addWidget(FOpenFileBTN)
-        buttonsLayout.addWidget(FShowStatsBTN)
+        # buttonsLayout.addWidget(FShowStatsBTN)
         buttonsLayout.addWidget(FAboutBTN)
         
         self.FLayout.addLayout(logosLayout, 0,1, pyqtCore.Qt.AlignCenter)
@@ -86,13 +79,11 @@ class FWelcomeInfo(pyqtWidgets.QDialog):
         pass
 
     def FAbout(self):
-        ## TODO _ : Implement a function to show About information.
+        """Opens a new tab in the default webbrowser, and displays the
+        documentation of the software.
         """
-        Should either be opening a new window to show information
-        about the software and its owners or show a webpage with
-        all the information.
-        """
-        pass
+        url = "https://minamaged113.github.io/fish-tracking/#"
+        return webbrowser.open_new_tab(url)
 
     def resizeEvent(self, event):
         if isinstance(self.lukePixmap, pyqtGUI.QPixmap):

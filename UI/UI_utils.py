@@ -155,7 +155,7 @@ def fisherInfo():
     """Opens a new tab in the default webbrowser to show project's
     homepage.
     """
-    url = "https://github.com/minamaged113"
+    url = "https://minamaged113.github.io/fish-tracking/#"
     return webbrowser.open_new_tab(url)
 
 def exportResult(type, detectedFish):    
