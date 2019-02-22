@@ -7,9 +7,10 @@ Welcome to Fisher's documentation!
 ==================================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
+   :maxdepth: 1
+   :numbered:
+    
+    ARIS <v5.rst>
 
 
 Indices and tables

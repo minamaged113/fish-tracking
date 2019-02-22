@@ -62,6 +62,12 @@ class v5_File:
 
     # ARIS File class initializer
     def __init__(self,  filename):
+        """When an instance of
+        
+        Arguments:
+            filename {[type]} -- [description]
+        """
+
         try:
             with open(filename, 'rb') as fhand:
                 self.FILE_PATH = filename
@@ -160,9 +166,9 @@ class v5_File:
         self.sanity = self.sanityChecks()
 
         
-    ##############################################################
+    #####################################################################
     #       Usable user Functions
-    ##############################################################
+    #####################################################################
 
     def __len__(self):
         """
