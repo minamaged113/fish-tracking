@@ -10,6 +10,8 @@ Welcome to Fisher's documentation!
    :maxdepth: 1
    :numbered:
     
+    SONAR <SONARs.rst>
+    SONAR Files <SONAR_Files.rst>
     ARIS <v5.rst>
 
 
