@@ -7,9 +7,12 @@ Welcome to Fisher's documentation!
 ==================================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
+   :maxdepth: 1
+   :numbered:
+    
+    SONAR <SONARs.rst>
+    SONAR Files <SONAR_Files.rst>
+    ARIS <v5.rst>
 
 
 Indices and tables
