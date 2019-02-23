@@ -62,14 +62,11 @@ class v5_File:
 
     # ARIS File class initializer
     def __init__(self,  filename):
-        """When an instance of
-        
-        Arguments:
-            filename {[type]} -- [description]
-        """
-
         try:
             with open(filename, 'rb') as fhand:
+                # The following reads through the file byte by byte, and 
+                # fills out the corresponding appropriate variable.
+                # for more definitions, refer to 'v5_file_headers_info.json'
                 self.FILE_PATH = filename
                 self.version = struct.unpack(
                     utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
@@ -177,6 +174,12 @@ class v5_File:
         return self.frameCount
 
     def __repr__(self):
+        """Returns the opened file name.
+        
+        Returns:
+            string -- ARIS filename
+        """
+
         fileName = re.search("/([a-zA-Z0-9]+).aris", self.FILE_PATH)
         return fileName.group(0)
     
@@ -196,7 +199,16 @@ class v5_File:
 
         return frame.ARIS_Frame(self.FILE_PATH, frameIndex, self.FRAME_SIZE)
 
-    def getImages(self, QDrogressDialog):
+    def getImages(self):
+        """loops through all frames and returns a list containing all
+        frames' data.
+        
+        WARNING: This consumes a lot of time and memory.
+
+        Returns:
+            list -- [description]
+        """
+
         images = list()
         for frameIndex in range(self.frameCount):
             wholeFrame = frame.ARIS_Frame(self.FILE_PATH, frameIndex, self.FRAME_SIZE)

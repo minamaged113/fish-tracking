@@ -34,6 +34,10 @@ A beamformer is used to concentrate the acoustic power into a beam. However, a s
 
 .. ## TODO : Diagram for single and multi beamed systems
 
+There are two types of SONARs according to the frequency that they emit. the first are Single Frequency SONARs, second, Changing Frequency SONARs. Usually, Single Frequency SONARs, are used for simplest cases, but usually Changing Frequency SONARs are used for multitude of purposes.
+
+The distance between the an object and the SONAR can be measured by knowing the speed of sound in the medium at hand, calculating the transmission time difference between emitting a pulse and receiving it, then calculating the distance becomes a simple velocity equation: 
+ 
 ..  ## TODO : read the following article :
     https://en.wikipedia.org/wiki/Sonar .
 

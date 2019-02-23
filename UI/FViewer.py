@@ -525,9 +525,6 @@ class FViewer(pyqtWidget.QDialog):
 
         # self.FShowSelectedBTN = pyqtWidget.QPushButton("Show Selected")
         # self.FShowSelectedBTN.clicked.connect(self.showSelectedFish)
-        
-        self.FApplyAllBTN = pyqtWidget.QPushButton("Apply All")
-        self.FApplyAllBTN.clicked.connect(self.FApplyAll)
 
         self.FApplyBTN = pyqtWidget.QPushButton("Apply")
         self.FApplyBTN.clicked.connect(self.FApply)
