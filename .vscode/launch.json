@@ -29,6 +29,13 @@
             "debugOptions": [
 				"RedirectOutput"
             ]
+        },
+        {
+            "name": "v5_unittest",
+            "type": "python",
+            "request": "launch",
+            "pythonPath": "${config:python.pythonPath}",
+            "program": "${workspaceFolder}/file_handlers/v5/v5_unittest.py",
         }
         
     ]

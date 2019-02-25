@@ -39,35 +39,28 @@ class v5_File:
     file formats
 
     Example:
-    >>> file = v5_File("sample.aris")
-
-    Note:
-        Naming Convention:
-            - header values follow camel case naming convention.
-            - calculated file values are in upper case
+    >>> import v5_file_info as v5
+    >>> file = v5.v5_File("sample.aris")
     """
     # File related calculated variables
-    FILE_PATH = None
-    FILE_SIZE = None
-    FILE_HEADER_SIZE = None
-    FILE_HEADER_NUM = 41
-
-    # Sanity check variable
-    sanity = None
+    __FILE_PATH = None
+    __FILE_SIZE = None
+    __FILE_HEADER_SIZE = 1024
+    __FILE_HEADER_NUM = 41
     
     # Frame related calculated variables
-    FRAME_SIZE = None
-    ALL_FRAMES_SIZE = None
+    __FRAME_SIZE = None
+    __FRAME_HEADER_SIZE = 1024
     FRAME_COUNT = None
 
     # ARIS File class initializer
     def __init__(self,  filename):
         try:
             with open(filename, 'rb') as fhand:
-                self.FILE_PATH = filename
+                self.__FILE_PATH = filename
                 self.version = struct.unpack(
                     utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
-                self.frameCount = struct.unpack(
+                self.__FRAME_COUNT = struct.unpack(
                     utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
                 self.frameRate = struct.unpack(
                     utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
@@ -148,16 +141,13 @@ class v5_File:
                 self.largeLens = struct.unpack(
                     utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
 
-        except:
-            err.print_error(err.fileReadError)
-            raise
+        except FileNotFoundError as e:
+            raise FileNotFoundError(e.errno, e.strerror, filename)
 
         
-        self.FRAME_SIZE = self.getFrameSize()
-        self.FILE_SIZE = self.getFileSize()
-        self.FILE_HEADER_SIZE = self.getFileHeaderSize()
-        self.ALL_FRAMES_SIZE = self.getAllFramesSize()
-        self.sanity = self.sanityChecks()
+        self.__FRAME_SIZE = self.__setFrameSize()
+        self.__FILE_SIZE = self.__getFileSize()
+        self.__sanityChecks()
 
         
     ##############################################################
@@ -166,40 +156,64 @@ class v5_File:
 
     def __len__(self):
         """
-        Returns number of frames inside the file
+        __len__ Returns number of frames inside the file.
+        
+        accesses private variable '__FRAME_COUNT' and returns its value
+        to the user.
+        
+        :return: number of frames in the file.
+        :rtype: integer
         """
-        return self.frameCount
+        return self.__FRAME_COUNT
+
 
     def __repr__(self):
-        fileName = re.search("/([a-zA-Z0-9]+).aris", self.FILE_PATH)
-        return fileName.group(0)
-    
-    def readFrame(self, frameIndex):
-        """This function reads a frame given the frame index
-        of that frame and returns a class handle of the read
-        frame.
-        
-        Arguments:
-            frameIndex {[integer]} -- [specifies a frame to be read from
-                                    a given file]
-        
-        Returns:
-            [class handle] -- [returns a class handle pointing
-                                to the data]
         """
+        gets the path of the opened file.
+        
+        :return: returns a string with the file path.
+        :rtype: string
+        """
+        return os.path.abspath(self.__FILE_PATH)
 
-        return frame.ARIS_Frame(self.FILE_PATH, frameIndex, self.FRAME_SIZE)
+        
+    
+    def getFileName(self):
+        """
+        getFileName gets file name.
+        
+        returns the file name.
+        
+        :return: file's name without any extensions
+        :rtype: string
+        """
+        fileName = re.search("([a-zA-Z0-9]+).aris", self.__FILE_PATH)
+        return fileName.group(0)
 
-    def getImages(self, QDrogressDialog):
+
+    def readFrame(self, frameIndex):
+        """
+        readFrame Reads a frame from the given file.
+        
+        creates a frame class with the given frame index, for more
+        information aboyt the class frame, refer to 'v5_frame_info.py'
+        
+        :param frameIndex: number of requested frame. zero indexing.
+        :type frameIndex: integer
+        :return: returns an instance of frame class
+        :rtype: object of type v5_frame
+        """
+        return frame.v5_Frame(self.__FILE_PATH, frameIndex, self.__FRAME_SIZE)
+
+    def getImages(self):
         images = list()
-        for frameIndex in range(self.frameCount):
-            wholeFrame = frame.ARIS_Frame(self.FILE_PATH, frameIndex, self.FRAME_SIZE)
+        for frameIndex in range(self.__FRAME_COUNT):
+            wholeFrame = frame.v5_Frame(self.__FILE_PATH, frameIndex, self.__FRAME_SIZE)
             images.append(wholeFrame.IMAGE)
-            QDrogressDialog.setValue(frameIndex)
         return images
 
     
-    def printFileHeader(self):
+    def getFileHeader(self):
     
         try:
             with open(JSON_FILE_PATH) as json_fhand:
@@ -215,7 +229,7 @@ class v5_File:
                         orderedSet[index] = headerValue
                     else:
                         continue
-                for i in range(self.FILE_HEADER_NUM):
+                for i in range(self.__FILE_HEADER_NUM):
                     print(orderedSet[str(i)])
 
         except:
@@ -225,110 +239,62 @@ class v5_File:
 
     def getInfo(self):
         Info = {
-            "File Name": self.FILE_PATH,
-            "Software Version": self.softwareVersion,
-            "ARIS SN": self.serialNumber,
-            "File Size": self.FILE_SIZE,
-            "Number Of Frames": self.frameCount,
-            "Beam Count": self.numRawBeams,
-            "Samples per Beam": self.samplesPerChannel
+            "FileName": self.__repr__(),
+            "SoftwareVersion": self.softwareVersion,
+            "ARIS_SN": self.serialNumber,
+            "FileSize": self.__FILE_SIZE,
+            "NumberOfFrames": self.__len__(),
+            "BeamCount": self.numRawBeams,
+            "SamplesPerBeam": self.samplesPerChannel
         }
         return Info
 
-    def fileName(self):
-        return self.FILE_PATH
-
-    def fileVersion(self):
-        return self.sanity
-
-    def exportFrameHeaders(self, format = "JSON", outputFilePath = None):
-        if(format == "JSON"):
-            print("Exporting JSON file...")
-
-        elif(format == "CSV"):
-            print("Exporting CSV file...")
-        pass
-
-
-    # def formImage(self, frameIndex):
-    #     output = self.readFrame(frameIndex)
-    #     createLUP(self, output)
-    #     # self.warpFrame(frameIndex)
-    #     remapARIS(self, output)
-    #     return
 
     ##############################################################
     #       Functions called when initializing ARIS File Class
     ##############################################################
     
-    def getFrameSize(self):
-        """a functione that takes an instant of the class and returns
+    def __setFrameSize(self):
+        """
+        __setFrameSize calculates frame size
+        
+        a functione that takes an instant of the class and returns
         an integer containing the frame size in the given file.
         
-        Returns:
-            [integer] -- [number of beams * number of samples per channel]
+        :return: number of beams * number of samples per channel
+        :rtype: integer
         """
-
         return self.numRawBeams*self.samplesPerChannel
 
-    def getFileSize(self):
-        """Returns the file size on disk
+    def __getFileSize(self):
+        """
+        __getFileSize
         
-        Returns:
-            [integer] -- [Given file size]
-        """
-
-        return os.path.getsize(self.FILE_PATH)
-
-    def getFileHeaderSize(self):
-        """Returns the default header size written in the
-        `file_headers_info.json`
+        Returns the file size on disk
         
-        Returns:
-            [integer] -- [Number of bytes that the header occupies]
+        :return: Given file size in bytes
+        :rtype: integer
         """
+        return os.path.getsize(self.__repr__())
 
-        size = int()
-        try:
-            with open(JSON_FILE_PATH) as json_fhand:
-                file_headers = json_fhand.read()
-                data = json.loads(file_headers)
-                size = data['headerSize']['size']
-        except:
-            err.print_error(err.jsonData)
-            raise
-        return size
 
-    def getAllFramesSize(self):
-        """Returns the size of all frames with their headers
+    def __sanityChecks(self):
+        """
+        __sanityChecks 
         
-        Returns:
-            [integer] -- [bytes that the header file occupy]
-        """
-
-        return self.FILE_SIZE - self.FILE_HEADER_SIZE
-
-    def sanityChecks(self):
-        """
-        Checking for file's sanity.
+        Checking file's sanity.
         
-        returns:
-            [bool] -- [True if everything working, otherwise False]
-
+        :return: True if everything working, otherwise False
+        :rtype: bool
         """
+
         if ((self.version == 88491076)):
-            # check number of frames == self.frameCount
-            # for i in range(self.frameCount):
-            #     x = frame.ARIS_Frame(self.FILE_PATH, i, self.FRAME_SIZE)
-            #     if(x.sanityCheck() != True):
-            #         return False
+            
             return True
-        return False
+        
+        raise TypeError("File is corrupted")
 
 
-    def play(self):
-        ## TODO
-        pass
     
 
 def v5_getAllFramesData(fhand, version, cls):
@@ -374,25 +340,25 @@ def v5_getAllFramesData(fhand, version, cls):
             fhand.read(utils.c(fileHeader["samplesPerChannel"]["size"])))[0]
 
     #   Reading Sample Period [from frame header]
-    fhand.seek(cls.FILE_HEADER_SIZE + fhand.seek(frameHeader["samplePeriod"]["location"], 0))
+    fhand.seek(cls.__FILE_HEADER_SIZE + fhand.seek(frameHeader["samplePeriod"]["location"], 0))
     cls.samplePeriod = struct.unpack(
             utils.cType[frameHeader["samplePeriod"]["size"]],
             fhand.read(utils.c(frameHeader["samplePeriod"]["size"])))[0]
 
     #   Reading Sound Velocity in Water [from frame header]
-    fhand.seek(cls.FILE_HEADER_SIZE + fhand.seek(frameHeader["soundSpeed"]["location"], 0))
+    fhand.seek(cls.__FILE_HEADER_SIZE + fhand.seek(frameHeader["soundSpeed"]["location"], 0))
     cls.soundSpeed = struct.unpack(
             utils.cType[frameHeader["soundSpeed"]["size"]],
             fhand.read(utils.c(frameHeader["soundSpeed"]["size"])))[0]
     
     #   Reading Sample Start Delay [from frame header]
-    fhand.seek(cls.FILE_HEADER_SIZE + fhand.seek(frameHeader["sampleStartDelay"]["location"], 0))
+    fhand.seek(cls.__FILE_HEADER_SIZE + fhand.seek(frameHeader["sampleStartDelay"]["location"], 0))
     cls.sampleStartDelay = struct.unpack(
             utils.cType[frameHeader["sampleStartDelay"]["size"]],
             fhand.read(utils.c(frameHeader["sampleStartDelay"]["size"])))[0]
 
     #   Reading availability of large lens [from frame header]
-    fhand.seek(cls.FILE_HEADER_SIZE + fhand.seek(frameHeader["largeLens"]["location"], 0))
+    fhand.seek(cls.__FILE_HEADER_SIZE + fhand.seek(frameHeader["largeLens"]["location"], 0))
     cls.largeLens = struct.unpack(
             utils.cType[frameHeader["largeLens"]["size"]],
             fhand.read(utils.c(frameHeader["largeLens"]["size"])))[0]
