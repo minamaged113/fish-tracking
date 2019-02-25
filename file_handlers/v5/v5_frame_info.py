@@ -3,12 +3,12 @@ Python3 module
 provided by the University of Oulu in collaboration with
 LUKE-OY. The software is intended to be an open-source.
 
-author: Mina Ghobrial.
-date:   April 19th, 2018.
+:author: Mina Ghobrial.
+:date:   April 19th, 2018.
 
-References: 
-#   https://github.com/SoundMetrics
-#   https://github.com/EminentCodfish/pyARIS
+:References:
+    https://github.com/SoundMetrics
+    https://github.com/EminentCodfish/pyARIS
 
 """
 import struct
