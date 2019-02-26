@@ -1,12 +1,27 @@
-prof.out
-Fishing-contest-badges.zip
-venv
-.vscode
-skimage_warp.py 
+# Execlude SONAR data file
 *.aris
-data
+*.ddf
+
+# Execlude virtualenv
+venv
+
+# Execlude VSCode settings
+.vscode
+
+# Execlude built executables
 build
+
+# Avoid pushing the compiled files
 __pycache__
 
+
+# If working from MAC OSX
 .DS_Store
+
+# Execlude analysis output samples or trial code samples
+out.json
+data.json
+data_all.json
 test.json
+test.py
+

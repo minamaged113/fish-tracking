@@ -12,7 +12,6 @@ References:
 
 """
 import struct
-import file_handlers.error_description as err
 import file_handlers.v5.v5_frame_info as frame
 import os
 import json
@@ -232,9 +231,8 @@ class v5_File:
                 for i in range(self.__FILE_HEADER_NUM):
                     print(orderedSet[str(i)])
 
-        except:
-            err.print_error(err.jsonData)
-            raise
+        except FileNotFoundError as e:
+            raise FileNotFoundError(e.errno, e.strerror, JSON_FILE_PATH)
         return
 
     def getInfo(self):
@@ -339,25 +337,25 @@ def v5_getAllFramesData(fhand, version, cls):
             fhand.read(utils.c(fileHeader["samplesPerChannel"]["size"])))[0]
 
     #   Reading Sample Period [from frame header]
-    fhand.seek(cls.__FILE_HEADER_SIZE + fhand.seek(frameHeader["samplePeriod"]["location"], 0))
+    fhand.seek(cls.FILE_HEADER_SIZE + fhand.seek(frameHeader["samplePeriod"]["location"], 0))
     cls.samplePeriod = struct.unpack(
             utils.cType[frameHeader["samplePeriod"]["size"]],
             fhand.read(utils.c(frameHeader["samplePeriod"]["size"])))[0]
 
     #   Reading Sound Velocity in Water [from frame header]
-    fhand.seek(cls.__FILE_HEADER_SIZE + fhand.seek(frameHeader["soundSpeed"]["location"], 0))
+    fhand.seek(cls.FILE_HEADER_SIZE + fhand.seek(frameHeader["soundSpeed"]["location"], 0))
     cls.soundSpeed = struct.unpack(
             utils.cType[frameHeader["soundSpeed"]["size"]],
             fhand.read(utils.c(frameHeader["soundSpeed"]["size"])))[0]
     
     #   Reading Sample Start Delay [from frame header]
-    fhand.seek(cls.__FILE_HEADER_SIZE + fhand.seek(frameHeader["sampleStartDelay"]["location"], 0))
+    fhand.seek(cls.FILE_HEADER_SIZE + fhand.seek(frameHeader["sampleStartDelay"]["location"], 0))
     cls.sampleStartDelay = struct.unpack(
             utils.cType[frameHeader["sampleStartDelay"]["size"]],
             fhand.read(utils.c(frameHeader["sampleStartDelay"]["size"])))[0]
 
     #   Reading availability of large lens [from frame header]
-    fhand.seek(cls.__FILE_HEADER_SIZE + fhand.seek(frameHeader["largeLens"]["location"], 0))
+    fhand.seek(cls.FILE_HEADER_SIZE + fhand.seek(frameHeader["largeLens"]["location"], 0))
     cls.largeLens = struct.unpack(
             utils.cType[frameHeader["largeLens"]["size"]],
             fhand.read(utils.c(frameHeader["largeLens"]["size"])))[0]

@@ -103,6 +103,10 @@ to the following [link](https://drive.google.com/open?id=1m71RbKyDRE8FwU-6GzVxIw
 ## Download Executables
 To download the executable, click [here](https://drive.google.com/open?id=1OvX94rnJiemxXv8hHyNMWmjA6Ipl_06N)
 
+## Build from Source
+
+TODO
+
 ## State
 
 - README [in Progress]

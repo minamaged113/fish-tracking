@@ -12,7 +12,6 @@ References:
 
 """
 import struct
-import file_handlers.error_description as err
 import file_handlers.v3.v3_frame_info as frame
 import os
 import json
@@ -145,9 +144,8 @@ class v3_File:
                 self.largeLens = struct.unpack(
                     utils.cType["uint32_t"], fhand.read(utils.c("uint32_t")))[0]
 
-        except:
-            err.print_error(err.fileReadError)
-            raise
+        except FileNotFoundError as e:
+            raise FileNotFoundError(e.errno, e.strerror, filename)
 
         
         self.FRAME_SIZE = self.getFrameSize()
@@ -213,9 +211,9 @@ class v3_File:
                 for i in range(self.FILE_HEADER_NUM):
                     print(orderedSet[str(i)])
 
-        except:
-            err.print_error(err.jsonData)
-            raise
+        except FileNotFoundError as e:
+            raise FileNotFoundError(e.errno, e.strerror, JSON_FILE_PATH)
+        
         return
 
     def getInfo(self):
@@ -289,9 +287,9 @@ class v3_File:
                 file_headers = json_fhand.read()
                 data = json.loads(file_headers)
                 size = data['headerSize']['size']
-        except:
-            err.print_error(err.jsonData)
-            raise
+        except FileNotFoundError as e:
+            raise FileNotFoundError(e.errno, e.strerror, JSON_FILE_PATH)
+        
         return size
 
     def getAllFramesSize(self):

@@ -18,9 +18,6 @@ import json
 import struct
 from file_handlers.utils import *
 
-from file_handlers.v0.v0_file_info import *
-from file_handlers.v1.v1_file_info import *
-from file_handlers.v2.v2_file_info import *
 from file_handlers.v3.v3_file_info import *
 from file_handlers.v4.v4_file_info import *
 from file_handlers.v5.v5_file_info import *
@@ -171,9 +168,8 @@ def FOpenSonarFile(filename):
     try:
         fhand = open(filename, 'rb')
         
-    except:
-        err.print_error(err.fileReadError)
-        raise ValueError("No such file or directory.\nSpecified path: {}".format(filename))
+    except FileNotFoundError as e:
+            raise FileNotFoundError(e.errno, e.strerror, filename)
     # read the first 4 bytes in the file to decide the version
     version = struct.unpack(cType["uint32_t"], fhand.read(c("uint32_t")))[0]
     versions[version]()

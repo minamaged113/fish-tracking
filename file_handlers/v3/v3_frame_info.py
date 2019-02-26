@@ -15,7 +15,6 @@ import struct
 import json
 import file_handlers.utils as utils
 import numpy as np
-import file_handlers.error_description as err
 import os
 import datetime
 import pytz
@@ -405,9 +404,9 @@ class v3_Frame:
                 ###########################
                 self.BEAM_COUNT = self.getBeamsFromPingMode(self.pingMode)
                 self.FRAME_DATA = self.readData(frameoffset, fhand)
-        except:
-            err.print_error(err.frameReadError)
-            raise
+        
+        except FileNotFoundError as e:
+            raise FileNotFoundError(e.errno, e.strerror, filename)
 
         self.Tmatrix = self.getTransformationMatrix()
         self.IMAGE = self.constructImage()
@@ -455,9 +454,9 @@ class v3_Frame:
                         else:
                             continue
                     return orderedSet
-            except:
-                err.print_error(err.jsonData)
-                raise
+            except FileNotFoundError as e:
+                raise FileNotFoundError(e.errno, e.strerror, JSON_FILE_PATH)
+        
         else:
             info = {
                 "Frame Number": self.FRAME_NUMBER,
