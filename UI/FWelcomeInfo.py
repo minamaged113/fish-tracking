@@ -1,11 +1,11 @@
 import PyQt5.QtCore as pyqtCore
 import PyQt5.QtGui as pyqtGUI
 import PyQt5.QtWidgets as pyqtWidgets
-import iconsLauncher as uiIcons         # UI/iconsLauncher
+import UI.iconsLauncher as uiIcons         
 import os
 import webbrowser
 
-import UI_utils as uif                  # UI/UI_utils
+import UI.UI_utils as uif
 
 
 class FWelcomeInfo(pyqtWidgets.QDialog):
