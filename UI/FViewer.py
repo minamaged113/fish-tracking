@@ -13,9 +13,9 @@ import json
 ## }
 
 import cv2
-import iconsLauncher as uiIcons      # UI/iconsLauncher
+import UI.iconsLauncher as uiIcons
 # uif : (u)ser (i)nterface (f)unction
-import UI_utils as uif              # UI/UI_utils
+import UI.UI_utils as uif
 import AutoAnalyzer
 
 ## library for reading SONAR files
@@ -36,7 +36,13 @@ class FFishListItem():
         self.FWdigetText = pyqtWidget.QLabel("Fish #{}".format(self.fishNumber))
 
         self.avgFishLength = pyqtWidget.QLabel()
-        self.avgFishLength.setText("Length: {}".format(uif.getAvgLength()))
+        self.avgFishLength.setText(
+            "Length: {}".format(
+                uif.getAvgLength(
+                    self.inputDict["width"]
+                    )
+                )
+            )
         
         self.FIfFish = pyqtWidget.QCheckBox("is Fish")
         self.FIfFish.setChecked(False)
@@ -477,7 +483,12 @@ class FViewer(pyqtWidget.QDialog):
 
         ## DEBUG: { toggle next blocks
         # block 1
-        dump = open(os.path.join(os.getcwd(), "data_all.json"))
+        dump = open(os.path.join(
+            os.getcwd(),
+            "samples",
+            "sample2_reallife",
+            "data_all.json")
+            )
         dump = dump.read()
         dump = json.loads(dump)
         self.FDetectedDict = dump['data']
@@ -500,7 +511,13 @@ class FViewer(pyqtWidget.QDialog):
         return
 
     def FPlay(self, eventQt):
-        ## problem
+        """Triggered when the user presses 'play' button. Continuously
+        calls for next frame.
+        
+        :param eventQt: when the space bar is pressed.
+        :type eventQt: QKeyEvent
+        """
+
         self.play = not self.play
         if self.play:
             self.FPlayBTN.setIcon(pyqtGUI.QIcon(uiIcons.FGetIcon('pause')))
@@ -526,11 +543,10 @@ class FViewer(pyqtWidget.QDialog):
         # self.FShowSelectedBTN = pyqtWidget.QPushButton("Show Selected")
         # self.FShowSelectedBTN.clicked.connect(self.showSelectedFish)
 
-        self.FApplyBTN = pyqtWidget.QPushButton("Apply")
-        self.FApplyBTN.clicked.connect(self.FApply)
+        self.FExportBTN = pyqtWidget.QPushButton("Export")
+        self.FExportBTN.clicked.connect(self.FExport)
 
-        # self.FLayout.addWidget(self.FApplyAllBTN, 2, 4)
-        self.FLayout.addWidget(self.FApplyBTN, 2, 5)
+        self.FLayout.addWidget(self.FExportBTN, 2, 5)
         self.FLayout.addWidget(self.FList, 0,4,2,2, pyqtCore.Qt.AlignRight)
         return
 
@@ -558,7 +574,7 @@ class FViewer(pyqtWidget.QDialog):
         return
 
 
-    def FApply(self):
+    def FExport(self, format=None, all=False):
         ## TODO _
         inputDict = self.FDetectedDict
         dictToBeSaved = dict()

@@ -4,8 +4,8 @@ that is available in all windows
 
 """
 import os
-from PyQt5.QtWidgets import QFileDialog
-from FViewer import FViewer                         # UI/FViewer
+from PyQt5.QtWidgets import QFileDialog, QMessageBox, QPushButton
+from UI.FViewer import FViewer
 # for the about section in the help menu
 import webbrowser
 #for exporting results
@@ -20,10 +20,12 @@ def FOpenFile(QT_Dialog):
         # filePathTuple = ('data.aris',) # Home PC & windows Laptop
         # filePathTuple = ('/home/mghobria/Documents/work/data/data 1/data.aris',) # work PC
         # filePathTuple = ("C:\\Users\\mghobria\\Downloads\\data.aris",) # Home PC windows
-        filePathTuple = QFileDialog.getOpenFileName(QT_Dialog,
-                                                    "Open File",
-                                                    homeDirectory,
-                                                    "Sonar Files (*.aris *.ddf)")
+        filePathTuple = (os.path.join(os.getcwd(), "samples", "sample2_reallife", "data.aris"), ) # Home PC windows
+        
+        # filePathTuple = QFileDialog.getOpenFileName(QT_Dialog,
+        #                                             "Open File",
+        #                                             homeDirectory,
+        #                                             "Sonar Files (*.aris *.ddf)")
         if filePathTuple[0] != "" : 
             # if the user has actually chosen a specific file.
             QT_Dialog.FFilePath = filePathTuple[0]
@@ -203,8 +205,27 @@ def loadFrameList():
         
     pass
 
-def getAvgLength():
-    return "N/A"
+def getAvgLength(listOfWidths):
+    ## TODO : this now returns average width in pixels, it should be in 
+    ## metric system units
+    return sum(listOfWidths)/len(listOfWidths)
+
+def errorMessage(error=None, msg=None, details=None):
+    msgBox = QMessageBox()
+    msgBox.setIcon(QMessageBox.Warning)
+    if error:
+        msgBox.setWindowTitle(error)
+    if msg:
+        msgBox.setText(msg)
+    if details:
+        msgBox.setDetailedText()
+    msgBox.setStandardButtons(QMessageBox.Ok)
+    msgBox.exec()
+    return
+
+def FGetSavePath():
+    fileDialog = QFileDialog.getSaveFileName()
+    return fileSavePath
 
 def print_stat_msg(text):
     ## TODO _ : delete this function
