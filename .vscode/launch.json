@@ -12,10 +12,16 @@
             "program": "${file}",
             "windows": {
                 "pythonPath": "${config:python.pythonPath}"
+            },
+            "linux": {
+                "pythonPath": "${config:python.pythonPath}"
+            },
+            "osx": {
+                "pythonPath": "${config:python.pythonPath}"
             }
         },
         {
-            "name": "test",
+            "name": "run",
             "type": "python",
             "request": "launch",
             "stopOnEntry": false,
@@ -25,10 +31,7 @@
             "env": {
                 
             },
-            "envFile": "${workspaceFolder}/.env",
-            "debugOptions": [
-				"RedirectOutput"
-            ]
+            "envFile": "${workspaceFolder}/.env"
         },
         {
             "name": "v5_unittest",
@@ -36,6 +39,56 @@
             "request": "launch",
             "pythonPath": "${config:python.pythonPath}",
             "program": "${workspaceFolder}/file_handlers/v5/v5_unittest.py",
+            "windows": {
+                "pythonPath": "${config:python.pythonPath}"
+            },
+            "linux": {
+                "pythonPath": "${config:python.pythonPath}"
+            },
+            "osx": {
+                "pythonPath": "${config:python.pythonPath}"
+            }
+        },
+        {
+            "name": "Windows Build",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/maker.py",
+            "args": ["build"],
+            "pythonPath": "${config:python.pythonPath}",
+            "cwd": "${workspaceFolder}",
+            "env": {},
+            "envFile": "${workspaceFolder}/.env",
+            "windows": {
+                "pythonPath": "${config:python.pythonPath}"
+            },
+            "linux": {
+                "pythonPath": "${config:python.pythonPath}"
+            },
+            "osx": {
+                "pythonPath": "${config:python.pythonPath}"
+            }// },
+            // "preLaunchTask": "Clean Previous Builds"
+        },
+        {
+            "name": "Create Installer",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/maker.py",
+            "args": ["bdist_msi"],
+            "pythonPath": "${config:python.pythonPath}",
+            "cwd": "${workspaceFolder}",
+            "env": {},
+            "envFile": "${workspaceFolder}/.env",
+            "windows": {
+                "pythonPath": "${config:python.pythonPath}"
+            },
+            "linux": {
+                "pythonPath": "${config:python.pythonPath}"
+            },
+            "osx": {
+                "pythonPath": "${config:python.pythonPath}"
+            }
         }
         
     ]

@@ -150,9 +150,9 @@ class v5_File:
         self.__sanityChecks()
 
         
-    ##############################################################
+    #####################################################################
     #       Usable user Functions
-    ##############################################################
+    #####################################################################
 
     def __len__(self):
         """
@@ -294,7 +294,6 @@ class v5_File:
         
         raise TypeError("File is corrupted")
 
-
     
 
 def v5_getAllFramesData(fhand, version, cls):
@@ -312,7 +311,7 @@ def v5_getAllFramesData(fhand, version, cls):
 
     """
     
-    ## TODO
+    ## TODO _
     
     cls.version = "ARIS"
     fileAttributesList = ["numRawBeams", "samplesPerChannel", "frameCount"]

@@ -10,6 +10,10 @@ References:
 #   https://github.com/SoundMetrics
 #   https://github.com/EminentCodfish/pyARIS
 """
+import sys
+import os
+import json
+
 
 import struct
 from file_handlers.utils import *
@@ -51,7 +55,10 @@ class FSONAR_File():
         frameoffset = (self.FILE_HEADER_SIZE + self.FRAME_HEADER_SIZE +(FI*(self.FRAME_HEADER_SIZE+(frameSize))))
         self.FILE_HANDLE.seek(frameoffset, 0)
         strCat = frameSize*"B"
-        self.FRAMES = np.array(struct.unpack(strCat, self.FILE_HANDLE.read(frameSize)), dtype=np.uint8)
+        try:
+            self.FRAMES = np.array(struct.unpack(strCat, self.FILE_HANDLE.read(frameSize)), dtype=np.uint8)
+        except:
+            return None
         self.FRAMES = cv2.flip(self.FRAMES.reshape((self.DATA_SHAPE[0], self.DATA_SHAPE[1])), 0)
         self.FRAMES = self.constructImages()
         return self.FRAMES
@@ -68,15 +75,15 @@ class FSONAR_File():
         Returns:
             [type] -- [description]
         """
-
+        ## TODO _
         allAngles = beamLookUp.BeamLookUp(self.BEAM_COUNT, self.largeLens)
         
         # d0 = self.sampleStartDelay * 0.000001 * self.soundSpeed/2
-        d0 = self.windowStart
+        d0 = self.windowStart   # in meters
         # dm = d0 + self.samplePeriod * self.samplesPerBeam * 0.000001 * self.soundSpeed/2
-        dm = self.windowStart + self.windowLength
+        dm = self.windowStart + self.windowLength   # in meters
         # am = allAngles[-1]
-        am = self.firstBeamAngle
+        am = self.firstBeamAngle    # in degrees
         K = self.samplesPerBeam
         N, M = self.DATA_SHAPE
 
@@ -102,12 +109,39 @@ class FSONAR_File():
             d = N + Q - dp
             outp = np.array((a,d)).T
             return outp
-        
+
 
 
         out = warp( self.FRAMES, invmap, output_shape=(K, L))
         out = (out/np.amax(out)*255).astype(np.uint8)
         return out
+
+    def getBeamDistance(self, x, y):
+        K = self.samplesPerBeam
+        N, M = self.DATA_SHAPE
+        d0 = self.windowStart
+        # dm = d0 + self.samplePeriod * self.samplesPerBeam * 0.000001 * self.soundSpeed/2
+        dm = self.windowStart + self.windowLength
+        am = self.firstBeamAngle
+        xm = dm*np.tan(am/180*np.pi)
+
+        L = int(K/(dm-d0) * 2*xm)
+        sx = L/(2*xm)
+        sa = M/(2*am)
+        sd = N/(dm-d0)
+        O = sx*d0
+        Q = sd*d0
+
+        xi = (x*L)
+        yi = (y*K)
+
+        xc = (xi - L/2)
+        yc = (K + O - yi)
+        dc = np.sqrt(xc**2 + yc**2)
+        ac = np.arctan(xc / yc)/np.pi*180
+
+        return [dc/sd, ac]
+
 
 
 def FOpenSonarFile(filename):
@@ -149,7 +183,7 @@ def DIDSON_v0(fhand, version, cls):
     """
     This function will handle version 0 DIDSON Files
     """
-    ## TODO
+    ## TODO _
     return cls
 
 
@@ -157,14 +191,14 @@ def DIDSON_v1(fhand, version, cls):
     """
     This function will handle version 1 DIDSON Files
     """
-    ## TODO
+    ## TODO _
     pass
 
 def DIDSON_v2(fhand, version, cls):
     """
     This function will handle version 2 DIDSON Files
     """
-    ## TODO
+    ## TODO _
     pass
 
 def DIDSON_v3(fhand, version, cls):
@@ -184,21 +218,7 @@ def DIDSON_v3(fhand, version, cls):
 
 def DIDSON_v4(fhand, version, cls):
     """
-    This function will handle version 5 DIDSON Files
-    version 5 of DIDSON format is also known as ARIS
-        dataAndParams = {
-            "data": allFrames,
-            "parameters":{
-                "frameCount": frameCount,
-                "numRawBeams" : numRawBeams,
-                "samplesPerChannel" : samplesPerChannel,
-                "samplePeriod" : samplePeriod,
-                "soundSpeed" : soundSpeed,
-                "sampleStartDelay" : sampleStartDelay,
-                "largeLens" : largeLens,
-                "DATA_SHAPE" : data.shape
-            }
-        }
+    This function will handle version 4 DIDSON Files
     """
     print("inside DIDSON v4")
     cls.FRAME_HEADER_SIZE = getFrameHeaderSize(version)
@@ -236,3 +256,49 @@ def DIDSON_v5(fhand, version, cls):
     cls.FILE_HANDLE = fhand
     return
 
+def loadJSON(jsonFilePath):
+    """This function will be used to load JSON files.
+    
+    Arguments:
+        jsonFilePath {string} -- path to the JSON file to load
+
+    Returns:
+        dict -- containing the data from JSON file.
+    """
+    try:
+        with open(jsonFilePath, "r") as template:
+            config = json.load(template)
+            return config
+    except:
+        return False
+
+def pathFromList(listOfDirectories):
+    """This function generates a sting path suitable for the used OS.
+    Example:
+    To get the path of file2.txt from a directory tree that looks like the
+    following:
+    {CWD}
+    ├── dir1
+    │   └── dirA
+    │       └── file1.txt
+    └── dir2
+        └── dirB
+            ├── file2.txt
+            └── file3.txt
+    the input list should be in the following form
+    ["dir1", "dirB", "file2.txt"]
+    and it returns a string holding the full path to that file.
+    
+    Arguments:
+        listOfDirectories {list} -- list of strings, each of which is a
+                                    part of the relative path to the 
+                                    specified file.
+    
+    Returns:
+        string -- full path to the specified file
+    """
+    return os.path.join(os.getcwd(), *listOfDirectories)
+
+def saveAnalysisPreset(presetName):
+    ## TODO _ : Finish this function
+    pass
