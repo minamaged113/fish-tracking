@@ -92,6 +92,17 @@ The style guide is mainly following PEP-8 unless stated otherwise.
 - Public attributes should have no leading underscores.
 - Comparisons to singletons like None should always be done with is or is not, never the equality operators.
 
+## Read more
+To find multiple research documents and articles about the topic, please
+visit the following [link](https://drive.google.com/open?id=1KgClGqckIhT0QGq54mdBsHee9TkbQyAR)
+
+## Sample Files
+To find couple of sample files and their respective output, please refer
+to the following [link](https://drive.google.com/open?id=1m71RbKyDRE8FwU-6GzVxIwKSSiS62A8S)
+
+## Download Executables
+To download the executable, click [here](https://drive.google.com/open?id=1OvX94rnJiemxXv8hHyNMWmjA6Ipl_06N)
+
 ## State
 
 - README [in Progress]
