@@ -11,6 +11,7 @@ import webbrowser
 #for exporting results
 from jinja2 import Environment, FileSystemLoader
 import file_handler as FH
+from math import sqrt, cos
 
 def FOpenFile(QT_Dialog):
         ## DEBUG : remove filePathTuple and uncomment filePathTuple
@@ -32,6 +33,13 @@ def FOpenFile(QT_Dialog):
             QT_Dialog.FCentralScreen = FViewer(QT_Dialog)
             QT_Dialog.setCentralWidget(QT_Dialog.FCentralScreen)
             QT_Dialog.setWindowTitle("Fisher - " + QT_Dialog.FFilePath)
+
+
+def FSaveFile(dataFilePath):
+    dialog = QFileDialog()
+    acquiredPath = QFileDialog().getSaveFileName(dialog, "Save File", os.path.dirname(dataFilePath), "JSON File (*.json) ;; TEXT (*.txt)")
+
+    return acquiredPath
 
 def loadTemplate(QT_Dialog, default=False):
     """Loads an analysis template from disk from the following path 
@@ -160,7 +168,7 @@ def fisherInfo():
     url = "https://minamaged113.github.io/fish-tracking/#"
     return webbrowser.open_new_tab(url)
 
-def exportResult(type, detectedFish):    
+def exportResult(type, detectedFish, path, cls_FViewer):    
     """Function used to export results of the program to well-known
     file formats {CSV, JSON, TXT}, according to the choice of the user.
     
@@ -172,18 +180,89 @@ def exportResult(type, detectedFish):
                          TXT: text.
         detectedFish {list} -- Ouput of the analysis process.
     """
-    templatesPath = os.path.join( os.getcwd(), "file_handlers","output_templates")
-    file_loader = FileSystemLoader(templatesPath)
-    env = Environment(loader = file_loader)
-    items = []
-    textTemp = env.get_template("textTemplate.txt")
-    for i in range(10):
-        an_item = dict(frame=i, dir=i, R=i, theta=i, L=i, dR=i, aspect=i, time=i, date=i, speed=i, comments="")
-        items.append(an_item)
+    if type == "txt":
+        templatesPath = os.path.join( os.getcwd(), "file_handlers","output_templates")
+        file_loader = FileSystemLoader(templatesPath)
+        env = Environment(loader = file_loader)
+        items = []
+        textTemp = env.get_template("textTemplate.txt")
+        for n in detectedFish.keys():
+            an_item = dict(
+                # frame is the middle frame from the set frames that the fish was detected
+                frame=str(detectedFish[n]["frames"][int(len(detectedFish[n]["frames"])/2)]).rjust(5)+"\t\t",
+                dir=str(detectedFish[n]["ID"]).rjust(4)+"\t\t",
+                R=str(
+                    round(
+                        calcDistanceAngle(
+                            cls_FViewer,
+                            detectedFish[n]["locations"]
+                            )[0],
+                            2
+                        ),
+                    ).rjust(4)+"\t\t",
+                theta=str(
+                    round(
+                        calcDistanceAngle(
+                            cls_FViewer,
+                            detectedFish[n]["locations"]
+                            )[1],
+                            2
+                        ),
+                    ).rjust(4)+"\t\t",
+                L="{0:.2f}".format(
+                    round(
+                        getAvgLength(cls_FViewer,
+                            detectedFish[n]["left"],
+                            detectedFish[n]["width"],
+                            detectedFish[n]["top"],
+                            detectedFish[n]["height"]
+                            ),
+                        2
+                        )
+                    ).rjust(4)+"\t\t",
 
-    output = textTemp.render(fishes=items)
-    
-    return
+                dR=str(detectedFish[n]["ID"]).rjust(4)+"\t\t",
+                aspect=str(detectedFish[n]["ID"]).rjust(4)+"\t\t",
+                time=str(n).rjust(4)+"\t\t",
+                date=str(detectedFish[n]["ID"]).rjust(4)+"\t\t",
+                speed=str(calcSpeed()).rjust(4)+"\t\t",
+                comments=""
+                )
+            items.append(an_item)
+
+        output = textTemp.render(fishes=items,
+            fileName=path,
+            totalFish=len(detectedFish),
+            editorID="TODO",
+            fileDate="TODO",
+            startTimeStamp="TODO",
+            endTimeStamp="TODO"
+            )
+
+        with open(path, 'w') as outFile:
+            outFile.write(output)
+
+    elif type == "json":
+
+        for n in detectedFish.keys():
+            data[str(n)] = {
+                "ID" : detectedFish[n]["ID"],
+                "locations" : tuple(map(tuple, detectedFish[n]["locations"])),
+                "frames" : detectedFish[n]["frames"],
+                "left": list(map(int, detectedFish[n]["left"])),
+                "top": list(map(int, detectedFish[n]["top"])),
+                "width": list(map(int, detectedFish[n]["width"])),
+                "height" : list(map(int, detectedFish[n]["height"])),
+                "area": list(map(int, detectedFish[n]["area"]))
+            }
+                  
+        with open(path, 'w') as outFile:
+            json.dump(data, outFile)
+
+    else:
+        return False
+
+    return True
 
 def loadFrameList():
     """Function that loads frames before and after the current
@@ -205,10 +284,51 @@ def loadFrameList():
         
     pass
 
-def getAvgLength(listOfWidths):
+def getAvgLength(cls_FViewer, listOfLefts, listOfWidths, listOfTops, listOfHeights):
     ## TODO : this now returns average width in pixels, it should be in 
     ## metric system units
-    return sum(listOfWidths)/len(listOfWidths)
+    
+    # https://www.easycalculation.com/physics/classical-physics/resultant-vector.php
+    # the hypotenus being the length of the fish
+    # p1  p2
+    # ____
+    # |  /
+    # | /
+    # |/
+    # p3
+    
+    
+    lengths = list()
+    for i in range(len(listOfLefts)):
+        p2 = (listOfLefts[i]+listOfWidths[i], listOfTops[i])        # fish head
+        p3 = (listOfLefts[i], listOfTops[i]-listOfHeights[i])       # fish tail
+
+        [L1, a1] = cls_FViewer.File.getBeamDistanceNonScaled(p2[0], p2[1])
+        [L2, a2] = cls_FViewer.File.getBeamDistanceNonScaled(p3[0], p3[1])
+
+        R = sqrt(
+            (L1**2)
+            + (L2**2)
+            + (2*L1*L2) * cos(abs(a2-a1))
+            )
+
+        lengths.append(R)
+
+
+    return sum(lengths)/len(lengths)
+
+def calcDistanceAngle(cls_FViewer, listOfCenters):
+    medianFrame = int(len(listOfCenters)/2)
+    [L, a] = cls_FViewer.File.getBeamDistanceNonScaled(listOfCenters[medianFrame][0], listOfCenters[medianFrame][1])
+    return [L, a]
+
+def calcDir():
+    ## TODO
+    return "TODO"
+
+def calcSpeed():
+    ## TODO
+    return "TODO"
 
 def errorMessage(error=None, msg=None, details=None):
     msgBox = QMessageBox()
@@ -218,7 +338,7 @@ def errorMessage(error=None, msg=None, details=None):
     if msg:
         msgBox.setText(msg)
     if details:
-        msgBox.setDetailedText()
+        msgBox.setDetailedText(details)
     msgBox.setStandardButtons(QMessageBox.Ok)
     msgBox.exec()
     return

@@ -5,7 +5,7 @@ import UI.iconsLauncher as uiIcons
 import os
 import webbrowser
 
-import UI.UI_utils as uif
+import UI_utils as uif
 
 
 class FWelcomeInfo(pyqtWidgets.QDialog):

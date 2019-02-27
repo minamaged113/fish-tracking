@@ -2,9 +2,10 @@ File		=	{{fileName}}
 TotalFish	=	{{totalFish}}
 Editor ID   =   {{editorID}}
 
-Frame#	|Dir	|R(m)	|Theta	|L(cm)	|dR(cm)	|Aspect	|Time		|Date		|speed	|comments
-=====================================================================================================================
-{% for f  in fishes %}{{f.frame}}	|{{f.dir}}	|{{f.R}}	|{{f.theta}}	|{{f.L}}	|{{f.dR}}	|{{f.aspect}}	|{{f.time}}		|{{f.date}}		|{{f.speed}}	|{{f.comments}}
+Frame#      |Dir        |R(m)       |Theta      |L(cm)      |dR(cm)     |Aspect     |Time       |speed      |comments
+==============================================================================================================================================================================================
+{% for f  in fishes %}
+{{f.frame}}|{{f.dir}}|{{f.R}}|{{f.theta}}|{{f.L}}|{{f.dR}}|{{f.aspect}}|{{f.time}}|{{f.speed}}|{{f.comments}}
 {% endfor %}
 
 

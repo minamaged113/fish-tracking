@@ -15,7 +15,7 @@ import json
 import cv2
 import UI.iconsLauncher as uiIcons
 # uif : (u)ser (i)nterface (f)unction
-import UI.UI_utils as uif
+import UI_utils as uif
 import AutoAnalyzer
 
 ## library for reading SONAR files
@@ -28,6 +28,7 @@ from ast import literal_eval
 
 class FFishListItem():
     def __init__(self, cls, inputDict, fishNumber):
+        # cls: instance of FVIewer
         self.fishNumber = fishNumber
         self.inputDict = inputDict
         self.listItem = pyqtWidget.QListWidgetItem()
@@ -37,9 +38,13 @@ class FFishListItem():
 
         self.avgFishLength = pyqtWidget.QLabel()
         self.avgFishLength.setText(
-            "Length: {}".format(
+            "Length: {0:.2f} cm".format(
                 uif.getAvgLength(
-                    self.inputDict["width"]
+                    cls,
+                    self.inputDict["left"],
+                    self.inputDict["width"],
+                    self.inputDict["top"],
+                    self.inputDict["height"]
                     )
                 )
             )
@@ -583,22 +588,27 @@ class FViewer(pyqtWidget.QDialog):
             if inputDict[i]['index'].FIfFish.isChecked():
                 dictToBeSaved[i] = inputDict[i]
 
-        for n in dictToBeSaved.keys():
-            data[str(n)] = {
-                "ID" : dictToBeSaved[n]["ID"],
-                "locations" : tuple(map(tuple, dictToBeSaved[n]["locations"])),
-                "frames" : dictToBeSaved[n]["frames"],
-                "left": list(map(int, dictToBeSaved[n]["left"])),
-                "top": list(map(int, dictToBeSaved[n]["top"])),
-                "width": list(map(int, dictToBeSaved[n]["width"])),
-                "height" : list(map(int, dictToBeSaved[n]["height"])),
-                "area": list(map(int, dictToBeSaved[n]["area"]))
+        if len(dictToBeSaved) == 0:
+            # if the user has marked no fish from the list as fish
+            # so there is nothing to save
+            uif.errorMessage(error="Empty Input",
+                msg="No fish was marked to save",
+                details="To save a detected fish, you have to mark the checkbox that is called 'isFish' as true."
+                )
+            return
 
-            }
-        path = self.File.FILE_PATH.split('.')
-        path = path[0] + '.json'
-        # path = os.path.join(path, fileName)            
-        with open(path, 'w') as outFile:
-            json.dump(data, outFile)
+        # get the absolute path and the extension
+        # abs_path_ext --> tuple
+        #   [0] Absolute path + extension
+        #   [1] extension
+        abs_path_ext = uif.FSaveFile(self.File.FILE_PATH)
+
+        if abs_path_ext[1] == 'TEXT (*.txt)':
+            # save the file as text, using text template
+            uif.exportResult("txt", dictToBeSaved, abs_path_ext[0], self)
+        elif abs_path_ext[1] == "JSON File (*.json)":
+            # save the file as JSON
+            uif.exportResult("json", dictToBeSaved, abs_path_ext[0], self)
+            
         
         return
