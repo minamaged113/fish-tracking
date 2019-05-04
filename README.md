@@ -6,7 +6,7 @@
 cd
 git clone https://github.com/minamaged113/fish-tracking.git
 cd fish-tracking
-virtualenv -p python3 venv/
+virtualenv -p python3 venv/ #or you can also use $ python3 -m venv venv
 source venv/bin/activate
 ```
 
@@ -16,42 +16,9 @@ remember to change the path according to your version of python
 
 ```bash
 pip install -r requirements.txt
-sudo apt-get install python3-tk
-sudo apt-get install python3-pyqt5
-CWD="$(pwd)"
-cp -r /usr/lib/python3/dist-packages/PyQt5 "${CWD}/venv/lib/python3.6/site-packages/PyQt5"
-cp /usr/lib/python3/dist-packages/sip.cpython-*.so "${CWD}/venv/lib/python3.6/site-packages/"
 ```
 
 ### Windows
-
-- Install Anaconda/Miniconda
-- Create new conda environmnet
-
-```BATCH
-conda create -n venv python=3.5
-```
-
-- Use `conda` package manager to install `numpy`, `pyqt`
-
-```BATCH
-conda install -n venv numpy=1.14.5 pyqt=5
-```
-
-- Activate `conda` environment
-
-```BATCH
-conda activate venv
-```
-
-- Run pip and python as usual
-
-```BATCH
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-python main.py
-```
-
 
 
 ## Read more
