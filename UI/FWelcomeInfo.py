@@ -18,7 +18,7 @@ class FWelcomeInfo(pyqtWidgets.QDialog):
     """
     
     def __init__(self, parent):
-        pyqtWidgets.QDialog.__init__(self)
+        pyqtWidgets.QDialog.__init__(self)          # initializing super class.
         self._MAIN_CONTAINER = parent
         self.FParent = parent
         self.FLayout = pyqtWidgets.QGridLayout()

@@ -477,21 +477,21 @@ class FViewer(pyqtWidget.QDialog):
 
         ## DEBUG: { toggle next blocks
         # block 1
-        dump = open(os.path.join(os.getcwd(), "data_all.json"))
-        dump = dump.read()
-        dump = json.loads(dump)
-        self.FDetectedDict = dump['data']
+        # dump = open(os.path.join(os.getcwd(), "data_all.json"))
+        # dump = dump.read()
+        # dump = json.loads(dump)
+        # self.FDetectedDict = dump['data']
 
         # block 2
-        # self.FDetectedDict = AutoAnalyzer.FAnalyze(self, kernel = kernel, 
-        #                                     kernelDim = kernelDim,
-        #                                     startFrame = startFrame,
-        #                                     blurDim = blurDim,
-        #                                     bgTh= bgTh,
-        #                                     minApp= minApp, 
-        #                                     maxDis = maxDis,
-        #                                     searchRadius= searchRadius,
-        #                                     imshow = imshow)
+        self.FDetectedDict = AutoAnalyzer.FAnalyze(self, kernel = kernel, 
+                                            kernelDim = kernelDim,
+                                            startFrame = startFrame,
+                                            blurDim = blurDim,
+                                            bgTh= bgTh,
+                                            minApp= minApp, 
+                                            maxDis = maxDis,
+                                            searchRadius= searchRadius,
+                                            imshow = imshow)
         # }
         self.popup.close()
         if(len(self.FDetectedDict)):
