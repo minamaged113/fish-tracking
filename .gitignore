@@ -25,3 +25,5 @@ data_all.json
 test.json
 test.py
 samples
+*.png
+*.jpg

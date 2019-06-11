@@ -21,12 +21,12 @@ def FOpenFile(QT_Dialog):
         # filePathTuple = ('data.aris',) # Home PC & windows Laptop
         # filePathTuple = ('/home/mghobria/Documents/work/data/data 1/data.aris',) # work PC
         # filePathTuple = ("C:\\Users\\mghobria\\Downloads\\data.aris",) # Home PC windows
-        filePathTuple = (os.path.join(os.getcwd(), "samples", "sample2_reallife", "data.aris"), ) # Home PC windows
+        # filePathTuple = (os.path.join(os.getcwd(), "samples", "sample2_reallife", "data.aris"), ) # Home PC windows
         
-        # filePathTuple = QFileDialog.getOpenFileName(QT_Dialog,
-        #                                             "Open File",
-        #                                             homeDirectory,
-        #                                             "Sonar Files (*.aris *.ddf)")
+        filePathTuple = QFileDialog.getOpenFileName(QT_Dialog,
+                                                    "Open File",
+                                                    homeDirectory,
+                                                    "Sonar Files (*.aris *.ddf)")
         if filePathTuple[0] != "" : 
             # if the user has actually chosen a specific file.
             QT_Dialog.FFilePath = filePathTuple[0]
