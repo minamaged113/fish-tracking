@@ -488,16 +488,12 @@ class FViewer(pyqtWidget.QDialog):
 
         ## DEBUG: { toggle next blocks
         # block 1
-<<<<<<< HEAD
-        # dump = open(os.path.join(os.getcwd(), "data_all.json"))
-=======
         # dump = open(os.path.join(
         #     os.getcwd(),
         #     "samples",
         #     "sample2_reallife",
         #     "data_all.json")
         #     )
->>>>>>> exportTemplates
         # dump = dump.read()
         # dump = json.loads(dump)
         # self.FDetectedDict = dump['data']
