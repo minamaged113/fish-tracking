@@ -26,4 +26,8 @@ test.json
 test.py
 samples
 *.png
+<<<<<<< HEAD
 *.jpg
+=======
+*.jpg
+>>>>>>> exportTemplates

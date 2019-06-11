@@ -14,8 +14,6 @@ def FAnalyze(cls, kernel = None , kernelDim = None,
             searchRadius = None,
             imshow = False):
 
-    # kernel = np.ones((5,5),np.uint8)
-    # kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (10,5))
     if kernelDim is not None:
         kernelDim = kernelDim
     else:

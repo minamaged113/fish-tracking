@@ -13,9 +13,9 @@ import json
 ## }
 
 import cv2
-import iconsLauncher as uiIcons      # UI/iconsLauncher
+import UI.iconsLauncher as uiIcons
 # uif : (u)ser (i)nterface (f)unction
-import UI_utils as uif              # UI/UI_utils
+import UI_utils as uif
 import AutoAnalyzer
 
 ## library for reading SONAR files
@@ -28,6 +28,7 @@ from ast import literal_eval
 
 class FFishListItem():
     def __init__(self, cls, inputDict, fishNumber):
+        # cls: instance of FVIewer
         self.fishNumber = fishNumber
         self.inputDict = inputDict
         self.listItem = pyqtWidget.QListWidgetItem()
@@ -36,7 +37,17 @@ class FFishListItem():
         self.FWdigetText = pyqtWidget.QLabel("Fish #{}".format(self.fishNumber))
 
         self.avgFishLength = pyqtWidget.QLabel()
-        self.avgFishLength.setText("Length: {}".format(uif.getAvgLength()))
+        self.avgFishLength.setText(
+            "Length: {0:.2f} cm".format(
+                uif.getAvgLength(
+                    cls,
+                    self.inputDict["left"],
+                    self.inputDict["width"],
+                    self.inputDict["top"],
+                    self.inputDict["height"]
+                    )
+                )
+            )
         
         self.FIfFish = pyqtWidget.QCheckBox("is Fish")
         self.FIfFish.setChecked(False)
@@ -477,7 +488,16 @@ class FViewer(pyqtWidget.QDialog):
 
         ## DEBUG: { toggle next blocks
         # block 1
+<<<<<<< HEAD
         # dump = open(os.path.join(os.getcwd(), "data_all.json"))
+=======
+        # dump = open(os.path.join(
+        #     os.getcwd(),
+        #     "samples",
+        #     "sample2_reallife",
+        #     "data_all.json")
+        #     )
+>>>>>>> exportTemplates
         # dump = dump.read()
         # dump = json.loads(dump)
         # self.FDetectedDict = dump['data']
@@ -500,7 +520,13 @@ class FViewer(pyqtWidget.QDialog):
         return
 
     def FPlay(self, eventQt):
-        ## problem
+        """Triggered when the user presses 'play' button. Continuously
+        calls for next frame.
+        
+        :param eventQt: when the space bar is pressed.
+        :type eventQt: QKeyEvent
+        """
+
         self.play = not self.play
         if self.play:
             self.FPlayBTN.setIcon(pyqtGUI.QIcon(uiIcons.FGetIcon('pause')))
@@ -526,11 +552,10 @@ class FViewer(pyqtWidget.QDialog):
         # self.FShowSelectedBTN = pyqtWidget.QPushButton("Show Selected")
         # self.FShowSelectedBTN.clicked.connect(self.showSelectedFish)
 
-        self.FApplyBTN = pyqtWidget.QPushButton("Apply")
-        self.FApplyBTN.clicked.connect(self.FApply)
+        self.FExportBTN = pyqtWidget.QPushButton("Export")
+        self.FExportBTN.clicked.connect(self.FExport)
 
-        # self.FLayout.addWidget(self.FApplyAllBTN, 2, 4)
-        self.FLayout.addWidget(self.FApplyBTN, 2, 5)
+        self.FLayout.addWidget(self.FExportBTN, 2, 5)
         self.FLayout.addWidget(self.FList, 0,4,2,2, pyqtCore.Qt.AlignRight)
         return
 
@@ -558,7 +583,7 @@ class FViewer(pyqtWidget.QDialog):
         return
 
 
-    def FApply(self):
+    def FExport(self, format=None, all=False):
         ## TODO _
         inputDict = self.FDetectedDict
         dictToBeSaved = dict()
@@ -567,22 +592,27 @@ class FViewer(pyqtWidget.QDialog):
             if inputDict[i]['index'].FIfFish.isChecked():
                 dictToBeSaved[i] = inputDict[i]
 
-        for n in dictToBeSaved.keys():
-            data[str(n)] = {
-                "ID" : dictToBeSaved[n]["ID"],
-                "locations" : tuple(map(tuple, dictToBeSaved[n]["locations"])),
-                "frames" : dictToBeSaved[n]["frames"],
-                "left": list(map(int, dictToBeSaved[n]["left"])),
-                "top": list(map(int, dictToBeSaved[n]["top"])),
-                "width": list(map(int, dictToBeSaved[n]["width"])),
-                "height" : list(map(int, dictToBeSaved[n]["height"])),
-                "area": list(map(int, dictToBeSaved[n]["area"]))
+        if len(dictToBeSaved) == 0:
+            # if the user has marked no fish from the list as fish
+            # so there is nothing to save
+            uif.errorMessage(error="Empty Input",
+                msg="No fish was marked to save",
+                details="To save a detected fish, you have to mark the checkbox that is called 'isFish' as true."
+                )
+            return
 
-            }
-        path = self.File.FILE_PATH.split('.')
-        path = path[0] + '.json'
-        # path = os.path.join(path, fileName)            
-        with open(path, 'w') as outFile:
-            json.dump(data, outFile)
+        # get the absolute path and the extension
+        # abs_path_ext --> tuple
+        #   [0] Absolute path + extension
+        #   [1] extension
+        abs_path_ext = uif.FSaveFile(self.File.FILE_PATH)
+
+        if abs_path_ext[1] == 'TEXT (*.txt)':
+            # save the file as text, using text template
+            uif.exportResult("txt", dictToBeSaved, abs_path_ext[0], self)
+        elif abs_path_ext[1] == "JSON File (*.json)":
+            # save the file as JSON
+            uif.exportResult("json", dictToBeSaved, abs_path_ext[0], self)
+            
         
         return
