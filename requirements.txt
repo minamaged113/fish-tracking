@@ -23,7 +23,7 @@ matplotlib==2.2.2
 mccabe==0.6.1
 networkx==2.1
 numpy==1.14.5
-opencv-python==4.0.0.21
+opencv-python==4.2.0.32
 packaging==19.0
 pep8==1.7.1
 Pillow==5.2.0
